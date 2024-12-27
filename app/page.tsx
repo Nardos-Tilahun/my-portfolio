@@ -99,7 +99,7 @@ export default function Home() {
               </svg>
             </a>
             <a
-              href="https://github.com/nardostilahun"
+              href="https://github.com/Nardos-Tilahun/my-portfolio"
               target="_blank"
               rel="noopener noreferrer"
               className="text-green-400 hover:text-green-300 transition-transform transform hover:scale-110"
