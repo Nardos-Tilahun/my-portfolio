@@ -1,7 +1,7 @@
 "use client";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { FaHtml5, FaCss3Alt, FaJs, FaReact, FaNodeJs, FaGitAlt, FaDocker, FaDatabase } from "react-icons/fa";
-import { SiNextdotjs, SiTailwindcss, SiMongodb, SiMysql, SiPostgresql, SiFirebase, SiDjango, SiRedis, SiTypescript, SiGraphql, SiWebpack, SiKubernetes, SiJenkins, SiNginx, SiVercel, SiNetlify } from "react-icons/si";
+import { SiNextdotjs, SiTailwindcss, SiMongodb, SiMysql, SiPostgresql, SiFirebase, SiDjango, SiRedis, SiTypescript, SiGraphql, SiWebpack, SiKubernetes, SiJenkins, SiNginx, SiVercel } from "react-icons/si";
 
 export default function TechnicalSkills() {
   const skills = [

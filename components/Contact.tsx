@@ -123,6 +123,7 @@ export default function Contact() {
         throw new Error(data.message || "Failed to send message");
       }
     } catch (error) {
+      console.error(error);
       setSubmitStatus({
         success: false,
         error: true,
@@ -143,7 +144,7 @@ export default function Contact() {
           className="max-w-4xl mx-auto"
         >
           <div className="text-center mb-12">
-            <h2 className="text-pink-400 text-4xl font-bold mb-4">Let's Connect</h2>
+            <h2 className="text-pink-400 text-4xl font-bold mb-4">Let&#39;s Connect</h2>
           </div>
 
           <div className="bg-gray-800 p-8 rounded-2xl shadow-xl">
