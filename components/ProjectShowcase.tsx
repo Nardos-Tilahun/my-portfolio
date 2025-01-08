@@ -12,7 +12,11 @@ interface Project {
   type: string;
   content: string;
   imageUrl: string;
+  features: string[];
+  githubUrl: string;
+  liveDemoUrl: string;
 }
+
 
 const Carousel3D = () => {
   const [currentIndex, setCurrentIndex] = useState<number>(0);
@@ -27,24 +31,17 @@ const Carousel3D = () => {
     {
       title: "LenderTrack",
       description: "Loan Management System",
-      type: "MERN Stack Application",
-      content: "A comprehensive loan management system for lenders to track borrowers and manage loan portfolios.",
-      imageUrl: "/api/placeholder/400/320"
+      type: "Full Stack Web Application",
+      content: "A comprehensive loan management system for lenders to track borrowers, manage loan portfolios, and automate repayment processes.",
+      imageUrl: "/api/placeholder/400/320",
+      features: [
+        "Developed full-stack application using MySQL, Express.js, React, and Node.js",
+        "Implemented real-time updates and notifications using sendgrid email",
+        "Integrated secure authentication and authorization with JWT",
+      ],
+      githubUrl: "https://github.com/Nardos-Tilahun/Personal_Loan_Management",
+      liveDemoUrl: "https://youtube.com/your-demo-link",
     },
-    {
-      title: "LenderTrack",
-      description: "Loan Management System",
-      type: "MERN Stack Application",
-      content: "A comprehensive loan management system for lenders to track borrowers and manage loan portfolios.",
-      imageUrl: "/api/placeholder/400/320"
-    },
-    {
-      title: "LenderTrack",
-      description: "Loan Management System",
-      type: "MERN Stack Application",
-      content: "A comprehensive loan management system for lenders to track borrowers and manage loan portfolios.",
-      imageUrl: "/api/placeholder/400/320"
-    }
   ];
 
   useEffect(() => {
@@ -237,17 +234,17 @@ const Carousel3D = () => {
               
                 </motion.div>
                 <p className="mt-4 text-gray-300">
-                  A comprehensive loan management system for lenders to track borrowers, manage loan portfolios, and automate repayment processes.
+                {project.content}
                 </p>
                 <ul className="mt-4 list-disc list-inside text-gray-400">
-                    <li>Developed full-stack application using MySQL, Express.js, React, and Node.js</li>
-                    <li>Implemented real-time updates and notifications using sendgrid email</li>
-                    <li>Integrated secure authentication and authorization with JWT</li>
-                </ul>
+                    {project.features.map((feature, featureIndex) => (
+                      <li key={featureIndex}>{feature}</li>
+                    ))}
+                  </ul>
               </CardContent>
               <CardFooter className="flex justify-between gap-4">
                 <a 
-                  href="https://youtube.com/your-demo-link"
+                  href={project.liveDemoUrl}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-block"
@@ -264,7 +261,7 @@ const Carousel3D = () => {
 
                 {/* GitHub Link */}
                 <a 
-                  href="https://github.com/your-repo-link"
+                  href={project.githubUrl}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-block"

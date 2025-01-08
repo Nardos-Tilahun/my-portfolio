@@ -1,6 +1,4 @@
-import Image from 'next/image'
 import Link from 'next/link'
-import { Button } from "@/components/ui/button"
 import Hero from '@/components/Hero'
 import ProjectShowcase from '@/components/ProjectShowcase'
 import TechnicalSkills from '@/components/TechnicalSkills'
