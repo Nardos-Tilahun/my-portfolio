@@ -40,7 +40,7 @@ const Carousel3D = () => {
         "Integrated secure authentication and authorization with JWT",
       ],
       githubUrl: "https://github.com/Nardos-Tilahun/Personal_Loan_Management",
-      liveDemoUrl: "https://youtube.com/your-demo-link",
+      liveDemoUrl: "https://drive.google.com/file/d/12TCHhbN9O247U_YvgtSOUyNYbuyyGHbu/view?usp=sharing",
     },
   ];
 
