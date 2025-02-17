@@ -109,7 +109,7 @@ const Hero = () => {
                   transition={{ delay: 0.5 }}
                   className="text-4xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-emerald-400 via-teal-900 to-gray-600 sm:text-6xl mt-16 lg:mt-0"
                 >
-                  Nardos Tilahun
+                  Nardos T. Dubale
                 </motion.h1>
 
                 <motion.p

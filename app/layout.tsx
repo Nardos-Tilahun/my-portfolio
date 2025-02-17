@@ -14,7 +14,7 @@ const geistMono = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "NTD.dev",
+  title: "NardosT.Dev",
   description: "Developed By Full Stack Developer, Nardos Tilahun Dubale",
 };
 
