@@ -120,14 +120,14 @@ export default function Contact() {
           message: "",
         });
       } else {
-        throw new Error(data.message || "Failed to send message");
+        throw new Error(data.message || "Failed to send message, Please try to send your message manually using the email address below:");
       }
     } catch (error) {
       console.error(error);
       setSubmitStatus({
         success: false,
         error: true,
-        message: "Failed to send message. Please try again later.",
+        message: "Failed to send message. Please try to send your message manually using the email address below:",
       });
     } finally {
       setIsSubmitting(false);
@@ -211,13 +211,13 @@ export default function Contact() {
               </div>
 
               {submitStatus.success && (
-                <Alert className="bg-green-500/20 text-green-500 border-green-500">
+                <Alert className="bg-green-500/20 text-green-500 border-green-500 text-center">
                   <AlertDescription>{submitStatus.message}</AlertDescription>
                 </Alert>
               )}
 
               {submitStatus.error && (
-                <Alert className="bg-red-500/20 text-red-500 border-red-500">
+                <Alert className="bg-red-500/20 text-red-500 border-red-500 text-center">
                   <AlertDescription>{submitStatus.message}</AlertDescription>
                 </Alert>
               )}
