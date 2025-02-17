@@ -81,7 +81,7 @@ export default function Home() {
           {/* Center Section */}
           <div className="flex items-center justify-center space-x-4">
             <a
-              href="https://linkedin.com/in/nardostilahun"
+              href="https://linkedin.com/in/nardos-tilahun-74260213a"
               target="_blank"
               rel="noopener noreferrer"
               className="text-green-400 hover:text-green-300 transition-transform transform hover:scale-110"

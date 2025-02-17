@@ -24,7 +24,7 @@ export async function POST(request: Request) {
 
     const msg = {
       to: "contactnardos@gmail.com", // Your email
-      from: "contactnardos@gmail.com", // Your verified SendGrid sender
+      from: process.env.VERIFIED_SENDER_EMAIL!, // Your verified SendGrid sender
       subject: `Portfolio Contact: ${subject}`,
       text: `
         Name: ${name}

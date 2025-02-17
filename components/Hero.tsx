@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { motion } from 'framer-motion';
 import { CldImage } from 'next-cloudinary';
 import { ChevronRight, ExternalLink } from 'lucide-react';
+import Link from 'next/link';
 
 const DeveloperLabel = ({ className = "" }) => {
   return (
@@ -129,22 +130,32 @@ const Hero = () => {
                 transition={{ delay: 0.9 }}
                 className="flex flex-col gap-4 sm:flex-row justify-center lg:justify-start"
               >
+                <Link
+                    href="#projects"
+                  >
                 <Button 
                   size="lg" 
                   className="group bg-emerald-500/80 text-black backdrop-blur-sm hover:bg-emerald-600 transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg hover:shadow-emerald-500/20"
                 >
-                  Explore Projects
-                  <ChevronRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+                  
+                    Explore Projects
+                    <ChevronRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
                 </Button>
-                
+                </Link>
+                <Link
+                    href="#contact"
+                  >
                 <Button 
                   size="lg" 
                   variant="outline" 
                   className="border-emerald-600/50 text-emerald-300 backdrop-blur-sm hover:bg-emerald-900/30 transition-all duration-300 ease-in-out transform hover:scale-105 hover:text-yellow-400 hover:shadow-lg hover:shadow-emerald-500/20"
                 >
-                  Get in Touch
-                  <ExternalLink className="ml-2 h-4 w-4" />
+                  
+                     Get in Touch
+                    <ExternalLink className="ml-2 h-4 w-4" />
+                  
                 </Button>
+                </Link>
               </motion.div>
             </motion.div>
           </div>

@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { ChevronRight, ChevronLeft } from 'lucide-react';
 import { CldImage } from 'next-cloudinary';
 import { motion } from 'framer-motion';
+import Link from 'next/link';
 
 interface Project {
   title: string;
@@ -29,7 +30,7 @@ const Carousel3D = () => {
 
   const projects: Project[] = [
     {
-      title: "LenderTrack",
+      title: "Personal Loan Management System",
       description: "Loan Management System",
       type: "Full Stack Web Application",
       content: "A comprehensive loan management system for lenders to track borrowers, manage loan portfolios, and automate repayment processes.",
@@ -215,11 +216,20 @@ const Carousel3D = () => {
             >
               
               <Card className="bg-gray-800 shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-105">
-              <CardHeader>
-                <CardTitle className="text-white">{project.title}</CardTitle>
-                <CardDescription className="text-gray-400">{project.type}</CardDescription>
-              </CardHeader>
+              <Link
+                href="https://personal-loan-management.onrender.com/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="transition-colors duration-300 hover:underline hover:text-blue-500"
+              >
+                <CardHeader>
+                  <CardTitle className="text-white">{project.title}</CardTitle>
+                  <CardDescription className="text-gray-400">{project.type}</CardDescription>
+                </CardHeader>
+              </Link>
+
               <CardContent>
+                
                 <motion.div
                   whileHover={{ scale: 1.05 }}
                   transition={{ type: "spring", stiffness: 200, damping: 10 }}
