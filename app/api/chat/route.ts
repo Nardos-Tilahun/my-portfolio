@@ -21,7 +21,7 @@ export async function POST(req: Request) {
     let apiKey;
     try {
       apiKey = getSecureApiKey();
-    } catch (_error) {
+    } catch {
       return NextResponse.json({ error: "API configuration error. Missing API key." }, { status: 500 });
     }
 

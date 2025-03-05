@@ -2,6 +2,7 @@
 
 import type React from "react"
 import { useState, useRef, useEffect } from "react"
+import NextImage from "next/image";
 import { Button } from "@/components/ui/button"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { Card, CardContent } from "@/components/ui/card"
@@ -13,6 +14,8 @@ import { atomDark } from "react-syntax-highlighter/dist/esm/styles/prism"
 import remarkGfm from "remark-gfm"
 import { TypeAnimation } from "react-type-animation"
 import * as Tooltip from "@radix-ui/react-tooltip"
+import { Image as LucideImage, /* other icons */ } from "lucide-react";
+
 
 // Define a type for our chat messages
 type Message = {
@@ -165,7 +168,7 @@ export default function FloatingChat() {
           }
         }, 1500) // Give user time to read the message before redirecting
       }
-    } catch (_error) {
+    } catch  {
       // Remove the typing indicator
       setMessages((prev) => prev.filter((msg) => msg.id !== typingMessageId))
       // Add a more helpful error message with contact information
@@ -510,17 +513,19 @@ export default function FloatingChat() {
                                   return (
                                     <div className="relative my-2">
                                       <div className="absolute top-2 left-2 bg-black/50 p-1 rounded">
-                                        <Image className="h-4 w-4 text-white" />
+                                        <LucideImage className="h-4 w-4 text-white" />
                                       </div>
-                                      <img
+                                      <NextImage
                                         className="rounded-md max-w-full"
                                         src={src || "/placeholder.svg"}
                                         alt={props.alt || "Image"}
                                         crossOrigin="anonymous"
+                                        width={500}  // adjust as needed
+                                        height={300} // adjust as needed
                                       />
                                     </div>
-                                  )
-                                },
+                                  );
+                                },                                
                                 ul({ children, ...props }) {
                                   return (
                                     <ul className="list-disc pl-5 space-y-1" {...props}>
