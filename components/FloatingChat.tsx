@@ -6,7 +6,7 @@ import NextImage from "next/image";
 import { Button } from "@/components/ui/button"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { Card, CardContent } from "@/components/ui/card"
-import { Send, MessageCircle, X, Code, Image, LinkIcon, Trash2, AlertTriangle } from "lucide-react"
+import { Send, MessageCircle, X, Code, LinkIcon, Trash2, AlertTriangle } from "lucide-react"
 import { motion, AnimatePresence } from "framer-motion"
 import ReactMarkdown from "react-markdown"
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter"
