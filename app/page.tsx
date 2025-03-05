@@ -4,8 +4,6 @@ import ProjectShowcase from '@/components/ProjectShowcase'
 import TechnicalSkills from '@/components/TechnicalSkills'
 import AboutMe from '@/components/AboutMe'
 import Contact from '@/components/Contact'
-import ChatInterface from '@/components/ChatInterface'
-import { personalData } from '@/data/PersonalInfo'
 import FloatingChat from '@/components/FloatingChat'
 
 export default function Home() {

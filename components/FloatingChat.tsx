@@ -41,7 +41,7 @@ export default function FloatingChat() {
   // Scroll to the bottom when new messages arrive
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
-  }, [messages])
+  }, [messagesEndRef]) //Corrected dependency
 
   // Focus input when chat opens
   useEffect(() => {
@@ -51,9 +51,7 @@ export default function FloatingChat() {
       }, 300)
       setUnreadCount(0)
     }
-  }, [isOpen])
-
-  
+  }, [isOpen, inputRef]) //Corrected dependency
 
   // Auto-resize the textarea to fit all content without scrolling
   const handleTextareaChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -167,27 +165,27 @@ export default function FloatingChat() {
           }
         }, 1500) // Give user time to read the message before redirecting
       }
-    } catch (err) {
+    } catch (_error) {
       // Remove the typing indicator
       setMessages((prev) => prev.filter((msg) => msg.id !== typingMessageId))
-       // Add a more helpful error message with contact information
-       const errorMessageId = Date.now() + 3
-       setMessages((prev) => [
-         ...prev,
-         {
-           id: errorMessageId,
-           role: "ai",
-           content:
-             "I'm sorry, I'm having trouble connecting to the server right now. Please try again later or reach out directly through one of these channels:\n\n" +
-             "- Email: [contact@example.com](mailto:contact@example.com)\n" +
-             "- Phone: +251 9494 94319\n\n" +
-             "Or visit the [contact page](#contact) for more options.",
-           shouldRedirectToContact: true,
-         },
-       ])
- 
-       setError(null)    
-      } finally {
+      // Add a more helpful error message with contact information
+      const errorMessageId = Date.now() + 3
+      setMessages((prev) => [
+        ...prev,
+        {
+          id: errorMessageId,
+          role: "ai",
+          content:
+            "I'm sorry, I'm having trouble connecting to the server right now. Please try again later or reach out directly through one of these channels:\n\n" +
+            "- Email: [contact@example.com](mailto:contact@example.com)\n" +
+            "- Phone: +251 9494 94319\n\n" +
+            "Or visit the [contact page](#contact) for more options.",
+          shouldRedirectToContact: true,
+        },
+      ])
+
+      setError(null)
+    } finally {
       setIsLoading(false)
     }
   }
@@ -329,7 +327,7 @@ export default function FloatingChat() {
               <div className="flex items-center space-x-2">
                 <Avatar className="h-10 w-10 border-2 border-green-500 ring-2 ring-green-400/30">
                   <AvatarFallback className="bg-gradient-to-br from-green-700 to-green-600 text-white font-bold">
-                    AI
+                    NT
                   </AvatarFallback>
                 </Avatar>
                 <div>
@@ -441,7 +439,7 @@ export default function FloatingChat() {
                       {message.role !== "user" && (
                         <Avatar className="h-8 w-8 border-2 border-green-500 mt-1">
                           <AvatarFallback className="bg-gradient-to-br from-green-700 to-green-600 text-white">
-                            NT
+                            AI
                           </AvatarFallback>
                         </Avatar>
                       )}
@@ -459,21 +457,25 @@ export default function FloatingChat() {
                             <ReactMarkdown
                               remarkPlugins={[remarkGfm]}
                               components={{
-                                code({ node, inline, className, children, ...props }: any) {
+                                code(props) {
+                                  const { className, children, ...rest } = props
                                   const match = /language-(\w+)/.exec(className || "")
-                                  return !inline && match ? (
+                                  const isInline = !match && !props.node?.properties?.className
+
+                                  return !isInline && match ? (
                                     <CodeBlock language={match[1]} value={String(children).replace(/\n$/, "")} />
                                   ) : (
-                                    <code className="bg-gray-700 px-1 py-0.5 rounded text-green-300" {...props}>
+                                    <code className="bg-gray-700 px-1 py-0.5 rounded text-green-300" {...rest}>
                                       {children}
                                     </code>
                                   )
                                 },
-                                a({ node, children, href, ...props }: any) {
+                                a({ children, href,...props  }) {
                                   // Special handling for contact section links
                                   if (href === "#contact") {
                                     return (
                                       <button
+                                        type="button"
                                         className="bg-green-600 hover:bg-green-500 text-white px-4 py-2 rounded-md flex items-center gap-2 mt-2 transition-all"
                                         onClick={() => {
                                           const contactSection = document.getElementById("contact")
@@ -484,7 +486,6 @@ export default function FloatingChat() {
                                             window.location.href = window.location.origin + "/#contact"
                                           }
                                         }}
-                                        {...props}
                                       >
                                         <LinkIcon className="h-4 w-4" />
                                         {children || "Contact Nardos"}
@@ -505,24 +506,29 @@ export default function FloatingChat() {
                                     </a>
                                   )
                                 },
-                                img({ node, ...props }: any) {
+                                img({ src, ...props }) {
                                   return (
                                     <div className="relative my-2">
                                       <div className="absolute top-2 left-2 bg-black/50 p-1 rounded">
                                         <Image className="h-4 w-4 text-white" />
                                       </div>
-                                      <img className="rounded-md max-w-full" {...props} alt={props.alt || "Image"} />
+                                      <img
+                                        className="rounded-md max-w-full"
+                                        src={src || "/placeholder.svg"}
+                                        alt={props.alt || "Image"}
+                                        crossOrigin="anonymous"
+                                      />
                                     </div>
                                   )
                                 },
-                                ul({ node, children, ...props }: any) {
+                                ul({ children, ...props }) {
                                   return (
                                     <ul className="list-disc pl-5 space-y-1" {...props}>
                                       {children}
                                     </ul>
                                   )
                                 },
-                                ol({ node, children, ...props }: any) {
+                                ol({ children, ...props }) {
                                   return (
                                     <ol className="list-decimal pl-5 space-y-1" {...props}>
                                       {children}
@@ -634,4 +640,3 @@ export default function FloatingChat() {
     </div>
   )
 }
-
