@@ -4,6 +4,9 @@ import ProjectShowcase from '@/components/ProjectShowcase'
 import TechnicalSkills from '@/components/TechnicalSkills'
 import AboutMe from '@/components/AboutMe'
 import Contact from '@/components/Contact'
+import ChatInterface from '@/components/ChatInterface'
+import { personalData } from '@/data/PersonalInfo'
+import FloatingChat from '@/components/FloatingChat'
 
 export default function Home() {
   return (
@@ -56,6 +59,7 @@ export default function Home() {
           <TechnicalSkills />
           <AboutMe />
           <Contact />
+          
         </div>
       </main>
       <footer className=" bg-gradient-to-r from-gray-900 via-black to-gray-900">
@@ -147,7 +151,7 @@ export default function Home() {
         </div>
       </footer>
 
-
+      <FloatingChat />
     </div>
   )
 }
