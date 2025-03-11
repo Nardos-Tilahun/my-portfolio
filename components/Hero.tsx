@@ -129,7 +129,7 @@ const DeveloperLabel: FC<DeveloperLabelProps> = ({ className = "" }) => {
 
 const Hero: FC = () => {
   return (
-    <div className="relative min-h-screen max-w-[1500px] w-full overflow-hidden">
+    <div className="relative min-h-screen max-h-[800px] max-w-[1500px] w-full overflow-hidden">
       <div className="relative z-10">
         <div className="container mx-auto px-6 md:py-24 py-12">
           {/* Desktop Label - Center Position */}
@@ -234,7 +234,7 @@ const Hero: FC = () => {
                 <Button 
                   size="lg" 
                   variant="outline" 
-                  className="border-emerald-600/50 text-emerald-300 backdrop-blur-sm hover:bg-emerald-900/30 transition-all duration-300 ease-in-out transform hover:scale-105 hover:text-yellow-400 hover:shadow-lg hover:shadow-emerald-500/20"
+                  className="border-emerald-600/50 text-gray-600 backdrop-blur-sm hover:bg-emerald-900/30 transition-all duration-300 ease-in-out transform hover:scale-105 hover:text-yellow-400 hover:shadow-lg hover:shadow-emerald-500/20"
                 >
                   
                      Get in Touch

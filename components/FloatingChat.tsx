@@ -611,34 +611,151 @@ export default function FloatingChat() {
         ) : (
           <motion.button
             initial={{ scale: 0.8, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
+            animate={{ 
+              scale: 1, 
+              opacity: 1,
+              boxShadow: ["0px 0px 0px rgba(0,200,83,0.3)", "0px 0px 15px rgba(0,200,83,0.6)", "0px 0px 0px rgba(0,200,83,0.3)"]
+            }}
             exit={{ scale: 0.8, opacity: 0 }}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
+            whileHover={{ 
+              scale: 1.05,
+              boxShadow: "0px 0px 20px rgba(0,200,83,0.7)",
+              background: "linear-gradient(45deg, #00c853, #2e7d32)"
+            }}
+            whileTap={{ 
+              scale: 0.95,
+              boxShadow: "0px 0px 5px rgba(0,200,83,0.8)" 
+            }}
             onClick={toggleChat}
-            className="bg-gradient-to-r from-green-700 to-green-600 text-white rounded-full p-4 shadow-lg shadow-green-900/20 flex items-center space-x-2 group relative"
+            transition={{ 
+              duration: 0.3,
+              boxShadow: { duration: 2, repeat: Infinity }
+            }}
+            className="bg-gradient-to-r from-green-700 to-green-600 text-white rounded-full p-4 shadow-lg shadow-green-900/20 flex items-center space-x-2 group relative overflow-hidden"
           >
-            <div className="relative">
-              <MessageCircle className="h-6 w-6" />
+            {/* Background particle effects with BLACK particles - FIXED STYLING */}
+            <motion.div 
+              className="absolute inset-0 opacity-20"
+              initial={{ backgroundPosition: "0% 0%" }}
+              animate={{ backgroundPosition: "100% 100%" }}
+              transition={{ duration: 15, repeat: Infinity, repeatType: "reverse" }}
+              style={{
+                backgroundImage: "url(\"data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%234A148C' fill-opacity='0.4' fill-rule='evenodd'%3E%3Ccircle cx='3' cy='3' r='2'/%3E%3Ccircle cx='13' cy='13' r='2'/%3E%3C/g%3E%3C/svg%3E\")",
+                backgroundRepeat: "repeat",
+                backgroundSize: "auto"
+              }}
+            />
+
+            {/* Icon container with pulse effect */}
+            <div className="relative z-10">
+              <motion.div
+                animate={{ 
+                  rotate: [0, 0, 10, -10, 0],
+                }}
+                transition={{ 
+                  duration: 3, 
+                  repeat: Infinity,
+                  repeatType: "loop",
+                  times: [0, 0.6, 0.7, 0.8, 1]
+                }}
+              >
+                <MessageCircle className="h-6 w-6" />
+              </motion.div>
+              
+              {/* Pulsing dot with trailing effect */}
               <motion.div
                 className="absolute -top-1 -right-1 h-2 w-2 bg-green-300 rounded-full"
-                animate={{ scale: [1, 1.5, 1] }}
-                transition={{ duration: 2, repeat: Number.POSITIVE_INFINITY }}
+                animate={{ 
+                  scale: [1, 1.5, 1],
+                  boxShadow: ["0px 0px 0px rgba(134,239,172,0)", "0px 0px 10px rgba(134,239,172,0.8)", "0px 0px 0px rgba(134,239,172,0)"]
+                }}
+                transition={{ 
+                  duration: 2, 
+                  repeat: Infinity,
+                  repeatType: "loop" 
+                }}
               />
             </div>
-            <span className="pr-2"> 👋 Meet My Digital Twin 🤖</span>
 
-            {/* Notification badge */}
+            {/* Text with wave effect */}
+            <div className="pr-2 relative z-10 overflow-hidden">
+              <motion.span 
+                className="inline-block"
+                animate={{
+                  y: ["0%", "-15%", "0%"]
+                }}
+                transition={{
+                  duration: 1.5,
+                  repeat: Infinity,
+                  repeatType: "loop",
+                  ease: "easeInOut",
+                  times: [0, 0.5, 1],
+                  delay: 0.1
+                }}
+              >
+                👋
+              </motion.span>
+              <span> Meet My </span>
+              <motion.span
+                className="inline-block font-bold bg-clip-text text-transparent bg-gradient-to-r from-green-200 to-green-100"
+                animate={{
+                  backgroundPosition: ["0% center", "100% center", "0% center"],
+                }}
+                transition={{
+                  duration: 3,
+                  repeat: Infinity,
+                  ease: "linear"
+                }}
+              >
+                Digital Twin
+              </motion.span>
+              <motion.span 
+                className="inline-block"
+                animate={{
+                  rotate: [0, 10, -10, 0],
+                }}
+                transition={{
+                  duration: 1.5,
+                  repeat: Infinity,
+                  repeatType: "loop",
+                  ease: "easeInOut",
+                  delay: 0.2
+                }}
+              >
+                🤖
+              </motion.span>
+            </div>
+
+            {/* Notification badge with bounce effect */}
             {unreadCount > 0 && (
               <motion.span
-                className="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center"
+                className="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center z-20"
                 initial={{ scale: 0 }}
-                animate={{ scale: 1 }}
-                transition={{ type: "spring", stiffness: 500, damping: 15 }}
+                animate={{ 
+                  scale: [1, 1.2, 1],
+                  rotate: [0, 0, 5, -5, 0]
+                }}
+                transition={{ 
+                  scale: { duration: 0.8, repeat: Infinity, repeatType: "reverse" },
+                  rotate: { duration: 1.5, repeat: Infinity, repeatType: "loop", times: [0, 0.6, 0.7, 0.8, 1] },
+                  type: "spring", 
+                  stiffness: 500, 
+                  damping: 15 
+                }}
               >
                 {unreadCount}
               </motion.span>
             )}
+
+            {/* Ripple effect on hover */}
+            <motion.div
+              className="absolute inset-0 rounded-full opacity-0 bg-white pointer-events-none"
+              whileHover={{ 
+                opacity: 0.2, 
+                scale: 1.05,
+                transition: { duration: 0.3 } 
+              }}
+            />
           </motion.button>
         )}
       </AnimatePresence>
