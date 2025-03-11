@@ -321,45 +321,25 @@ const ProjectShowcase: React.FC = () => {
                 </CardContent>
                 
                 <CardFooter className="flex justify-between gap-4">
-                   
-                    <Button 
-                      onClick={() => setSelectedProject(project)}
-                      className="bg-gradient-to-r from-green-500 to-teal-600 hover:from-green-600 hover:to-teal-700 text-white px-6 py-3 flex items-center hover:text-black gap-2 transition-transform transform hover:scale-105"
-                    >
-                      
-                      Learn More
+                <Button
+                  onClick={() => setSelectedProject(project)}
+                  className="bg-gradient-to-r from-green-500 to-teal-600 hover:from-green-600 hover:to-teal-700 text-white px-4 py-2 sm:px-6 sm:py-3 flex items-center hover:text-black gap-2 transition-transform transform hover:scale-105 text-sm sm:text-base"
+                >
+                  Learn More
+                  <ChevronRight className="ml-2 h-3 w-3 sm:h-4 sm:w-4 transition-transform group-hover:translate-x-1" />
+                </Button>
 
-                        <ChevronRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
-                    </Button>
-                    
-                    <Link
-                       href={`/projects/${project.id}`} passHref
-                      >
-                    <Button 
-                      variant="outline" 
-                      className="border-emerald-600/50 text-black backdrop-blur-sm hover:bg-emerald-900/30 transition-all duration-300 ease-in-out transform hover:scale-105 hover:text-yellow-400 hover:shadow-lg hover:shadow-emerald-500/20"
-                    >
-                      
-                      View Details
-                        <ExternalLink className="ml-2 h-4 w-4" />
-                      
-                    </Button>
-                  </Link>
-                  {/* <Button
-                    onClick={() => setSelectedProject(project)}
-                    className="flex items-center gap-2 bg-blue-600 text-white hover:bg-blue-700 transition-colors"
+                <Link href={`/projects/${project.id}`} passHref>
+                  <Button
+                    variant="outline"
+                    className="border-emerald-600/50 text-black backdrop-blur-sm hover:bg-emerald-900/30 transition-all duration-300 ease-in-out transform hover:scale-105 hover:text-yellow-400 hover:shadow-lg hover:shadow-emerald-500/20 px-4 py-2 sm:px-6 sm:py-3 text-sm sm:text-base"
                   >
-                    Learn More
+                    View Details
+                    <ExternalLink className="ml-2 h-3 w-3 sm:h-4 sm:w-4" />
                   </Button>
-                  <Link href={`/projects/${project.id}`} passHref>
-                    <Button
-                      variant="outline"
-                      className="flex items-center gap-2 border-gray-600 text-gray-300 hover:bg-gray-700 transition-colors"
-                    >
-                      View Details
-                    </Button>
-                  </Link> */}
-                </CardFooter>
+                </Link>
+              </CardFooter>
+
               </Card>
             </div>
           ))}
