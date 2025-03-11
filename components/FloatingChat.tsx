@@ -234,24 +234,28 @@ export default function FloatingChat() {
 
   // Typing indicator component
   const TypingIndicator = () => (
-    <div className="flex space-x-1 items-center px-2 py-1">
-      <motion.div
-        className="w-2 h-2 rounded-full bg-green-400"
-        animate={{ scale: [0.5, 1, 0.5] }}
-        transition={{ duration: 1, repeat: Number.POSITIVE_INFINITY }}
-      />
-      <motion.div
-        className="w-2 h-2 rounded-full bg-green-400"
-        animate={{ scale: [0.5, 1, 0.5] }}
-        transition={{ duration: 1, repeat: Number.POSITIVE_INFINITY, delay: 0.2 }}
-      />
-      <motion.div
-        className="w-2 h-2 rounded-full bg-green-400"
-        animate={{ scale: [0.5, 1, 0.5] }}
-        transition={{ duration: 1, repeat: Number.POSITIVE_INFINITY, delay: 0.4 }}
-      />
+    <div className="flex items-center space-x-1">
+      <span className=" text-emrald-600 font-medium">typing</span>
+      <div className="flex space-x-1">
+        <motion.div
+          className=" w-1 h-1 rounded-full bg-gradient-to-r from-green-400 to-blue-600 shadow-md"
+          animate={{ scale: [1, 1.4, 1], opacity: [0.5, 1, 0.5] }}
+          transition={{ duration: 1, repeat: Infinity, ease: "easeInOut" }}
+        />
+        <motion.div
+          className=" w-1 h-1 rounded-full bg-gradient-to-r from-green-400 to-blue-600 shadow-md"
+          animate={{ scale: [1, 1.4, 1], opacity: [0.5, 1, 0.5] }}
+          transition={{ duration: 1, repeat: Infinity, ease: "easeInOut", delay: 0.2 }}
+        />
+        <motion.div
+          className="w-1 h-1 rounded-full bg-gradient-to-r from-green-400 to-blue-600 shadow-md"
+          animate={{ scale: [1, 1.4, 1], opacity: [0.5, 1, 0.5] }}
+          transition={{ duration: 1, repeat: Infinity, ease: "easeInOut", delay: 0.4 }}
+        />
+      </div>
     </div>
-  )
+  );
+  
 
   // New component for delete confirmation
   const DeleteConfirmation = () => (

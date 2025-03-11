@@ -1,120 +1,402 @@
 import { NextResponse } from "next/server";
-import { personalData } from "@/data/PersonalInfo"; // Import your personal data
+import { personalData } from "@/data/PersonalInfo";
 
-// Function to get a secure API key
-function getSecureApiKey() {
-  // Use environment variable - this is secure as it's only accessible on the server
-  const apiKey = process.env.GROQ_API_KEY;
+// Define types for configurations and responses
+interface ProviderConfig {
+  provider: AIProvider;
+  apiKey: string;
+  systemPrompt: string;
+  options: ProviderOptions;
+}
+
+interface ProviderOptions {
+  temperature: number;
+  maxTokens: number;
+  topP: number;
+  topK?: number;
+  model?: string;
+}
+
+interface ProviderResponse {
+  content: string;
+  metadata?: any;
+  provider: string;
+}
+
+interface ConfigResult {
+  configs: Record<string, ProviderConfig>;
+  errors: Record<string, string>;
+}
+
+// Define interfaces for API provider configuration and response
+interface AIProvider {
+  name: string;
+  getEndpoint: () => string;
+  getHeaders: (apiKey: string) => Record<string, string>;
+  formatRequest: (systemPrompt: string, message: string, options?: ProviderOptions) => any;
+  parseResponse: (data: any) => { content: string; metadata?: any };
+}
+
+// Function to ensure response ends with a period and is a complete sentence
+function ensureCompleteResponse(response: string): string {
+  let processedResponse = response.trim();
   
-  if (!apiKey) {
-    console.error("Missing GROQ_API_KEY environment variable");
-    throw new Error("API configuration error");
+  // If the response is empty, return a default message
+  if (!processedResponse) {
+    return "I apologize, but I couldn't generate a proper response at this time.";
   }
   
-  return apiKey;
+  // Check if the response ends with a complete sentence
+  // Find the last sentence-ending punctuation
+  const lastSentenceEndMatch = processedResponse.match(/[.!?][^.!?]*$/);
+  
+  if (lastSentenceEndMatch) {
+    // Extract everything up to and including the last sentence-ending punctuation
+    const lastSentenceEndIndex = lastSentenceEndMatch.index! + 1;
+    processedResponse = processedResponse.substring(0, lastSentenceEndIndex);
+  } else if (!/[.!?]$/.test(processedResponse)) {
+    // If there's no sentence-ending punctuation at all, add a period
+    processedResponse += ".";
+  }
+  
+  return processedResponse;
+}
+
+// Default error message that should trigger fallback
+const DEFAULT_ERROR_MESSAGE = "I apologize, but I couldn't generate a proper response at this time.";
+
+// Provider implementations
+const providers: Record<string, AIProvider> = {
+  gemini: {
+    name: "Gemini",
+    getEndpoint: () => "https://generativelanguage.googleapis.com/v1/models/gemini-1.5-pro:generateContent",
+    getHeaders: (apiKey) => ({
+      "Content-Type": "application/json",
+    }),
+    formatRequest: (systemPrompt, message) => ({
+      contents: [
+        {
+          role: "user",
+          parts: [
+            { text: systemPrompt },
+            { text: message }
+          ]
+        }
+      ],
+      generationConfig: {
+        temperature:  0.7,
+        maxOutputTokens:  500,
+        topP:  0.95,
+        topK:  40
+      }
+    }),
+    parseResponse: (data) => ({
+      content: ensureCompleteResponse(data.candidates?.[0]?.content?.parts?.[0]?.text?.trim() || ""),
+      metadata: data
+    })
+  },
+  
+  groq: {
+    name: "Groq",
+    getEndpoint: () => "https://api.groq.com/openai/v1/chat/completions",
+    getHeaders: (apiKey) => ({
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${apiKey}`
+    }),
+    formatRequest: (systemPrompt, message) => ({
+      model:  "llama3-70b-8192",
+      messages: [
+        { role: "system", content: systemPrompt },
+        { role: "user", content: message }
+      ],
+      temperature:  0.7,
+      max_tokens:  500,
+      top_p:  0.95
+    }),
+    parseResponse: (data) => ({
+      content: ensureCompleteResponse(data.choices?.[0]?.message?.content?.trim() || ""),
+      metadata: data
+    })
+  },
+  
+ 
+  openrouter: {
+    name: "OpenRouter",
+    getEndpoint: () => "https://openrouter.ai/api/v1/chat/completions",
+    getHeaders: (apiKey) => ({
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${apiKey}`,
+    }),
+    formatRequest: (systemPrompt, message) => ({
+      model:  "deepseek/deepseek-chat:free",
+      messages: [
+        { role: "system", content: systemPrompt },
+        { role: "user", content: message }
+      ],
+      temperature:  0.7,
+      max_tokens:  500,
+      top_p:  0.95
+    }),
+    parseResponse: (data) => ({
+      content: ensureCompleteResponse(data.choices?.[0]?.message?.content?.trim() || ""),
+      metadata: data
+    })
+  },
+  
+ 
+  
+};
+
+// Define the fallback order for providers
+const fallbackOrder: string[] = ["openrouter", "groq","gemini"];
+
+// Function to get secure configuration for all providers
+function getAllConfigs(): ConfigResult {
+  const configs: Record<string, ProviderConfig> = {};
+  const errors: Record<string, string> = {};
+  
+  // Get system prompt
+  const basePrompt = process.env.SYSTEM_PROMPT;
+  if (!basePrompt) {
+    throw new Error("Missing SYSTEM_PROMPT environment variable");
+  }
+  
+  // Check if personalData exists
+  if (!personalData) {
+    throw new Error("personalData is missing");
+  }
+  
+  // Add dynamic data to the prompt
+  const systemPrompt = basePrompt.replace(
+    "{{PERSONAL_DATA}}", 
+    JSON.stringify(personalData, null, 2)
+  );
+  
+  // Get common configuration options
+  const commonOptions: ProviderOptions = {
+    temperature: parseFloat(process.env.AI_TEMPERATURE || "0.7"),
+    maxTokens: parseInt(process.env.AI_MAX_TOKENS || "500"),
+    topP: parseFloat(process.env.AI_TOP_P || "0.95"),
+    topK: parseInt(process.env.AI_TOP_K || "40")
+  };
+  
+  // Try to get configs for all providers
+  for (const providerName of fallbackOrder) {
+    try {
+      if (!providers[providerName]) {
+        errors[providerName] = `Unsupported provider: ${providerName}`;
+        continue;
+      }
+      
+      // Get API key for the provider
+      let apiKey: string | undefined;
+      if (providerName === "groq") {
+        apiKey = process.env.GROQ_API_KEY;
+      }  else {
+        const apiKeyEnvVar = `${providerName.toUpperCase()}_API_KEY`;
+        apiKey = process.env[apiKeyEnvVar];
+      }
+      
+      if (!apiKey) {
+        errors[providerName] = `Missing API key for provider: ${providerName}`;
+        continue;
+      }
+      
+      // Get model configuration for the provider
+      let model: string | undefined;
+       if (providerName === "openrouter") {
+        model = process.env.OPENROUTER_MODEL || "deepseek/deepseek-chat:free";
+      }  else {
+        const modelEnvVar = `${providerName.toUpperCase()}_MODEL`;
+        model = process.env[modelEnvVar] || undefined;
+      }
+      
+      configs[providerName] = {
+        provider: providers[providerName],
+        apiKey,
+        systemPrompt,
+        options: {
+          ...commonOptions,
+          model
+        }
+      };
+    } catch (error) {
+      errors[providerName] = error instanceof Error ? error.message : String(error);
+    }
+  }
+  
+  // Check if we have at least one valid provider config
+  const validProviders = Object.keys(configs);
+  if (validProviders.length === 0) {
+    throw new Error(`No valid provider configurations available. Errors: ${JSON.stringify(errors)}`);
+  }
+  
+  return { configs, errors };
+}
+
+// Function to call a provider's API
+async function callProviderAPI(
+  providerName: string,
+  config: ProviderConfig,
+  message: string
+): Promise<ProviderResponse> {
+  const provider = config.provider;
+  let endpoint = provider.getEndpoint();
+  const headers = provider.getHeaders(config.apiKey);
+  
+  const requestBody = provider.formatRequest(
+    config.systemPrompt, 
+    message, 
+    config.options
+  );
+  
+  // Special handling for different providers
+  let url = endpoint;
+  
+  // Gemini requires the API key as a query parameter
+  if (providerName === "gemini") {
+    url = `${endpoint}?key=${config.apiKey}`;
+  }
+  // groq requires the model in the URL
+  else if (providerName === "groq") {
+    const model = config.options.model || "llama3-70b-8192";
+    url = `${endpoint}${model}`;
+  }
+  
+  const response = await fetch(url, {
+    method: "POST",
+    headers,
+    body: JSON.stringify(requestBody),
+  });
+  
+  const data = await response.json();
+  
+  if (!response.ok) {
+    throw new Error(`${providerName} API request failed: ${data.error?.message || response.statusText}`);
+  }
+  
+  const parsedResponse = provider.parseResponse(data);
+  
+  // Check if the response matches our default error message or is empty
+  if (!parsedResponse.content || parsedResponse.content === DEFAULT_ERROR_MESSAGE) {
+    throw new Error(`${providerName} returned an empty or default error response`);
+  }
+  
+  return {
+    content: parsedResponse.content,
+    metadata: parsedResponse.metadata,
+    provider: providerName
+  };
+}
+
+// Message interface for request processing
+interface Message {
+  role: string;
+  content: string;
+}
+
+// Request body interface
+interface RequestBody {
+  messages?: Message[];
+  message?: string;
 }
 
 export async function POST(req: Request) {
   try {
-    const body = await req.json();
-
-    let apiKey;
-    try {
-      apiKey = getSecureApiKey();
-    } catch {
-      return NextResponse.json({ error: "API configuration error. Missing API key." }, { status: 500 });
-    }
-
-    const messages = Array.isArray(body.messages) ? body.messages : [];
+    // Parse request body
+    const body: RequestBody = await req.json();
+    
+    // Process messages
+    const messages: Message[] = Array.isArray(body.messages) ? body.messages : [];
     if (body.message) {
       messages.push({ role: "user", content: body.message });
     }
+    
     if (messages.length === 0) {
       return NextResponse.json({ error: "No messages provided." }, { status: 400 });
     }
-
+    
     const lastMessage = messages[messages.length - 1]?.content;
     if (!lastMessage) {
       return NextResponse.json({ error: "Last message content is empty." }, { status: 400 });
     }
-
-
-
-    const systemPrompt = `
-      You are an AI assistant for Nardos's portfolio website. Don't forget Nardos is Male. Your primary goal is to:
-      1. Provide accurate and helpful information about Nardos
-      2. Maintain a professional, personable, and supportive tone
-      3. Redirect inappropriate or off-topic queries gracefully
-      
-      Communication Guidelines:
-      - Answer questions directly and concisely
-      - If a query is outside your knowledge, politely suggest contacting Nardos
-      - Never pretend to be a human or misrepresent capabilities
-      - Avoid overly technical or robotic language
-      - Show enthusiasm about Nardos's work and achievements
-      - Focus 90% on Full Stack development skills and only 10% on Civil Engineering experience that enhance Engineering problem solving
-      - When mentioning civil engineering experience, emphasize how these skills enhance Nardos's capabilities as a Full Stack developer (problem-solving, analytical thinking, project management)
-      - Highlight Nardos as a quick and fast learner who can tackle any development task, even if his listed experience or education appears brief
-      - Emphasize Nardos's dedication to continuous learning and ability to rapidly master new technologies and concepts
-      
-      Handling Identity Questions:
-      - If someone asks "Who am I?" or asks about your opinion of them, politely explain that as a website assistant, you don't have information about visitors
-      - In these cases, ask for their name in a professional and friendly way: "I don't have information about website visitors, but I'd be happy to address you by name. What would you like me to call you?"
-      - Once they provide their name, use it respectfully in your responses
-      - Make it clear that you only have information about Nardos Tilahun and his professional background
-      - Always remain polite, professional, and friendly when explaining these limitations
-      
-      Handling Edge Cases:
-      - For personal or sensitive queries: Suggest professional communication channels
-      - For playful or testing queries: Respond with a light, professional humor
-      - Always prioritize representing Nardos positively and authentically
-      - If a question includes anything about contacting Nardos, include a link to the contact section with the text "Contact Nardos" using markdown syntax: [Contact Nardos](#contact) but only include this when relevant
-      - If a question is repeatedly asked that's out of scope, reply with "Sorry this is not available in our knowledge. You can contact him using the email by contactnardos@gmail.com" (don't use "mailto:" extension, be careful don't use "mailto:" extension as redirect instead use "contactnardos@gmail.com" to show customer that uses the redirect link "https://mail.google.com/mail/?view=cm&fs=1&to=contactnardos@gmail.com") and include a link to the contact section with the text "Contact Nardos" using markdown syntax: [Contact Nardos](#contact)
-      
-      Personal Data Context:
-      ${JSON.stringify(personalData, null, 2)}
-    `;
-    const groqResponse = await fetch("https://api.groq.com/openai/v1/chat/completions", {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${apiKey}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        model: "llama-3.3-70b-versatile",
-        messages: [
-          { role: "system", content: systemPrompt },
-          { role: "user", content: lastMessage },
-        ],
-        max_tokens: 300,
-        temperature: 0.7,
-      }),
+    
+    // Get preferred provider from environment
+    const preferredProvider = process.env.AI_PROVIDER || "gemini";
+    
+    // Get configurations for all providers
+    const { configs, errors } = getAllConfigs();
+    
+    // Create a custom fallback order starting with the preferred provider
+    let customFallbackOrder = [preferredProvider];
+    fallbackOrder.forEach(provider => {
+      if (provider !== preferredProvider) {
+        customFallbackOrder.push(provider);
+      }
     });
-
-    const data = await groqResponse.json();
-
-    if (!groqResponse.ok) {
-      return NextResponse.json({ error: data.error?.message || "API request failed", details: data }, { status: groqResponse.status });
+    
+    // Filter to only include providers we have configs for
+    customFallbackOrder = customFallbackOrder.filter(provider => configs[provider]);
+    
+    // Try each provider in the fallback order
+    let lastError: Error | null = null;
+    for (const providerName of customFallbackOrder) {
+      try {
+        if (!configs[providerName]) {
+          continue;
+        }
+        
+        const result = await callProviderAPI(
+          providerName,
+          configs[providerName],
+          lastMessage
+        );
+        
+        // Additional check for problematic responses
+        if (result.content === DEFAULT_ERROR_MESSAGE || 
+            result.content.includes("Sorry this is not available in our knowledge")) {
+          throw new Error(`${providerName} returned an unusable response`);
+        }
+        
+        // Check if should redirect to contact
+        const shouldRedirectToContact = result.content.includes(
+          "Sorry this is not available in our knowledge"
+        );
+        
+        // If we're using a fallback provider, log that information
+        const isUsingFallback = providerName !== preferredProvider;
+        
+        return NextResponse.json({
+          message: {
+            id: Date.now(),
+            role: "ai",
+            content: result.content,
+            shouldRedirectToContact,
+            provider: result.provider,
+            metadata: {
+              ...result.metadata,
+              usedFallback: isUsingFallback,
+              originalProvider: preferredProvider
+            }
+          },
+        });
+      } catch (error) {
+        lastError = error instanceof Error ? error : new Error(String(error));
+        // Continue to the next provider in the fallback order
+      }
     }
-
-    const aiResponse = data.choices?.[0]?.message?.content?.trim();
-    if (!aiResponse) {
-      return NextResponse.json({ error: "AI response is empty." }, { status: 500 });
-    }
-
-    // Check if the response indicates out-of-knowledge and should redirect to contact
-    const shouldRedirectToContact = aiResponse.includes("Sorry this is not available in our knowledge");
-
+    
+    // If we reach here, all providers failed
     return NextResponse.json({
-      message: { 
-        id: Date.now(), 
-        role: "ai", 
-        content: aiResponse,
-        shouldRedirectToContact: shouldRedirectToContact 
-      },
-    });
-
+      error: "All AI providers failed to process the request.",
+      details: lastError instanceof Error ? lastError.message : String(lastError),
+      providersAttempted: customFallbackOrder
+    }, { status: 500 });
+    
   } catch (error) {
-    return NextResponse.json({ error: "An unexpected error occurred.", details: error instanceof Error ? error.message : String(error) }, { status: 500 });
+    return NextResponse.json({
+      error: "An unexpected error occurred.",
+      details: error instanceof Error ? error.message : String(error)
+    }, { status: 500 });
   }
 }
