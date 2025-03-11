@@ -315,14 +315,14 @@ export default function FloatingChat() {
   )
 
   return (
-    <div className="fixed bottom-16 right-2 xs:right-6 lg:right-6 xl:right-12 z-50">
+    <div className="fixed bottom-8 sm:bottom-16 right-2 xs:right-6 lg:right-6 xl:right-12 z-50">
       <AnimatePresence>
         {isOpen ? (
           <motion.div
             initial={{ opacity: 0, scale: 0.8, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.8, y: 20 }}
-            className="w-[380px] min-h-[550px] max-h-[80vh] bg-gray-900 border border-green-700 rounded-lg shadow-2xl flex flex-col overflow-hidden relative"
+            className="w-[380px] min-h-[550px] max-h-[80vh] max-w-[100vh] bg-gray-900 border border-green-700 rounded-lg shadow-2xl flex flex-col overflow-hidden relative"
             style={{ transformOrigin: "bottom right" }}
           >
             {/* Chat Header */}
@@ -633,18 +633,7 @@ export default function FloatingChat() {
             }}
             className="bg-gradient-to-r from-green-700 to-green-600 text-white rounded-full p-4 shadow-lg shadow-green-900/20 flex items-center space-x-2 group relative overflow-hidden"
           >
-            {/* Background particle effects with BLACK particles - FIXED STYLING */}
-            {/* <motion.div 
-              className="absolute inset-0 opacity-20"
-              initial={{ backgroundPosition: "0% 0%" }}
-              animate={{ backgroundPosition: "100% 100%" }}
-              transition={{ duration: 15, repeat: Infinity, repeatType: "reverse" }}
-              style={{
-                backgroundImage: "url(\"data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%234A148C' fill-opacity='0.4' fill-rule='evenodd'%3E%3Ccircle cx='3' cy='3' r='2'/%3E%3Ccircle cx='13' cy='13' r='2'/%3E%3C/g%3E%3C/svg%3E\")",
-                backgroundRepeat: "repeat",
-                backgroundSize: "auto"
-              }}
-            /> */}
+          
 
             {/* Icon container with pulse effect */}
             <div className="relative z-10">

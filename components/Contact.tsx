@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, ChangeEvent, FormEvent } from "react";
+import { useState, ChangeEvent, FormEvent, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -42,6 +42,23 @@ export default function Contact() {
     error: false,
     message: "",
   });
+
+  // Add useEffect to clear notifications after a set time
+  useEffect(() => {
+    // Only set the timer if there's a success or error message
+    if (submitStatus.success || submitStatus.error) {
+      const timer = setTimeout(() => {
+        setSubmitStatus({
+          success: false,
+          error: false,
+          message: "",
+        });
+      }, 5000); // 5 seconds (change to 10000 for 10 seconds)
+      
+      // Clear the timer if the component unmounts or if the status changes
+      return () => clearTimeout(timer);
+    }
+  }, [submitStatus]);
 
   const validateForm = (): boolean => {
     const newErrors: FormErrors = {};
@@ -162,7 +179,7 @@ export default function Contact() {
                   placeholder="Your Name"
                   value={formData.name}
                   onChange={handleInputChange}
-                  className={`w-full  text-gray-100${errors.name ? "border-red-500" : ""}`}
+                  className={`w-full text-gray-100${errors.name ? "border-red-500" : ""}`}
                 />
                 {errors.name && (
                   <p className="text-red-500 text-sm mt-1">{errors.name}</p>
@@ -190,7 +207,7 @@ export default function Contact() {
                   placeholder="Subject"
                   value={formData.subject}
                   onChange={handleInputChange}
-                  className={`w-full  text-gray-100${errors.subject ? "border-red-500" : ""}`}
+                  className={`w-full text-gray-100${errors.subject ? "border-red-500" : ""}`}
                 />
                 {errors.subject && (
                   <p className="text-red-500 text-sm mt-1">{errors.subject}</p>
@@ -203,7 +220,7 @@ export default function Contact() {
                   placeholder="Your Message"
                   value={formData.message}
                   onChange={handleInputChange}
-                  className={`w-full h-32  text-gray-100${errors.message ? "border-red-500" : ""}`}
+                  className={`w-full h-32 text-gray-100${errors.message ? "border-red-500" : ""}`}
                 />
                 {errors.message && (
                   <p className="text-red-500 text-sm mt-1">{errors.message}</p>
@@ -211,15 +228,27 @@ export default function Contact() {
               </div>
 
               {submitStatus.success && (
-                <Alert className="bg-green-500/20 text-green-500 border-green-500 text-center">
-                  <AlertDescription>{submitStatus.message}</AlertDescription>
-                </Alert>
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                >
+                  <Alert className="bg-green-500/20 text-green-500 border-green-500 text-center">
+                    <AlertDescription>{submitStatus.message}</AlertDescription>
+                  </Alert>
+                </motion.div>
               )}
 
               {submitStatus.error && (
-                <Alert className="bg-red-500/20 text-red-500 border-red-500 text-center">
-                  <AlertDescription>{submitStatus.message}</AlertDescription>
-                </Alert>
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                >
+                  <Alert className="bg-red-500/20 text-red-500 border-red-500 text-center">
+                    <AlertDescription>{submitStatus.message}</AlertDescription>
+                  </Alert>
+                </motion.div>
               )}
 
               <Button
