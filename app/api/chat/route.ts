@@ -1,6 +1,25 @@
 import { NextResponse } from "next/server";
 import { personalData } from "@/data/PersonalInfo";
 
+// Define more specific types to replace 'any'
+interface ApiResponseData {
+  candidates?: Array<{
+    content?: {
+      parts?: Array<{
+        text?: string;
+      }>;
+    };
+  }>;
+  choices?: Array<{
+    message?: {
+      content?: string;
+    };
+  }>;
+  error?: {
+    message: string;
+  };
+}
+
 // Define types for configurations and responses
 interface ProviderConfig {
   provider: AIProvider;
@@ -19,7 +38,7 @@ interface ProviderOptions {
 
 interface ProviderResponse {
   content: string;
-  metadata?: any;
+  metadata?: Record<string, unknown>;
   provider: string;
 }
 
@@ -33,8 +52,8 @@ interface AIProvider {
   name: string;
   getEndpoint: () => string;
   getHeaders: (apiKey: string) => Record<string, string>;
-  formatRequest: (systemPrompt: string, message: string, options?: ProviderOptions) => any;
-  parseResponse: (data: any) => { content: string; metadata?: any };
+  formatRequest: (systemPrompt: string, message: string, options?: ProviderOptions) => Record<string, unknown>;
+  parseResponse: (data: ApiResponseData) => { content: string; metadata?: Record<string, unknown> };
 }
 
 // Function to ensure response ends with a period and is a complete sentence
@@ -70,7 +89,7 @@ const providers: Record<string, AIProvider> = {
   gemini: {
     name: "Gemini",
     getEndpoint: () => "https://generativelanguage.googleapis.com/v1/models/gemini-1.5-pro:generateContent",
-    getHeaders: (apiKey) => ({
+    getHeaders: () => ({
       "Content-Type": "application/json",
     }),
     formatRequest: (systemPrompt, message) => ({
@@ -92,7 +111,7 @@ const providers: Record<string, AIProvider> = {
     }),
     parseResponse: (data) => ({
       content: ensureCompleteResponse(data.candidates?.[0]?.content?.parts?.[0]?.text?.trim() || ""),
-      metadata: data
+      metadata: data as Record<string, unknown>
     })
   },
   
@@ -115,7 +134,7 @@ const providers: Record<string, AIProvider> = {
     }),
     parseResponse: (data) => ({
       content: ensureCompleteResponse(data.choices?.[0]?.message?.content?.trim() || ""),
-      metadata: data
+      metadata: data as Record<string, unknown>
     })
   },
   
@@ -139,7 +158,7 @@ const providers: Record<string, AIProvider> = {
     }),
     parseResponse: (data) => ({
       content: ensureCompleteResponse(data.choices?.[0]?.message?.content?.trim() || ""),
-      metadata: data
+      metadata: data as Record<string, unknown>
     })
   },
   
@@ -241,7 +260,7 @@ async function callProviderAPI(
   message: string
 ): Promise<ProviderResponse> {
   const provider = config.provider;
-  let endpoint = provider.getEndpoint();
+  const endpoint = provider.getEndpoint();
   const headers = provider.getHeaders(config.apiKey);
   
   const requestBody = provider.formatRequest(
@@ -269,7 +288,7 @@ async function callProviderAPI(
     body: JSON.stringify(requestBody),
   });
   
-  const data = await response.json();
+  const data = await response.json() as ApiResponseData;
   
   if (!response.ok) {
     throw new Error(`${providerName} API request failed: ${data.error?.message || response.statusText}`);
@@ -325,7 +344,7 @@ export async function POST(req: Request) {
     const preferredProvider = process.env.AI_PROVIDER || "gemini";
     
     // Get configurations for all providers
-    const { configs, errors } = getAllConfigs();
+    const { configs } = getAllConfigs();
     
     // Create a custom fallback order starting with the preferred provider
     let customFallbackOrder = [preferredProvider];
