@@ -47,12 +47,11 @@ interface Project {
 interface ProjectModalProps {
   project: Project
   onClose: () => void
-  allProjects: Project[]
 }
 
 
 
-const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose, allProjects }) => {
+const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose }) => {
   const [, setCurrentTab] = useState("overview")
   const [isModalOpen, setIsModalOpen] = useState(false);
 

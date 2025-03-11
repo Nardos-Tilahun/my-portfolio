@@ -50,17 +50,6 @@ const ArchitectureDiagram: React.FC<ArchitectureDiagramProps> = ({
   const isSmallScreen = useMediaQuery('(max-width: 640px)');
   const isMediumScreen = useMediaQuery('(max-width: 1024px)');
   
-  // Adjust component positions and sizes based on screen size
-  const getAdjustedSize = () => {
-    if (isSmallScreen) return 'small';
-    if (isMediumScreen) return 'medium';
-    return 'large';
-  }
-  
- 
-  
-
-  
   // Default diagram components with BETTER SPACING to prevent overlap
   const defaultDiagramComponents: DiagramComponent[] = [
     { 

@@ -148,7 +148,7 @@ const ProjectShowcase: React.FC = () => {
     setIsScrolling(true)
     setCurrentIndex((prev) => prev + 1)
     setTimeout(() => setIsScrolling(false), 500)
-  }, [isScrolling, currentIndex, projects.length, isMobile])
+  }, [isScrolling, currentIndex, isMobile])
 
   const handlePrev = useCallback(() => {
     if (isScrolling || currentIndex <= 0) return
@@ -368,7 +368,6 @@ const ProjectShowcase: React.FC = () => {
       {selectedProject && (
         <ProjectModal 
           project={selectedProject} 
-          allProjects={projects}
           onClose={() => setSelectedProject(null)} 
         />
       )}

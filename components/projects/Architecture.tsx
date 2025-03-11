@@ -12,7 +12,7 @@ interface ArchitectureProps {
   id: string;
 }
 
-const ProjectArchitecture: React.FC<ArchitectureProps> = ({ id }) => {
+const ProjectArchitecture: React.FC<ArchitectureProps> = () => {
   // Architecture data based on readme contents
   const architectureData = {
     overview: "The Personal Loan Management System uses a modern three-tier architecture with React frontend, Node.js backend API, and MySQL database. It provides secure authentication, loan management, payment processing, and customer interfaces for a complete personal financial loan solution.",
