@@ -26,13 +26,7 @@ async function getProject(id: string) {
   return projects.find(p => p.id === id) || null;
 }
 
-interface PageProps {
-  params: {
-    id: string;
-  };
-}
-
-export default async function ProjectPage({ params }: PageProps) {
+export default async function ProjectPage({ params }: { params: { id: string } }) {
   // Await params before accessing its properties
   const { id } = await params;
 
@@ -66,6 +60,8 @@ export default async function ProjectPage({ params }: PageProps) {
     </>
   );
 }
+
+
 
 
 
