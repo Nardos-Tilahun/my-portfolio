@@ -130,8 +130,8 @@ export default function FloatingChat() {
           role: "ai",
           content:
             "I'm sorry, I'm having trouble connecting to the server right now. Please try again later or reach out directly through one of these channels:\n\n" +
-            "- Email: [contact@example.com](mailto:contact@example.com)\n" +
-            "- Phone: +1 (555) 123-4567\n\n" +
+            "- Email: [contactnardos@gmail.com](https://mail.google.com/mail/?view=cm&fs=1&to=contactnardos@gmail.com)\n" +
+            "- Phone: +251 949494319\n\n" +
             "Or visit the [contact page](#contact) for more options.",
           shouldRedirectToContact: true,
         }
@@ -180,7 +180,7 @@ export default function FloatingChat() {
           role: "ai",
           content:
             "I'm sorry, I'm having trouble connecting to the server right now. Please try again later or reach out directly through one of these channels:\n\n" +
-            "- Email: [contact@example.com](mailto:contact@example.com)\n" +
+            "- Email: [contactnardos@gmail.com](https://mail.google.com/mail/?view=cm&fs=1&to=contactnardos@gmail.com)\n" +
             "- Phone: +251 9494 94319\n\n" +
             "Or visit the [contact page](#contact) for more options.",
           shouldRedirectToContact: true,

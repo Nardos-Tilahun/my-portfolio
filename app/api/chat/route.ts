@@ -62,7 +62,7 @@ export async function POST(req: Request) {
       - For playful or testing queries: Respond with a light, professional humor
       - Always prioritize representing Nardos positively and authentically
       - If a question includes anything about contacting Nardos, include a link to the contact section with the text "Contact Nardos" using markdown syntax: [Contact Nardos](#contact) but only include this when relevant
-      - If a question is repeatedly asked that's out of scope, reply with "Sorry this is not available in our knowledge. You can contact him using the email: contactnardos@gmail.com" and include a link to the contact section with the text "Contact Nardos" using markdown syntax: [Contact Nardos](#contact)
+      - If a question is repeatedly asked that's out of scope, reply with "Sorry this is not available in our knowledge. You can contact him using the email by contactnardos@gmail.com don't use "mailto:" extesion, be careful don't use "mailto:" extesion as redirect instead use "contactnardos@gmail.com" to show customer that uses the redirect link "https://mail.google.com/mail/?view=cm&fs=1&to=contactnardos@gmail.com"  and include a link to the contact section with the text "Contact Nardos" using markdown syntax: [Contact Nardos](#contact)
 
       Personal Data Context:
       ${JSON.stringify(personalData, null, 2)}

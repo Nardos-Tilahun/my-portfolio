@@ -47,20 +47,124 @@ export const personalData = {
   ],
   "projects": [
     {
-      "name": "Personal Financial Loan Website",
-      "description": "A full-featured platform for managing personal loans with separate admin and customer portals. Features include user authentication, loan application management, payment tracking, and detailed financial reporting with data visualization.",
-      "technologies": ["React", "Node.js", "Express.js", "MySQL", "JWT", "SendGrid", "RESTful APIs"],
-      "features": [
-        "Dual-role access system (Admin and Customer interfaces)",
-        "Complete loan lifecycle management",
-        "Payment tracking and management with validation logic",
-        "Financial data visualization (graphs and reports)",
-        "Email notifications for loan status and payment confirmations",
-        "Responsive design for cross-device compatibility"
+      "name": "Personal Financial Loan Management System",
+      "description": "A comprehensive platform for managing personal loans online with separate interfaces for administrators and customers.",
+      "longDescription": "This full-stack web application enables secure loan management for both administrators and customers. Administrators can manage users, loans, and payments, while customers can track their loan statuses and payment history. The application streamlines the entire lending process with features like authentication, payment tracking, email notifications, and detailed analytics.",
+      "technologies": [
+        "React", "Node.js", "Express", "MySQL", "JWT", "Tailwind CSS", 
+        "Vite", "SendGrid", "D3.js", "Material UI", "Lodash", "Bcrypt", 
+        "Nodemailer", "Winston", "Morgan", "Multer", "React Router DOM", 
+        "Helmet", "CORS", "Country-State-City", "React Phone Number Input"
       ],
-      "github": "https://github.com/Nardos-Tilahun/Personal_Loan_Management",
-      "demoVideo": "https://drive.google.com/file/d/12TCHhbN9O247U_YvgtSOUyNYbuyyGHbu/view?usp=sharing",
-      "role": "Full Stack Developer"
+      "keyFeatures": [
+        "User authentication with role-based access control",
+        "Comprehensive loan application management",
+        "Payment tracking and transaction history",
+        "Interactive dashboard with financial analytics",
+        "Automated email notifications",
+        "Customer verification system",
+        "Multi-currency support",
+        "Responsive design for all devices",
+        "Batch operations for admin efficiency",
+        "Real-time input validation"
+      ],
+      "architecture": {
+        "overview": "The system uses a modern three-tier architecture with React frontend, Node.js backend API, and MySQL database.",
+        "frontend": {
+          "description": "React-based UI with Vite for fast development. Features responsive design that works across devices, with secure authentication and role-based access control.",
+          "technologies": ["React", "Vite", "Tailwind CSS", "MUI (Material UI)", "React Router DOM", "JWT Decode", "Lodash", "D3.js"],
+          "components": ["User Authentication", "Admin Dashboard", "Loan Application Form", "Payment Management", "Customer Portal"]
+        },
+        "backend": {
+          "description": "Node.js backend with Express.js framework implementing RESTful APIs. Includes JWT authentication with role-based access for admins and customers.",
+          "technologies": ["Node.js", "Express.js", "JWT Authentication", "Bcrypt", "Nodemailer", "SendGrid", "Winston", "Morgan", "Multer"],
+          "components": ["User Service", "Loan Processing Service", "Payment Service", "Notification Service"]
+        },
+        "dataLayer": {
+          "description": "MySQL database for relational data storage with optimized schema for users, loans, and payments. Ensures data integrity for financial transactions.",
+          "technologies": ["MySQL", "mysql2"],
+          "components": ["User Records", "Loan Transactions", "Payment History", "System Logs"]
+        }
+      },
+      "systemInteractions": {
+        "authFlow": "Users authenticate through the frontend using JWT tokens, with role-based access controls distinguishing between admin and customer capabilities.",
+        "loanManagementFlow": "Admins can create, edit, and manage loans, while customers can view their loan details. Email notifications inform customers of any changes.",
+        "paymentProcessing": "The system tracks payments against loans, with recent payments being editable. Each payment updates the loan status and triggers notifications.",
+        "dataPersistence": "All transactions are stored in the MySQL database, ensuring data integrity and allowing for comprehensive reporting and analytics."
+      },
+      "challenges": [
+        {
+          "title": "Frontend Design Collaboration",
+          "description": "Faced difficulties designing an intuitive and engaging main page that would represent the platform effectively. The UI needed to be professional while remaining user-friendly for various stakeholders.",
+          "solution": "Collaborated with UI/UX designer to create wireframes and prototypes before implementation, resulting in a clean, modern interface that met all user requirements."
+        },
+        {
+          "title": "Cash-Based Payment Algorithm",
+          "description": "Since this was a cash-based system, payments needed to end in round figures. Created a system that would divide payments appropriately across terms while ensuring the total amount was covered.",
+          "solution": "Developed a custom algorithm that distributes payments optimally while maintaining rounded payment amounts."
+        },
+        {
+          "title": "Time Constraints & First Real-World Project",
+          "description": "As my first full-scale real-world project, I faced significant time pressure to deliver a functioning product while learning new concepts and technologies simultaneously.",
+          "solution": "Implemented agile methodology with weekly sprints and prioritized core features first, allowing for iterative improvements while meeting deadlines."
+        },
+        {
+          "title": "Evolving Requirements",
+          "description": "Throughout the development process, customer requirements frequently changed, requiring flexibility and adaptability in the system architecture.",
+          "solution": "Built the system with modular components and clean separation of concerns, allowing for easier adaptation to changing requirements."
+        }
+      ],
+      "futureImprovements": [
+        {
+          "feature": "Online Payment Integration",
+          "timeline": "Q2 2025",
+          "description": "Implement secure payment gateways allowing customers to make loan payments online via credit/debit cards, bank transfers, and digital wallets, eliminating the need for cash transactions.",
+          "benefits": ["Increased payment convenience", "Reduced processing time", "Automated reconciliation"],
+          "technologies": ["Stripe API", "PayPal", "Plaid"]
+        },
+        {
+          "feature": "Advanced Analytics Dashboard",
+          "timeline": "Q3 2025",
+          "description": "Implement data visualization tools showing loan performance metrics, customer payment history trends, and predictive analytics for risk assessment.",
+          "benefits": ["Data-driven decision making", "Risk mitigation", "Performance tracking"],
+          "technologies": ["D3.js", "TensorFlow.js", "React Query"]
+        },
+        {
+          "feature": "Multi-currency Support",
+          "timeline": "Q3 2025",
+          "description": "Expand beyond USD and Colombian Peso to support additional currencies with real-time exchange rate integration.",
+          "benefits": ["Global market expansion", "Currency risk management", "International reach"],
+          "technologies": ["Exchange Rate API", "Currency.js", "i18next"]
+        },
+        {
+          "feature": "Mobile Application",
+          "timeline": "Q4 2025",
+          "description": "Develop a native mobile application to allow customers to manage loans, make payments, and receive notifications on-the-go.",
+          "benefits": ["Increased user engagement", "24/7 account access", "Push notifications"],
+          "technologies": ["React Native", "Expo", "Firebase"]
+        },
+        {
+          "feature": "Automated Payment Reminders",
+          "timeline": "Q2 2025",
+          "description": "Implement an automated system to send customizable payment reminders at scheduled intervals before due dates.",
+          "benefits": ["Reduced delinquency rates", "Improved communication", "Lower overhead"],
+          "technologies": ["Twilio API", "SendGrid", "Node-cron"]
+        },
+        {
+          "feature": "Document Management System",
+          "timeline": "Q1 2026",
+          "description": "Add functionality for secure uploading, storing, and managing loan-related documents with OCR capabilities.",
+          "benefits": ["Centralized document storage", "Reduced paperwork", "Enhanced security"],
+          "technologies": ["AWS S3", "Tesseract.js", "PDF.js"]
+        }
+      ],
+      "links": {
+        "github": "https://github.com/Nardos-Tilahun/Personal_Loan_Management",
+        "demoVideo": "https://drive.google.com/file/d/12TCHhbN9O247U_YvgtSOUyNYbuyyGHbu/view?usp=sharing",
+        "liveSite": "https://personal-loan-management.onrender.com"
+      },
+      "role": "Full Stack Developer",
+      "outcome": "Successfully delivered a full-stack application with MySQL that provides a comprehensive loan management platform. The system now efficiently handles all aspects of the lending process while maintaining high standards of security and user experience."
     }
   ],
   "contact": {
