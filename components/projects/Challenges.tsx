@@ -2,13 +2,6 @@
 import React from 'react';
 import ChallengeCards from './ChallengeCards';
 
-interface Challenge {
-  title: string;
-  description: string;
-  solution: string;
-  icon?: string;
-}
-
 interface ChallengesProps {
   id: string;
 }

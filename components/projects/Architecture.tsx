@@ -2,8 +2,8 @@
 
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { FaServer, FaDatabase, FaReact, FaNodeJs, FaArrowRight, FaUsers, FaCreditCard, FaMoneyBillWave, FaUserShield, FaFileInvoiceDollar } from "react-icons/fa";
-import { SiNextdotjs, SiMongodb, SiRedis, SiFirebase, SiVercel, SiTailwindcss, SiExpress, SiJsonwebtokens, SiMysql, SiNpm } from "react-icons/si";
+import {  FaUsers, FaCreditCard } from "react-icons/fa";
+import {  SiJsonwebtokens} from "react-icons/si";
 import { MdNotifications, MdPayment, MdDashboard } from "react-icons/md";
 import { motion } from "framer-motion";
 import ArchitectureDiagram from './ArchitectureDiagram';

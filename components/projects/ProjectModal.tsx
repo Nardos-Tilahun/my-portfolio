@@ -53,34 +53,8 @@ interface ProjectModalProps {
 
 
 const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose, allProjects }) => {
-  const [currentTab, setCurrentTab] = useState("overview")
-  const [currentImageIndex, setCurrentImageIndex] = useState(0)
+  const [, setCurrentTab] = useState("overview")
   const [isModalOpen, setIsModalOpen] = useState(false);
-
-  // Find the index of the current project to enable navigation
-  const currentProjectIndex = allProjects.findIndex(p => p.id === project.id)
-  
-  // Navigate to previous or next project
-  const navigateToProject = (direction: "prev" | "next") => {
-    let newIndex = direction === "prev" 
-      ? (currentProjectIndex - 1 + allProjects.length) % allProjects.length
-      : (currentProjectIndex + 1) % allProjects.length
-    
-    // Return the new project at the calculated index
-    return allProjects[newIndex]
-  }
-
-  // Handle image navigation
-  const navigateImages = (direction: "prev" | "next") => {
-    const totalImages = project.images.length
-    setCurrentImageIndex(prevIndex => {
-      if (direction === "prev") {
-        return (prevIndex - 1 + totalImages) % totalImages
-      } else {
-        return (prevIndex + 1) % totalImages
-      }
-    })
-  }
 
   // Get background color for technology badge based on category
   const getTechBadgeColor = (category: string): string => {

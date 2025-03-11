@@ -3,12 +3,13 @@
 import React, { useState, useCallback, useRef, useEffect } from 'react'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { ChevronRight, ChevronLeft, Github, ExternalLink, BarChart, Users, FileText, CreditCard, User, Edit, Plus, AlertCircle, Home, X } from "lucide-react"
+import { ChevronRight, ChevronLeft, Github, ExternalLink, BarChart, Users, FileText, CreditCard, User, Edit, Plus, AlertCircle, Home} from "lucide-react"
 import { motion, AnimatePresence } from "framer-motion"
 import Link from "next/link"
 import { Badge } from "@/components/ui/badge"
 import { CldImage } from 'next-cloudinary'
-import { Dialog, DialogClose, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
+import Image from 'next/image'
 
 interface Screenshot {
   cloudinaryId: string
@@ -595,7 +596,7 @@ const ProjectOverview: React.FC<ProjectOverviewProps> = ({ id, cloudinaryImageId
                               className="w-full h-full object-contain"
                             />
                           ) : (
-                            <img
+                            <Image
                               src={`/api/placeholder/1892/855`}
                               alt={screenshot.title}
                               className="w-full h-full object-cover"

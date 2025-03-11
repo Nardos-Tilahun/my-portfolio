@@ -57,14 +57,9 @@ const ArchitectureDiagram: React.FC<ArchitectureDiagramProps> = ({
     return 'large';
   }
   
-  const size = getAdjustedSize();
+ 
   
-  // Spacing map based on screen size - REDUCED SIZES
-  const spacingMap = {
-    small: { iconSize: 8, spacing: 8 },
-    medium: { iconSize: 10, spacing: 10 },
-    large: { iconSize: 12, spacing: 12 }
-  };
+
   
   // Default diagram components with BETTER SPACING to prevent overlap
   const defaultDiagramComponents: DiagramComponent[] = [
