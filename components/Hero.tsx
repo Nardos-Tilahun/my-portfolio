@@ -131,7 +131,7 @@ const Hero: FC = () => {
   return (
     <div className="relative min-h-screen max-h-[800px] max-w-[1500px] w-full overflow-hidden">
       <div className="relative z-10">
-        <div className="container mx-auto px-6 md:py-24 py-12">
+        <div className="container mx-auto px-6 py-12">
           {/* Desktop Label - Center Position */}
           <div className="hidden lg:block">
             <DeveloperLabel className="left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2" />

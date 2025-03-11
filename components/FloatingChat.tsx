@@ -315,7 +315,7 @@ export default function FloatingChat() {
   )
 
   return (
-    <div className="fixed bottom-16 right-1 xs:right-6 z-50">
+    <div className="fixed bottom-16 right-2 xs:right-6 lg:right-6 xl:right-12 z-50">
       <AnimatePresence>
         {isOpen ? (
           <motion.div
@@ -634,7 +634,7 @@ export default function FloatingChat() {
             className="bg-gradient-to-r from-green-700 to-green-600 text-white rounded-full p-4 shadow-lg shadow-green-900/20 flex items-center space-x-2 group relative overflow-hidden"
           >
             {/* Background particle effects with BLACK particles - FIXED STYLING */}
-            <motion.div 
+            {/* <motion.div 
               className="absolute inset-0 opacity-20"
               initial={{ backgroundPosition: "0% 0%" }}
               animate={{ backgroundPosition: "100% 100%" }}
@@ -644,7 +644,7 @@ export default function FloatingChat() {
                 backgroundRepeat: "repeat",
                 backgroundSize: "auto"
               }}
-            />
+            /> */}
 
             {/* Icon container with pulse effect */}
             <div className="relative z-10">

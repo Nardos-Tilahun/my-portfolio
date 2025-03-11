@@ -241,7 +241,7 @@ export default function Contact() {
                 Email: contactnardos@gmail.com
               </p>
               <p className="mb-4 text-gray-400 text-lg">
-                Location: East Africa (UTC+3)
+                Location: Addis Ababa, Ethiopia (UTC+3)
               </p>
             </motion.div>
           </div>
