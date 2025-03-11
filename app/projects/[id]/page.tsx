@@ -26,9 +26,11 @@ async function getProject(id: string) {
   return projects.find(p => p.id === id) || null;
 }
 
-export default async function ProjectPage({ params }: { params: { id: string } }) {
-  // Await params before accessing its properties
-  const { id } = await params;
+// We need to await params and resolve them before using
+export default async function ProjectPage({ params }: { params: Promise<{ id: string }> }) {
+  // Await params object to resolve the id
+  const resolvedParams = await params;
+  const { id } = resolvedParams;
 
   const project = await getProject(id);
 
@@ -60,6 +62,7 @@ export default async function ProjectPage({ params }: { params: { id: string } }
     </>
   );
 }
+
 
 
 
