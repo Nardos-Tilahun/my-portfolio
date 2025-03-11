@@ -320,25 +320,26 @@ const ProjectShowcase: React.FC = () => {
 
                 </CardContent>
                 
-                <CardFooter className="flex justify-between gap-4">
-                <Button
-                  onClick={() => setSelectedProject(project)}
-                  className="bg-gradient-to-r from-green-500 to-teal-600 hover:from-green-600 hover:to-teal-700 text-white px-4 py-2 sm:px-6 sm:py-3 flex items-center hover:text-black gap-2 transition-transform transform hover:scale-105 text-sm sm:text-base"
-                >
-                  Learn More
-                  <ChevronRight className="ml-2 h-3 w-3 sm:h-4 sm:w-4 transition-transform group-hover:translate-x-1" />
-                </Button>
-
-                <Link href={`/projects/${project.id}`} passHref>
+                <CardFooter className="flex justify-between gap-2 sm:gap-4">
                   <Button
-                    variant="outline"
-                    className="border-emerald-600/50 text-black backdrop-blur-sm hover:bg-emerald-900/30 transition-all duration-300 ease-in-out transform hover:scale-105 hover:text-yellow-400 hover:shadow-lg hover:shadow-emerald-500/20 px-4 py-2 sm:px-6 sm:py-3 text-sm sm:text-base"
+                    onClick={() => setSelectedProject(project)}
+                    className="bg-gradient-to-r from-green-500 to-teal-600 hover:from-green-600 hover:to-teal-700 text-white px-3 py-1.5 xs:px-4 xs:py-2 sm:px-6 sm:py-3 flex items-center hover:text-black gap-1.5 xs:gap-2 transition-transform transform hover:scale-105 text-xs xs:text-sm sm:text-base"
                   >
-                    View Details
-                    <ExternalLink className="ml-2 h-3 w-3 sm:h-4 sm:w-4" />
+                    Learn More
+                    <ChevronRight className="ml-1 h-3 w-3 xs:h-4 xs:w-4 transition-transform group-hover:translate-x-1" />
                   </Button>
-                </Link>
-              </CardFooter>
+
+                  <Link href={`/projects/${project.id}`} passHref>
+                    <Button
+                      variant="outline"
+                      className="border-emerald-600/50 text-black backdrop-blur-sm hover:bg-emerald-900/30 transition-all duration-300 ease-in-out transform hover:scale-105 hover:text-yellow-400 hover:shadow-lg hover:shadow-emerald-500/20 px-3 py-1.5 xs:px-4 xs:py-2 sm:px-6 sm:py-3 text-xs xs:text-sm sm:text-base"
+                    >
+                      View Details
+                      <ExternalLink className="ml-1 h-3 w-3 xs:h-4 xs:w-4" />
+                    </Button>
+                  </Link>
+                </CardFooter>
+
 
               </Card>
             </div>

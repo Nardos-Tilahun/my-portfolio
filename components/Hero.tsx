@@ -44,7 +44,7 @@ const DeveloperLabel = ({ className = "" }) => {
 
 const Hero = () => {
   return (
-    <div className="relative min-h-screen max-w-[1500px] w-full overflow-hidden">
+    <div className="relative min-h-screen max-w-[1500px] xl:min-h-600 w-full overflow-hidden">
       <div className="relative z-10">
         <div className="container mx-auto px-6 md:py-24 py-12">
           {/* Desktop Label - Center Position */}

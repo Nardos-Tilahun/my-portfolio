@@ -3,7 +3,7 @@
 import React, { useState, useCallback, useRef, useEffect } from 'react'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { ChevronRight, ChevronLeft, Github, ExternalLink, BarChart, Users, FileText, CreditCard, User, Edit, Plus, AlertCircle, Home} from "lucide-react"
+import { ChevronRight, ChevronLeft, Github, ExternalLink, BarChart, Users, FileText, CreditCard, User, Edit, Plus, AlertCircle, Home, ZoomIn, X, } from "lucide-react"
 import { motion, AnimatePresence } from "framer-motion"
 import Link from "next/link"
 import { Badge } from "@/components/ui/badge"
@@ -39,6 +39,7 @@ interface ProjectOverviewProps {
 
 const ProjectOverview: React.FC<ProjectOverviewProps> = ({ id, cloudinaryImageIds = [] }) => {
   // Project data based on the README file and all pages from document
+
   const projectData: ProjectDetails = {
     id: id,
     title: "Personal Financial Loan Management System",
@@ -200,7 +201,7 @@ const ProjectOverview: React.FC<ProjectOverviewProps> = ({ id, cloudinaryImageId
     githubUrl: "https://github.com/Nardos-Tilahun/Personal_Loan_Management",
     liveDemoUrl: "https://drive.google.com/file/d/12TCHhbN9O247U_YvgtSOUyNYbuyyGHbu/view?usp=sharing"
   }
-
+  const [isExpanded, setIsExpanded] = useState(false);
   const [currentIndex, setCurrentIndex] = useState<number>(0)
   const [isScrolling, setIsScrolling] = useState<boolean>(false)
   const [isMobile, setIsMobile] = useState<boolean>(false)
@@ -321,7 +322,7 @@ const ProjectOverview: React.FC<ProjectOverviewProps> = ({ id, cloudinaryImageId
 
   // Function to check if screenshot has a valid Cloudinary ID
   const hasValidCloudinaryId = (cloudinaryId: string) => {
-    console.log(cloudinaryId)
+    
     return cloudinaryId && !cloudinaryId.startsWith('default_');
   };
 
@@ -587,22 +588,63 @@ const ProjectOverview: React.FC<ProjectOverviewProps> = ({ id, cloudinaryImageId
                         className="h-full"
                       >
                         <div className="relative h-full rounded-lg overflow-hidden border border-gray-700/50 shadow-xl">
-                          {hasValidCloudinaryId(screenshot.cloudinaryId) ? (
-                            <CldImage
-                              src={screenshot.cloudinaryId}
-                              alt={screenshot.title}
-                              width={1892}
-                              height={855}
-                              className="w-full h-full object-contain"
-                            />
-                          ) : (
-                            <Image
-                              src={`/api/placeholder/1892/855`}
-                              alt={screenshot.title}
-                              className="w-full h-full object-cover"
-                            />
-                          )}
-                          <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/90 via-black/70 to-transparent p-6">
+                          {/* Expandable Image Container */}
+                          <div 
+                            className={`w-full h-full transition-all duration-300 ${
+                              isExpanded && currentIndex === index ? "fixed inset-0 z-50 bg-black/90" : ""
+                            }`}
+                            onClick={() => setIsExpanded(!isExpanded)}
+                          >
+                            {hasValidCloudinaryId(screenshot.cloudinaryId) ? (
+                              <CldImage
+                                src={screenshot.cloudinaryId}
+                                alt={screenshot.title}
+                                width={1892}
+                                height={855}
+                                className={`${
+                                  isExpanded && currentIndex === index 
+                                    ? "w-full h-full object-contain p-4 md:p-8" 
+                                    : "w-full h-full object-contain"
+                                }`}
+                              />
+                            ) : (
+                              <Image
+                                src={`/api/placeholder/1892/855`}
+                                alt={screenshot.title}
+                                className={`${
+                                  isExpanded && currentIndex === index 
+                                    ? "w-full h-full object-contain p-4 md:p-8" 
+                                    : "w-full h-full object-cover"
+                                }`}
+                              />
+                            )}
+                            
+                            {/* Mobile expand indicator */}
+                            {!isExpanded && (
+                              <div className="absolute top-2 right-2 bg-black/60 backdrop-blur-sm p-1.5 rounded-full md:hidden">
+                                <ZoomIn className="w-5 h-5 text-white" />
+                              </div>
+                            )}
+                            
+                            {/* Close button when expanded */}
+                            {isExpanded && currentIndex === index && (
+                              <button 
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  setIsExpanded(false);
+                                }}
+                                className="absolute top-4 right-4 bg-black/70 hover:bg-red-700 p-2 rounded-full text-white transition-colors"
+                                aria-label="Close expanded view"
+                              >
+                                <X className="w-6 h-6" />
+                              </button>
+                            )}
+                          </div>
+                          
+                          {/* Info overlay - only visible when not expanded */}
+                          <div className={`absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/90 via-black/70 to-transparent p-6 ${
+                            isExpanded && currentIndex === index ? "hidden" : ""
+                          }`}>
                             <div className="flex items-center mb-2">
                               <span className={`${getCategoryIconColor(screenshot.category)} p-1.5 rounded-full mr-2 backdrop-blur-sm`}>
                                 {getIconForScreenshot(screenshot.title)}
