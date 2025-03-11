@@ -10,7 +10,6 @@ const FutureImprovements: React.FC<FutureImprovementsProps> = ({ id }) => {
     {
       title: 'Online Payment Integration',
       description: 'Implement secure payment gateways allowing customers to make loan payments online via credit/debit cards, bank transfers, and digital wallets, eliminating the need for cash transactions.',
-      timeline: 'Q2 2025',
       benefits: 'Increased payment convenience, reduced processing time, automated reconciliation',
       technologies: 'Stripe API, PayPal, Plaid',
       iconClass: 'bg-blue-500'
@@ -18,7 +17,6 @@ const FutureImprovements: React.FC<FutureImprovementsProps> = ({ id }) => {
     {
       title: 'Advanced Analytics Dashboard',
       description: 'Implement data visualization tools showing loan performance metrics, customer payment history trends, and predictive analytics for risk assessment.',
-      timeline: 'Q3 2025',
       benefits: 'Data-driven decision making, risk mitigation, performance tracking',
       technologies: 'D3.js, TensorFlow.js, React Query',
       iconClass: 'bg-indigo-500'
@@ -26,7 +24,6 @@ const FutureImprovements: React.FC<FutureImprovementsProps> = ({ id }) => {
     {
       title: 'Multi-currency Support',
       description: 'Expand beyond USD and Colombian Peso to support additional currencies with real-time exchange rate integration.',
-      timeline: 'Q3 2025',
       benefits: 'Global market expansion, currency risk management, international reach',
       technologies: 'Exchange Rate API, Currency.js, i18next',
       iconClass: 'bg-cyan-500'
@@ -34,7 +31,6 @@ const FutureImprovements: React.FC<FutureImprovementsProps> = ({ id }) => {
     {
       title: 'Mobile Application',
       description: 'Develop a native mobile application to allow customers to manage loans, make payments, and receive notifications on-the-go.',
-      timeline: 'Q4 2025',
       benefits: 'Increased user engagement, 24/7 account access, push notifications',
       technologies: 'React Native, Expo, Firebase',
       iconClass: 'bg-green-500'
@@ -42,7 +38,6 @@ const FutureImprovements: React.FC<FutureImprovementsProps> = ({ id }) => {
     {
       title: 'Automated Payment Reminders',
       description: 'Implement an automated system to send customizable payment reminders at scheduled intervals before due dates.',
-      timeline: 'Q2 2025',
       benefits: 'Reduced delinquency rates, improved communication, lower overhead',
       technologies: 'Twilio API, SendGrid, Node-cron',
       iconClass: 'bg-yellow-500'
@@ -50,7 +45,6 @@ const FutureImprovements: React.FC<FutureImprovementsProps> = ({ id }) => {
     {
       title: 'Document Management System',
       description: 'Add functionality for secure uploading, storing, and managing loan-related documents with OCR capabilities.',
-      timeline: 'Q1 2026',
       benefits: 'Centralized document storage, reduced paperwork, enhanced security',
       technologies: 'AWS S3, Tesseract.js, PDF.js',
       iconClass: 'bg-red-500'
@@ -87,9 +81,6 @@ const FutureImprovements: React.FC<FutureImprovementsProps> = ({ id }) => {
                     <h3 className="font-bold text-lg text-blue-300">
                       {improvement.title}
                     </h3>
-                    <span className="text-xs font-medium text-gray-400 bg-gray-800/70 px-2 py-1 rounded-full">
-                      {improvement.timeline}
-                    </span>
                   </div>
                   
                   <p className="text-gray-300 text-sm mb-4">
