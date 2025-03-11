@@ -48,9 +48,9 @@ const ArchitectureDiagram: React.FC<ArchitectureDiagramProps> = ({
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const [isDragging, setIsDragging] = useState(false);
   const [startDragPosition, setStartDragPosition] = useState({ x: 0, y: 0 });
-  const [pinchStart, setPinchStart] = useState<number>(0);
-  const [pinchScale, setPinchScale] = useState<number>(1);
-  const [dragStart, setDragStart] = useState<{x: number, y: number}>({ x: 0, y: 0 });
+  const [, setPinchStart] = useState<number>(0);
+  const [, setPinchScale] = useState<number>(1);
+
   const [showMobileHelp, setShowMobileHelp] = useState<boolean>(true);
   
   const diagramRef = useRef<HTMLDivElement>(null);
