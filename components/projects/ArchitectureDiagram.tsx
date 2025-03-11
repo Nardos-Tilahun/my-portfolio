@@ -28,6 +28,11 @@ interface Connection {
   color?: string;
 }
 
+interface PinchState {
+  start: number;
+  scale: number;
+}
+
 interface ArchitectureDiagramProps {
   customComponents?: DiagramComponent[];
   customConnections?: Connection[];
@@ -43,6 +48,10 @@ const ArchitectureDiagram: React.FC<ArchitectureDiagramProps> = ({
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const [isDragging, setIsDragging] = useState(false);
   const [startDragPosition, setStartDragPosition] = useState({ x: 0, y: 0 });
+  const [pinchStart, setPinchStart] = useState<number>(0);
+  const [pinchScale, setPinchScale] = useState<number>(1);
+  const [dragStart, setDragStart] = useState<{x: number, y: number}>({ x: 0, y: 0 });
+  const [showMobileHelp, setShowMobileHelp] = useState<boolean>(true);
   
   const diagramRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
@@ -119,7 +128,7 @@ const ArchitectureDiagram: React.FC<ArchitectureDiagramProps> = ({
       id: "database", 
       icon: <SiMysql className="text-blue-500" />, 
       label: "MySQL Database", 
-      x: 85, 
+      x: 95, 
       y: 30,
       color: "blue-500",
       description: "Stores user, loan, and transaction data" 
@@ -154,6 +163,15 @@ const ArchitectureDiagram: React.FC<ArchitectureDiagramProps> = ({
     setPosition({ x: 0, y: 0 });
   }, [isSmallScreen, isMediumScreen]);
 
+  useEffect(() => {
+    if (isSmallScreen && showMobileHelp) {
+      const timer = setTimeout(() => {
+        setShowMobileHelp(false);
+      }, 4000);
+      
+      return () => clearTimeout(timer);
+    }
+  }, [isSmallScreen, showMobileHelp]);
   // Handle touch start for pinch zoom
   const handleTouchStart = (e: React.TouchEvent) => {
     if (e.touches.length === 2) {
@@ -166,6 +184,8 @@ const ArchitectureDiagram: React.FC<ArchitectureDiagramProps> = ({
       );
       
       setInitialTouchDistance(distance);
+      setPinchStart(distance);
+      setPinchScale(scale);
     } else if (e.touches.length === 1) {
       // Start dragging with one finger
       setIsDragging(true);
@@ -261,6 +281,9 @@ const ArchitectureDiagram: React.FC<ArchitectureDiagramProps> = ({
   const handleReset = () => {
     setScale(1);
     setPosition({ x: 0, y: 0 });
+    if (isSmallScreen) {
+      setShowMobileHelp(true);
+  }
   };
 
   // Get connection color
@@ -342,7 +365,10 @@ const ArchitectureDiagram: React.FC<ArchitectureDiagramProps> = ({
           onMouseMove={handleMouseMove}
           onMouseUp={handleMouseUp}
           onMouseLeave={handleMouseUp}
-          style={{ cursor: isDragging ? 'grabbing' : 'grab' }}
+          style={{ 
+            cursor: isDragging ? 'grabbing' : 'grab',
+            minWidth: '100%'  // Ensure it's at least full width of container
+          }}
         >
           {/* Interactive Architecture Diagram background */}
           <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-blue-900/30 via-gray-900/50 to-gray-900/80 animate-pulse-slow"></div>
@@ -354,7 +380,9 @@ const ArchitectureDiagram: React.FC<ArchitectureDiagramProps> = ({
             className="absolute inset-0 transform origin-center"
             style={{ 
               transform: `translate(${position.x}px, ${position.y}px) scale(${scale})`,
-              transition: isDragging ? 'none' : 'transform 0.1s ease-out'
+              transition: isDragging ? 'none' : 'transform 0.1s ease-out',
+              minWidth: '1024px',  // Set minimum width to 1024px
+              minHeight: '100%'
             }}
           >
             {diagramComponents.map((component) => (
@@ -543,7 +571,7 @@ const ArchitectureDiagram: React.FC<ArchitectureDiagramProps> = ({
           </div>
           
           {/* Legend */}
-          <div className="absolute top-4 left-4 hidden sm:block bg-gray-800/80 text-xs text-gray-300 px-3 py-2 rounded">
+          <div className="absolute bottom-4 left-4 hidden sm:block bg-gray-800/80 text-xs text-gray-300 px-3 py-2 rounded">
           <div className="flex items-center mb-1">
               <div className="w-3 h-0.5 bg-purple-400 mr-2 border-dashed border-b-[0.5px]"></div>
               <span>Admin</span>
@@ -565,6 +593,22 @@ const ArchitectureDiagram: React.FC<ArchitectureDiagramProps> = ({
               <span>Notification</span>
             </div>
           </div>
+  
+          {/* Mobile help overlay - shows briefly on mobile */}
+          {isSmallScreen && (
+            <motion.div 
+              className="absolute inset-0 bg-black/70 text-white flex flex-col items-center justify-center z-30 text-center px-6"
+              initial={{ opacity: 1 }}
+              animate={{ opacity: 0 }}
+              transition={{ delay: 3, duration: 1 }}
+              style={{ pointerEvents: 'none' }}
+            >
+              <div className="mb-4 text-2xl">👆 👇</div>
+              <p className="text-sm mb-2">Use one finger to drag</p>
+              <p className="text-sm mb-4">Use two fingers to zoom</p>
+              <p className="text-xs text-gray-400">This help will disappear in a moment</p>
+            </motion.div>
+          )}
         </div>
       </CardContent>
     </Card>
