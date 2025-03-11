@@ -367,7 +367,10 @@ const ProjectOverview: React.FC<ProjectOverviewProps> = ({ id, cloudinaryImageId
         return "bg-gray-800/50 text-gray-200 border-gray-500";
     }
   };
-
+  const navigateScreenshots = (direction : number) => {
+    const newIndex = (currentIndex + direction + filteredScreenshots.length) % filteredScreenshots.length;
+    setCurrentIndex(newIndex);
+  };
   // Get icon color based on category
   const getCategoryIconColor = (category: string) => {
     switch(category) {
@@ -524,20 +527,20 @@ const ProjectOverview: React.FC<ProjectOverviewProps> = ({ id, cloudinaryImageId
             <CardContent className="pb-4">
               {/* Category Filters */}
               <div className="flex flex-wrap gap-2 mb-4">
-                {categories.map((category) => (
-                  <Button
-                    key={category}
-                    onClick={() => setActiveCategory(category)}
-                    variant={activeCategory === category ? "default" : "outline"}
-                    className={`px-3 py-1 text-sm h-8 ${
-                      activeCategory === category
-                        ? "bg-indigo-600 hover:bg-indigo-700 text-white"
-                        : "bg-transparent border-gray-700 text-gray-300 hover:bg-gray-800"
-                    }`}
-                  >
-                    {category}
-                  </Button>
-                ))}
+              {categories.map((category) => (
+                <Button
+                  key={category}
+                  onClick={() => setActiveCategory(category)}
+                  variant={activeCategory === category ? "default" : "outline"}
+                  className={`px-2 md:px-3 py-0.5 md:py-1 text-xs md:text-sm h-6 md:h-8 ${
+                    activeCategory === category
+                      ? "bg-indigo-600 hover:bg-indigo-700 text-white"
+                      : "bg-transparent border-gray-700 text-gray-300 hover:bg-gray-800"
+                  }`}
+                >
+                  {category}
+                </Button>
+              ))}
               </div>
               
               <div className="flex justify-center items-center gap-6 mb-4">
@@ -571,166 +574,243 @@ const ProjectOverview: React.FC<ProjectOverviewProps> = ({ id, cloudinaryImageId
               </div>
               
               {/* Full-width Screenshot Container */}
-              <div 
-                ref={containerRef}
-                className="relative w-full aspect-[1892/855] overflow-hidden select-none rounded-xl"
-              >
-                <AnimatePresence>
-                  {filteredScreenshots.map((screenshot, index) => (
-                    <div 
-                      key={index} 
-                      className="absolute w-full h-full" 
-                      style={getScreenshotStyle(index)}
-                    >
-                      <motion.div 
-                        whileHover={{ scale: 1.02 }} 
-                        transition={{ type: "spring", stiffness: 200, damping: 10 }}
-                        className="h-full"
-                      >
-                        <div className="relative h-full rounded-lg overflow-hidden border border-gray-700/50 shadow-xl">
-                          {/* Expandable Image Container */}
-                          <div 
-                            className={`w-full h-full transition-all duration-300 ${
-                              isExpanded && currentIndex === index ? "fixed inset-0 z-50 bg-black/90" : ""
-                            }`}
-                            onClick={() => {
-                              setCurrentIndex(index);
-                              setIsExpanded(!isExpanded);
-                            }}
-                          >
-                            {hasValidCloudinaryId(screenshot.cloudinaryId) ? (
-                              <CldImage
-                                src={screenshot.cloudinaryId}
-                                alt={screenshot.title}
-                                width={1892}
-                                height={855}
-                                className={`${
-                                  isExpanded && currentIndex === index 
-                                    ? "w-full h-full object-contain p-4 md:p-8" 
-                                    : "w-full h-full object-contain"
-                                }`}
-                              />
-                            ) : (
-                              <Image
-                                src={`/api/placeholder/1892/855`}
-                                alt={screenshot.title}
-                                className={`${
-                                  isExpanded && currentIndex === index 
-                                    ? "w-full h-full object-contain p-4 md:p-8" 
-                                    : "w-full h-full object-cover"
-                                }`}
-                              />
-                            )}
-                            
-                            {/* Mobile expand indicator */}
-                            {!isExpanded && (
-                              <div className="absolute top-2 right-2 bg-black/80 backdrop-blur-sm p-2 rounded-full md:hidden">
-                                <ZoomIn className="w-6 h-6 text-white" />
-                              </div>
-                            )}
-                            
-                            {/* Close button when expanded */}
-                            {isExpanded && currentIndex === index && (
-                              <button 
-                                onClick={(e) => {
-                                  e.stopPropagation();
-                                  setIsExpanded(false);
-                                }}
-                                className="absolute top-4 right-4 bg-black/70 hover:bg-red-700 p-2 rounded-full text-white transition-colors"
-                                aria-label="Close expanded view"
-                              >
-                                <X className="w-6 h-6" />
-                              </button>
-                            )}
-                          </div>
-                          
-                          {/* Info overlay - HIDDEN on mobile in normal view, shown on desktop or when expanded */}
-                          <div className={`absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/90 via-black/70 to-transparent p-6 ${
-                            isExpanded && currentIndex === index ? "hidden" : "hidden md:block"
-                          }`}>
-                            <div className="flex items-center mb-2">
-                              <span className={`${getCategoryIconColor(screenshot.category)} p-1.5 rounded-full mr-2 backdrop-blur-sm`}>
-                                {getIconForScreenshot(screenshot.title)}
-                              </span>
-                              <div>
-                                <h4 className="text-xl font-bold text-white">{screenshot.title}</h4>
-                                <Badge variant="outline" className={`mt-1 text-xs ${getCategoryColor(screenshot.category)}`}>
-                                  {screenshot.category}
-                                </Badge>
-                              </div>
-                            </div>
-                            <p className="text-sm text-gray-300 font-light mt-2 max-w-3xl">{screenshot.description}</p>
-                            
-                            {showDetailedDescription && index === currentIndex && (
-                              <motion.div 
-                                initial={{ opacity: 0, height: 0 }}
-                                animate={{ opacity: 1, height: "auto" }}
-                                exit={{ opacity: 0, height: 0 }}
-                                className="mt-3 pt-3 border-t border-gray-700/50 max-w-3xl"
-                              >
-                                <p className="text-sm text-gray-300 font-light leading-relaxed">
-                                  {screenshot.detailedDescription}
-                                </p>
-                              </motion.div>
-                            )}
-                            <Button
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                toggleDetailedDescription();
-                              }}
-                              variant="outline"
-                              className="text-sm bg-transparent border-gray-700 text-gray-300 hover:bg-gray-800 hover:text-white transition-all mt-3"
-                            >
-                              {showDetailedDescription ? "Hide Details" : "Show Full Description"}
-                            </Button>
-                          </div>
-                          
-                          {/* Mobile expanded view info - only shown when in fullscreen on mobile */}
-                          {isExpanded && currentIndex === index && (
-                            <div className="fixed bottom-0 left-0 right-0 bg-gradient-to-t from-black/90 via-black/70 to-transparent p-4 md:hidden">
-                              <div className="flex items-center mb-2">
-                                <span className={`${getCategoryIconColor(screenshot.category)} p-1.5 rounded-full mr-2 backdrop-blur-sm`}>
-                                  {getIconForScreenshot(screenshot.title)}
-                                </span>
-                                <div>
-                                  <h4 className="text-xl font-bold text-white">{screenshot.title}</h4>
-                                  <Badge variant="outline" className={`mt-1 text-xs ${getCategoryColor(screenshot.category)}`}>
-                                    {screenshot.category}
-                                  </Badge>
-                                </div>
-                              </div>
-                              <p className="text-sm text-gray-300 font-light mt-2 max-w-3xl">{screenshot.description}</p>
-                              
-                              {showDetailedDescription && (
-                                <motion.div 
-                                  initial={{ opacity: 0, height: 0 }}
-                                  animate={{ opacity: 1, height: "auto" }}
-                                  exit={{ opacity: 0, height: 0 }}
-                                  className="mt-3 pt-3 border-t border-gray-700/50 max-w-3xl"
-                                >
-                                  <p className="text-sm text-gray-300 font-light leading-relaxed">
-                                    {screenshot.detailedDescription}
-                                  </p>
-                                </motion.div>
-                              )}
-                              <Button
-                                onClick={(e) => {
-                                  e.stopPropagation();
-                                  toggleDetailedDescription();
-                                }}
-                                variant="outline"
-                                className="text-sm bg-transparent border-gray-700 text-gray-300 hover:bg-gray-800 hover:text-white transition-all mt-3"
-                              >
-                                {showDetailedDescription ? "Hide Details" : "Show Full Description"}
-                              </Button>
-                            </div>
-                          )}
-                        </div>
-                      </motion.div>
+              <div className="flex flex-col w-full">
+                  {/* Mobile Header - Only visible on mobile */}
+                  <div className="md:hidden mb-4">
+                    <h3 className="text-xl font-bold text-white mb-2">
+                      {filteredScreenshots[currentIndex]?.title || "Screenshots"}
+                    </h3>
+                    <div className="flex items-center mb-2">
+                      <span className={`${getCategoryIconColor(filteredScreenshots[currentIndex]?.category)} p-1.5 rounded-full mr-2 backdrop-blur-sm`}>
+                        {getIconForScreenshot(filteredScreenshots[currentIndex]?.title)}
+                      </span>
+                      <Badge variant="outline" className={`text-xs ${getCategoryColor(filteredScreenshots[currentIndex]?.category)}`}>
+                        {filteredScreenshots[currentIndex]?.category || "General"}
+                      </Badge>
                     </div>
-                  ))}
-                </AnimatePresence>
-              </div>
+                    <p className="text-sm text-gray-300 font-light mt-2">
+                      {filteredScreenshots[currentIndex]?.description || "Browse through the screenshots."}
+                    </p>
+                    
+                    {/* Show/Hide Details Button */}
+                    {filteredScreenshots[currentIndex]?.detailedDescription && (
+                      <>
+                        <Button
+                          onClick={toggleDetailedDescription}
+                          variant="outline"
+                          className="text-sm bg-transparent border-gray-700 text-gray-300 hover:bg-gray-800 hover:text-white transition-all mt-3"
+                        >
+                          {showDetailedDescription ? "Hide Details" : "Show Full Description"}
+                        </Button>
+                        
+                        {showDetailedDescription && (
+                          <motion.div 
+                            initial={{ opacity: 0, height: 0 }}
+                            animate={{ opacity: 1, height: "auto" }}
+                            exit={{ opacity: 0, height: 0 }}
+                            className="mt-3 pt-3 border-t border-gray-700/50"
+                          >
+                            <p className="text-sm text-gray-300 font-light leading-relaxed">
+                              {filteredScreenshots[currentIndex]?.detailedDescription}
+                            </p>
+                          </motion.div>
+                        )}
+                      </>
+                    )}
+                  </div>
+
+                  {/* Screenshots Container */}
+                  <div 
+                    ref={containerRef}
+                    className="relative w-full aspect-[1892/855] overflow-hidden select-none rounded-xl"
+                  >
+                    <AnimatePresence>
+                      {filteredScreenshots.map((screenshot, index) => (
+                        <div 
+                          key={index} 
+                          className="absolute w-full h-full" 
+                          style={getScreenshotStyle(index)}
+                        >
+                          <motion.div 
+                            whileHover={{ scale: 1.02 }} 
+                            transition={{ type: "spring", stiffness: 200, damping: 10 }}
+                            className="h-full"
+                          >
+                            <div className="relative h-full rounded-lg overflow-hidden border border-gray-700/50 shadow-xl">
+                              {/* Expandable Image Container */}
+                              <div 
+                                className={`w-full h-full transition-all duration-300 ${
+                                  isExpanded && currentIndex === index ? "fixed inset-0 z-50 bg-black/90" : ""
+                                }`}
+                                onClick={() => {
+                                  if (isExpanded) {
+                                    setIsExpanded(false);
+                                  } else {
+                                    setCurrentIndex(index);
+                                    setIsExpanded(true);
+                                  }
+                                }}
+                              >
+                                {hasValidCloudinaryId(screenshot.cloudinaryId) ? (
+                                  <CldImage
+                                    src={screenshot.cloudinaryId}
+                                    alt={screenshot.title}
+                                    width={1892}
+                                    height={855}
+                                    className={`${
+                                      isExpanded && currentIndex === index 
+                                        ? "w-full h-full object-contain p-4 md:p-8" 
+                                        : "w-full h-full object-contain"
+                                    }`}
+                                  />
+                                ) : (
+                                  <Image
+                                    src={`/api/placeholder/1892/855`}
+                                    alt={screenshot.title}
+                                    className={`${
+                                      isExpanded && currentIndex === index 
+                                        ? "w-full h-full object-contain p-4 md:p-8" 
+                                        : "w-full h-full object-cover"
+                                    }`}
+                                  />
+                                )}
+                                
+                                {/* Mobile expand indicator */}
+                                {!isExpanded && (
+                                  <div className="absolute top-2 right-2 bg-black/80 backdrop-blur-sm p-2 rounded-full md:hidden">
+                                    <ZoomIn className="w-6 h-6 text-white" />
+                                  </div>
+                                )}
+                                
+                                {/* Close button when expanded */}
+                                {isExpanded && currentIndex === index && (
+                                  <button 
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      setIsExpanded(false);
+                                    }}
+                                    className="absolute top-4 right-4 bg-black/70 hover:bg-red-700 p-2 rounded-full text-white transition-colors"
+                                    aria-label="Close expanded view"
+                                  >
+                                    <X className="w-6 h-6" />
+                                  </button>
+                                )}
+                              </div>
+                              
+                              {/* Info overlay - Only shown on desktop or when expanded on mobile */}
+                              <div className={`absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/90 via-black/70 to-transparent p-6 ${
+                                isExpanded && currentIndex === index ? "hidden" : "hidden md:block"
+                              }`}>
+                                <div className="flex items-center mb-2">
+                                  <span className={`${getCategoryIconColor(screenshot.category)} p-1.5 rounded-full mr-2 backdrop-blur-sm`}>
+                                    {getIconForScreenshot(screenshot.title)}
+                                  </span>
+                                  <div>
+                                    <h4 className="text-xl font-bold text-white">{screenshot.title}</h4>
+                                    <Badge variant="outline" className={`mt-1 text-xs ${getCategoryColor(screenshot.category)}`}>
+                                      {screenshot.category}
+                                    </Badge>
+                                  </div>
+                                </div>
+                                <p className="text-sm text-gray-300 font-light mt-2 max-w-3xl">{screenshot.description}</p>
+                                
+                                {showDetailedDescription && index === currentIndex && (
+                                  <motion.div 
+                                    initial={{ opacity: 0, height: 0 }}
+                                    animate={{ opacity: 1, height: "auto" }}
+                                    exit={{ opacity: 0, height: 0 }}
+                                    className="mt-3 pt-3 border-t border-gray-700/50 max-w-3xl"
+                                  >
+                                    <p className="text-sm text-gray-300 font-light leading-relaxed">
+                                      {screenshot.detailedDescription}
+                                    </p>
+                                  </motion.div>
+                                )}
+                                <Button
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    toggleDetailedDescription();
+                                  }}
+                                  variant="outline"
+                                  className="text-sm bg-transparent border-gray-700 text-gray-300 hover:bg-gray-800 hover:text-white transition-all mt-3"
+                                >
+                                  {showDetailedDescription ? "Hide Details" : "Show Full Description"}
+                                </Button>
+                              </div>
+                              
+                              {/* Mobile expanded view info */}
+                              {isExpanded && currentIndex === index && (
+                                <div className="fixed bottom-0 left-0 right-0 bg-gradient-to-t from-black/90 via-black/70 to-transparent p-4 md:hidden">
+                                  <div className="flex items-center mb-2">
+                                    <span className={`${getCategoryIconColor(screenshot.category)} p-1.5 rounded-full mr-2 backdrop-blur-sm`}>
+                                      {getIconForScreenshot(screenshot.title)}
+                                    </span>
+                                    <div>
+                                      <h4 className="text-xl font-bold text-white">{screenshot.title}</h4>
+                                      <Badge variant="outline" className={`mt-1 text-xs ${getCategoryColor(screenshot.category)}`}>
+                                        {screenshot.category}
+                                      </Badge>
+                                    </div>
+                                  </div>
+                                  <p className="text-sm text-gray-300 font-light mt-2 max-w-3xl">{screenshot.description}</p>
+                                  
+                                  {showDetailedDescription && (
+                                    <motion.div 
+                                      initial={{ opacity: 0, height: 0 }}
+                                      animate={{ opacity: 1, height: "auto" }}
+                                      exit={{ opacity: 0, height: 0 }}
+                                      className="mt-3 pt-3 border-t border-gray-700/50 max-w-3xl"
+                                    >
+                                      <p className="text-sm text-gray-300 font-light leading-relaxed">
+                                        {screenshot.detailedDescription}
+                                      </p>
+                                    </motion.div>
+                                  )}
+                                  <Button
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      toggleDetailedDescription();
+                                    }}
+                                    variant="outline"
+                                    className="text-sm bg-transparent border-gray-700 text-gray-300 hover:bg-gray-800 hover:text-white transition-all mt-3"
+                                  >
+                                    {showDetailedDescription ? "Hide Details" : "Show Full Description"}
+                                  </Button>
+                                </div>
+                              )}
+                            </div>
+                          </motion.div>
+                        </div>
+                      ))}
+                    </AnimatePresence>
+                    
+                    {/* Navigation controls for mobile - optional to add if needed */}
+                    <div className="absolute bottom-4 right-4 flex space-x-2 md:hidden z-10">
+                      <Button 
+                        variant="outline"
+                        size="icon"
+                        className="bg-black/60 backdrop-blur-sm border-gray-700 text-white hover:bg-black/80" 
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          navigateScreenshots(-1);
+                        }}
+                      >
+                        <ChevronLeft className="w-5 h-5" />
+                      </Button>
+                      <Button 
+                        variant="outline"
+                        size="icon"
+                        className="bg-black/60 backdrop-blur-sm border-gray-700 text-white hover:bg-black/80" 
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          navigateScreenshots(1);
+                        }}
+                      >
+                        <ChevronRight className="w-5 h-5" />
+                      </Button>
+                    </div>
+                  </div>
+                </div>
             </CardContent>
           </Card>
         </div>
