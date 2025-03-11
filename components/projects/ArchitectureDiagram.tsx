@@ -28,10 +28,7 @@ interface Connection {
   color?: string;
 }
 
-interface PinchState {
-  start: number;
-  scale: number;
-}
+
 
 interface ArchitectureDiagramProps {
   customComponents?: DiagramComponent[];
