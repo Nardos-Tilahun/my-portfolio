@@ -1,12 +1,97 @@
+
 "use client";
-import React from 'react';
+import React, { useState, useEffect, FC } from 'react';
 import { Button } from "@/components/ui/button";
 import { motion } from 'framer-motion';
 import { CldImage } from 'next-cloudinary';
 import { ChevronRight, ExternalLink } from 'lucide-react';
 import Link from 'next/link';
 
-const DeveloperLabel = ({ className = "" }) => {
+// Define proper TypeScript interfaces
+interface CrossBrowserEmeraldNameProps {
+  text: string;
+  className?: string;
+}
+
+interface LetterStyleType {
+  color: string;
+  textShadow?: string; 
+}
+
+// Cross Browser Emerald Name Component - Embedded in same file
+const CrossBrowserEmeraldName: FC<CrossBrowserEmeraldNameProps> = ({ 
+  text = "Nardos T. Dubale", 
+  className = "text-4xl sm:text-6xl font-bold tracking-tight" 
+}) => {
+  const letters = text.split('');
+  const [currentPosition, setCurrentPosition] = useState<number>(0);
+  
+  // In the CrossBrowserEmeraldName component, update the useEffect hook:
+
+useEffect(() => {
+  const interval = setInterval(() => {
+    setCurrentPosition(prev => {
+      // When we reach the end, immediately wrap around to start
+      return (prev + 1) % letters.length;
+    });
+  }, 500);
+  
+  return () => clearInterval(interval);
+}, [letters.length]);
+
+// And update the getLetterStyle function to handle the wrap-around case better:
+const getLetterStyle = (index: number): LetterStyleType => {
+  // Create a continuous highlightable window that wraps around the text
+  const textLength = letters.length;
+  
+  // Calculate relative distance considering wrap-around
+  const distanceForward = (index >= currentPosition) 
+    ? index - currentPosition 
+    : textLength - currentPosition + index;
+  
+  const distanceBackward = (index <= currentPosition) 
+    ? currentPosition - index 
+    : currentPosition + textLength - index;
+  
+  // Use the smaller of the two distances for a more efficient highlight path
+  const distance = Math.min(distanceForward, distanceBackward);
+  
+  // Highlight the current position and the next 2 characters with gradient
+  if (distance === 0) {
+    return { 
+      color: "#00ffaa", // Brightest, almost glowing emerald
+      textShadow: '0 0 15px rgba(16, 185, 129, 0.7)' // Add glow effect to current letter
+    };
+  }
+  if (distance === 1) return { color: "#10b981" }; // Very bright emerald
+  if (distance === 2) return { color: "#059669" }; // Medium emerald
+  if (distance === 3) return { color: "#047857" }; // Darker emerald
+  if (distance === 4) return { color: "#065f46" }; // Dim emerald
+  return { color: "#064e3b" }; // Background emerald (slightly brighter than before)
+};
+  
+  return (
+    <h1 className={className}>
+      {letters.map((letter, index) => (
+        <span 
+          key={index} 
+          style={{
+            ...getLetterStyle(index),
+            transition: 'color 1s ease, text-shadow 3s ease' // Add transition for text-shadow too
+          }}
+        >
+          {letter === " " ? "\u00A0" : letter}
+        </span>
+      ))}
+    </h1>
+  );
+};
+
+interface DeveloperLabelProps {
+  className?: string;
+}
+
+const DeveloperLabel: FC<DeveloperLabelProps> = ({ className = "" }) => {
   return (
     <motion.div
       initial={{ opacity: 0, scale: 0.9 }}
@@ -42,9 +127,9 @@ const DeveloperLabel = ({ className = "" }) => {
   );
 };
 
-const Hero = () => {
+const Hero: FC = () => {
   return (
-    <div className="relative min-h-screen max-w-[1500px] xl:min-h-600 w-full overflow-hidden">
+    <div className="relative min-h-screen max-w-[1500px] w-full overflow-hidden">
       <div className="relative z-10">
         <div className="container mx-auto px-6 md:py-24 py-12">
           {/* Desktop Label - Center Position */}
@@ -103,14 +188,15 @@ const Hero = () => {
               className="flex flex-col justify-center space-y-8 order-2 lg:order-1 text-center lg:text-left"
             >
               <div className="space-y-4">
-                <motion.h1
+                {/* Using the embedded CrossBrowserEmeraldName component with explicit text prop */}
+                <motion.div
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.5 }}
-                  className="text-4xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-emerald-400 via-teal-900 to-gray-600 sm:text-6xl mt-16 lg:mt-0"
+                  className="mt-16 lg:mt-0"
                 >
-                  Nardos T. Dubale
-                </motion.h1>
+                  <CrossBrowserEmeraldName text="Nardos T. Dubale" />
+                </motion.div>
 
                 <motion.p
                   initial={{ opacity: 0 }}
