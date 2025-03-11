@@ -593,7 +593,10 @@ const ProjectOverview: React.FC<ProjectOverviewProps> = ({ id, cloudinaryImageId
                             className={`w-full h-full transition-all duration-300 ${
                               isExpanded && currentIndex === index ? "fixed inset-0 z-50 bg-black/90" : ""
                             }`}
-                            onClick={() => setIsExpanded(!isExpanded)}
+                            onClick={() => {
+                              setCurrentIndex(index);
+                              setIsExpanded(!isExpanded);
+                            }}
                           >
                             {hasValidCloudinaryId(screenshot.cloudinaryId) ? (
                               <CldImage
@@ -621,8 +624,8 @@ const ProjectOverview: React.FC<ProjectOverviewProps> = ({ id, cloudinaryImageId
                             
                             {/* Mobile expand indicator */}
                             {!isExpanded && (
-                              <div className="absolute top-2 right-2 bg-black/60 backdrop-blur-sm p-1.5 rounded-full md:hidden">
-                                <ZoomIn className="w-5 h-5 text-white" />
+                              <div className="absolute top-2 right-2 bg-black/80 backdrop-blur-sm p-2 rounded-full md:hidden">
+                                <ZoomIn className="w-6 h-6 text-white" />
                               </div>
                             )}
                             
@@ -641,9 +644,9 @@ const ProjectOverview: React.FC<ProjectOverviewProps> = ({ id, cloudinaryImageId
                             )}
                           </div>
                           
-                          {/* Info overlay - only visible when not expanded */}
+                          {/* Info overlay - HIDDEN on mobile in normal view, shown on desktop or when expanded */}
                           <div className={`absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/90 via-black/70 to-transparent p-6 ${
-                            isExpanded && currentIndex === index ? "hidden" : ""
+                            isExpanded && currentIndex === index ? "hidden" : "hidden md:block"
                           }`}>
                             <div className="flex items-center mb-2">
                               <span className={`${getCategoryIconColor(screenshot.category)} p-1.5 rounded-full mr-2 backdrop-blur-sm`}>
@@ -658,14 +661,6 @@ const ProjectOverview: React.FC<ProjectOverviewProps> = ({ id, cloudinaryImageId
                             </div>
                             <p className="text-sm text-gray-300 font-light mt-2 max-w-3xl">{screenshot.description}</p>
                             
-                            <Button
-                              onClick={toggleDetailedDescription}
-                              variant="outline"
-                              className="text-sm bg-transparent border-gray-700 text-gray-300 hover:bg-gray-800 hover:text-white transition-all mt-3"
-                            >
-                              {showDetailedDescription ? "Hide Details" : "Show Full Description"}
-                            </Button>
-                            
                             {showDetailedDescription && index === currentIndex && (
                               <motion.div 
                                 initial={{ opacity: 0, height: 0 }}
@@ -678,7 +673,58 @@ const ProjectOverview: React.FC<ProjectOverviewProps> = ({ id, cloudinaryImageId
                                 </p>
                               </motion.div>
                             )}
+                            <Button
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                toggleDetailedDescription();
+                              }}
+                              variant="outline"
+                              className="text-sm bg-transparent border-gray-700 text-gray-300 hover:bg-gray-800 hover:text-white transition-all mt-3"
+                            >
+                              {showDetailedDescription ? "Hide Details" : "Show Full Description"}
+                            </Button>
                           </div>
+                          
+                          {/* Mobile expanded view info - only shown when in fullscreen on mobile */}
+                          {isExpanded && currentIndex === index && (
+                            <div className="fixed bottom-0 left-0 right-0 bg-gradient-to-t from-black/90 via-black/70 to-transparent p-4 md:hidden">
+                              <div className="flex items-center mb-2">
+                                <span className={`${getCategoryIconColor(screenshot.category)} p-1.5 rounded-full mr-2 backdrop-blur-sm`}>
+                                  {getIconForScreenshot(screenshot.title)}
+                                </span>
+                                <div>
+                                  <h4 className="text-xl font-bold text-white">{screenshot.title}</h4>
+                                  <Badge variant="outline" className={`mt-1 text-xs ${getCategoryColor(screenshot.category)}`}>
+                                    {screenshot.category}
+                                  </Badge>
+                                </div>
+                              </div>
+                              <p className="text-sm text-gray-300 font-light mt-2 max-w-3xl">{screenshot.description}</p>
+                              
+                              {showDetailedDescription && (
+                                <motion.div 
+                                  initial={{ opacity: 0, height: 0 }}
+                                  animate={{ opacity: 1, height: "auto" }}
+                                  exit={{ opacity: 0, height: 0 }}
+                                  className="mt-3 pt-3 border-t border-gray-700/50 max-w-3xl"
+                                >
+                                  <p className="text-sm text-gray-300 font-light leading-relaxed">
+                                    {screenshot.detailedDescription}
+                                  </p>
+                                </motion.div>
+                              )}
+                              <Button
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  toggleDetailedDescription();
+                                }}
+                                variant="outline"
+                                className="text-sm bg-transparent border-gray-700 text-gray-300 hover:bg-gray-800 hover:text-white transition-all mt-3"
+                              >
+                                {showDetailedDescription ? "Hide Details" : "Show Full Description"}
+                              </Button>
+                            </div>
+                          )}
                         </div>
                       </motion.div>
                     </div>
