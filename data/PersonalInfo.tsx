@@ -170,7 +170,7 @@ export const personalData = {
   "contact": {
     "email": "contactnardos@gmail.com",
     "phone": "+251 949 494319",
-    "linkedin": "https://linkedin.com/in/nardos-tilahun-74260213a",
+    "linkedin": "www.linkedin.com/in/nardosdubale",
     "github": "https://github.com/Nardos-Tilahun",
     "twitter": "@Nardos_Tilahun",
     "resume": "https://drive.google.com/file/d/1in0RVRK0Q6G5-nOMhFY1_8xIdzWCl9qi/view?usp=sharing"

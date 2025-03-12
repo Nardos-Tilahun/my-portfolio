@@ -1,6 +1,6 @@
 
 "use client";
-import React, { useState, useEffect, FC } from 'react';
+import { useState, useEffect, FC } from 'react';
 import { Button } from "@/components/ui/button";
 import { motion } from 'framer-motion';
 import { CldImage } from 'next-cloudinary';
