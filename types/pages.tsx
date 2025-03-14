@@ -23,9 +23,5 @@ export interface ProjectTechnology {
     challenges: string[];
     solutions: string[];
     learnings: string[];
-    timeline: string;
-    githubUrl: string;
-    liveDemoUrl: string;
-    mockSiteUrl: string;
   }
   

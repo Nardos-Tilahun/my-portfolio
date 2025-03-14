@@ -117,42 +117,36 @@ export const personalData = {
       "futureImprovements": [
         {
           "feature": "Online Payment Integration",
-          "timeline": "Q2 2025",
           "description": "Implement secure payment gateways allowing customers to make loan payments online via credit/debit cards, bank transfers, and digital wallets, eliminating the need for cash transactions.",
           "benefits": ["Increased payment convenience", "Reduced processing time", "Automated reconciliation"],
           "technologies": ["Stripe API", "PayPal", "Plaid"]
         },
         {
           "feature": "Advanced Analytics Dashboard",
-          "timeline": "Q3 2025",
           "description": "Implement data visualization tools showing loan performance metrics, customer payment history trends, and predictive analytics for risk assessment.",
           "benefits": ["Data-driven decision making", "Risk mitigation", "Performance tracking"],
           "technologies": ["D3.js", "TensorFlow.js", "React Query"]
         },
         {
           "feature": "Multi-currency Support",
-          "timeline": "Q3 2025",
           "description": "Expand beyond USD and Colombian Peso to support additional currencies with real-time exchange rate integration.",
           "benefits": ["Global market expansion", "Currency risk management", "International reach"],
           "technologies": ["Exchange Rate API", "Currency.js", "i18next"]
         },
         {
           "feature": "Mobile Application",
-          "timeline": "Q4 2025",
           "description": "Develop a native mobile application to allow customers to manage loans, make payments, and receive notifications on-the-go.",
           "benefits": ["Increased user engagement", "24/7 account access", "Push notifications"],
           "technologies": ["React Native", "Expo", "Firebase"]
         },
         {
           "feature": "Automated Payment Reminders",
-          "timeline": "Q2 2025",
           "description": "Implement an automated system to send customizable payment reminders at scheduled intervals before due dates.",
           "benefits": ["Reduced delinquency rates", "Improved communication", "Lower overhead"],
           "technologies": ["Twilio API", "SendGrid", "Node-cron"]
         },
         {
           "feature": "Document Management System",
-          "timeline": "Q1 2026",
           "description": "Add functionality for secure uploading, storing, and managing loan-related documents with OCR capabilities.",
           "benefits": ["Centralized document storage", "Reduced paperwork", "Enhanced security"],
           "technologies": ["AWS S3", "Tesseract.js", "PDF.js"]

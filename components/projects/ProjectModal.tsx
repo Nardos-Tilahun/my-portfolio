@@ -37,10 +37,6 @@ interface Project {
   challenges: string[]
   solutions: string[]
   learnings: string[]
-  timeline: string
-  githubUrl: string
-  liveDemoUrl: string
-  mockSiteUrl: string
 }
 
 interface ProjectModalProps {
@@ -90,7 +86,6 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose }) => {
             <Badge variant="outline" className="text-gray-300 bg-gray-700">
               {project.type}
             </Badge>
-            <p className="text-gray-400 ml-4 text-sm">{project.timeline}</p>
           </div>
         </div>
 

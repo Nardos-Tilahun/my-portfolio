@@ -13,11 +13,10 @@ async function getProject(id: string) {
       id: 'personal-loan-management', 
       title: 'personal-loan-management',
       cloudinaryImageIds: [
-        'dashboard1234', 'addUser123', 'editUser123', 'addLoan123',
-        'editLoan123', 'addPayment123', 'editPayment123', 'customersPage123',
-        'adminsPage123', 'loanDetailAdmin123', 'paymentDetailAdmin123',
+        'dashboard1234', 'addUser123', 
+        'editLoan123', 'addPayment123','loanDetailAdmin123',
         'customerDetailAdmin123', 'customerDashboard123', 'loanDetailCustomer123',
-        'paymentDetailCustomer123', 'signIn123', 'serverErrorPage500', 'notFoundPage404'
+        'paymentDetailCustomer123', 'signIn123', 'serverErrorPage500'
       ]
     },
     // Add more projects here

@@ -35,10 +35,6 @@ interface Project {
   challenges: string[]
   solutions: string[]
   learnings: string[]
-  timeline: string
-  githubUrl: string
-  liveDemoUrl: string
-  mockSiteUrl: string
 }
 
 
@@ -109,10 +105,6 @@ const projects: Project[] = [
       "Improved database management skills using MySQL for structured financial data.",
       "Refined project management skills using agile methodologies."
     ],
-    timeline: "Q1 2024 - Q2 2024",
-    githubUrl: "https://github.com/Nardos-Tilahun/Personal_Loan_Management",
-    liveDemoUrl: "https://drive.google.com/file/d/12TCHhbN9O247U_YvgtSOUyNYbuyyGHbu/view?usp=sharing",
-    mockSiteUrl: "https://personal-loan-management.onrender.com/"
   }
 ];
 
