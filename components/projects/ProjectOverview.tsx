@@ -80,20 +80,6 @@ const ProjectOverview: React.FC<ProjectOverviewProps> = ({ id, cloudinaryImageId
         category: "Admin"
       },
       {
-        cloudinaryId: cloudinaryImageIds[2] || "default_edit_user",
-        title: "Edit User Page",
-        description: "Update existing user information",
-        detailedDescription: "A dialog window that lets administrators update existing user details. It pre-fills fields with current data (except email and role, which are fixed) and provides real-time validation. It also shows previous values for comparison and confirms changes upon saving.",
-        category: "Admin"
-      },
-      {
-        cloudinaryId: cloudinaryImageIds[3] || "default_add_loan",
-        title: "Add Loan Page",
-        description: "Create new loan applications for customers",
-        detailedDescription: "A form used to create a new loan for a customer. It starts with a customer lookup and then displays loan-specific fields (amount, period, currency, payment method, duration, interest rate, and start date). The page calculates and displays expiration dates and total interest, with validation and reset options.",
-        category: "Admin"
-      },
-      {
         cloudinaryId: cloudinaryImageIds[4] || "default_edit_loan",
         title: "Edit Loan Page",
         description: "Modify pending loan details",
@@ -108,38 +94,10 @@ const ProjectOverview: React.FC<ProjectOverviewProps> = ({ id, cloudinaryImageId
         category: "Admin"
       },
       {
-        cloudinaryId: cloudinaryImageIds[6] || "default_edit_payment",
-        title: "Edit Payment Page",
-        description: "Modify recent payment details",
-        detailedDescription: "A dialog used to modify details of a recent payment (editable only if no subsequent payments have been made). It pre-populates the payment details, allows adjustments with real-time validation, and confirms the update with a success message.",
-        category: "Admin"
-      },
-      {
-        cloudinaryId: cloudinaryImageIds[7] || "default_customers_page",
-        title: "Customers Page",
-        description: "List and manage all customer accounts",
-        detailedDescription: "A table listing all registered customers. It features a search bar, batch deletion with confirmation, sortable columns (e.g., full name, creation date, status), and pagination. Each customer row offers quick access to editing or detailed view pages.",
-        category: "Admin"
-      },
-      {
-        cloudinaryId: cloudinaryImageIds[8] || "default_admins_page",
-        title: "Admins Page",
-        description: "List and manage admin user accounts",
-        detailedDescription: "A similar table to the Customers Page but for admin users. It provides search and filtering options, batch deletion with confirmation dialogs, inline details expansion, and pagination controls, along with options to edit admin details.",
-        category: "Admin"
-      },
-      {
         cloudinaryId: cloudinaryImageIds[9] || "default_loans_page",
         title: "Loans Page",
         description: "Comprehensive list of all loans in the system",
         detailedDescription: "A comprehensive table listing all loans. It supports search, filtering (by customer name, issue date, currency, amount, and status), sorting, and batch deletion for pending loans. Navigation options allow quick access to detailed loan information or editing (when eligible), with full pagination controls.",
-        category: "Admin"
-      },
-      {
-        cloudinaryId: cloudinaryImageIds[10] || "default_payments_page",
-        title: "Payments Page",
-        description: "Track and manage all payment records",
-        detailedDescription: "A table listing all payments, similar in functionality to the Loans Page. It enables search, filtering (by customer name, payment date, currency, and amount), sorting, and batch deletion for recent payments. Navigation links provide access to detailed payment information or the editing interface, along with pagination options.",
         category: "Admin"
       },
       {
