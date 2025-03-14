@@ -92,7 +92,7 @@ const ProjectOverview: React.FC<ProjectOverviewProps> = ({ id, cloudinaryImageId
         category: "Admin"
       },
       {
-        cloudinaryId: cloudinaryImageIds[5] || "default_customer_detail_admin",
+        cloudinaryId: cloudinaryImageIds[4] || "default_customer_detail_admin",
         title: "Customer Detail (Admin View)",
         description: "Detailed customer profile with loan history",
         detailedDescription: "A detailed view of a specific customer accessed from the Customers Page. It includes sections for Customer Information (name, email with verification status, phone, address), Payment Information (upcoming and total remaining payment details if a loan exists), and Loan Information (a table listing all loans with options to add or view details).",
@@ -101,21 +101,21 @@ const ProjectOverview: React.FC<ProjectOverviewProps> = ({ id, cloudinaryImageId
       
       // Customer Role Pages
       {
-        cloudinaryId: cloudinaryImageIds[6] || "default_customer_dashboard",
+        cloudinaryId: cloudinaryImageIds[5] || "default_customer_dashboard",
         title: "Customer Dashboard",
         description: "Customer's personal profile and loan summary",
         detailedDescription: "The landing page for a customer after logging in. It displays personal details such as name, email (with verification status and notification options), phone, and address. Additional sections show Payment Information (upcoming payment details and remaining amounts) and Loan Information (listing all the customer's loans).",
         category: "Customer"
       },
       {
-        cloudinaryId: cloudinaryImageIds[7] || "default_loan_detail_customer",
+        cloudinaryId: cloudinaryImageIds[6] || "default_loan_detail_customer",
         title: "Loan Detail (Customer View)",
         description: "Customer view of loan details and payment schedule",
         detailedDescription: "A detailed view of a specific loan from the customer's perspective. It provides comprehensive loan details including the principal, issue date, duration, terms, status, total interest, and a breakdown of paid vs. remaining amounts. It also lists payment history and upcoming payment details for that loan.",
         category: "Customer"
       },
       {
-        cloudinaryId: cloudinaryImageIds[8] || "default_payment_detail_customer",
+        cloudinaryId: cloudinaryImageIds[7] || "default_payment_detail_customer",
         title: "Payment Detail (Customer View)",
         description: "Details of individual payments made by customer",
         detailedDescription: "A detailed view of a specific payment made by the customer. It includes the payment term, amount, date, and status, along with a breakdown of principal versus interest and any penalties. This page also shows associated loan details for full context.",
@@ -124,14 +124,14 @@ const ProjectOverview: React.FC<ProjectOverviewProps> = ({ id, cloudinaryImageId
       
       // Mutual Pages
       {
-        cloudinaryId: cloudinaryImageIds[9] || "default_signin_image",
+        cloudinaryId: cloudinaryImageIds[8] || "default_signin_image",
         title: "Sign In Page",
         description: "Secure login for financial services",
         detailedDescription: "A professional sign-in page for financial services, featuring a company logo, email and password input fields, a 'Forgot Password?' option, and a green-themed sign-in button.",
         category: "Mutual",
       },
       {
-        cloudinaryId: cloudinaryImageIds[10] || "default_server_error",
+        cloudinaryId: cloudinaryImageIds[9] || "default_server_error",
         title: "500 Server Error Page",
         description: "User-friendly server error notification",
         detailedDescription: "This page appears when the system encounters an internal server error. It informs the user that a server-side problem has occurred and typically provides a message suggesting to try again later or contact support. Navigation options (like a link to return home) are usually available.",
