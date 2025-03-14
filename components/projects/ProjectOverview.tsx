@@ -92,13 +92,6 @@ const ProjectOverview: React.FC<ProjectOverviewProps> = ({ id, cloudinaryImageId
         category: "Admin"
       },
       {
-        cloudinaryId: cloudinaryImageIds[4] || "default_loans_page",
-        title: "Loans Page",
-        description: "Comprehensive list of all loans in the system",
-        detailedDescription: "A comprehensive table listing all loans. It supports search, filtering (by customer name, issue date, currency, amount, and status), sorting, and batch deletion for pending loans. Navigation options allow quick access to detailed loan information or editing (when eligible), with full pagination controls.",
-        category: "Admin"
-      },
-      {
         cloudinaryId: cloudinaryImageIds[5] || "default_customer_detail_admin",
         title: "Customer Detail (Admin View)",
         description: "Detailed customer profile with loan history",
