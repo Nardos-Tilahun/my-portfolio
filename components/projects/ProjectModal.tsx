@@ -52,7 +52,6 @@ interface ProjectModalProps {
 
 const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose }) => {
   const [, setCurrentTab] = useState("overview")
-  const [isModalOpen, setIsModalOpen] = useState(false);
 
   // Get background color for technology badge based on category
   const getTechBadgeColor = (category: string): string => {

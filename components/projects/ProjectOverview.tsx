@@ -3,7 +3,7 @@
 import React, { useState, useCallback, useRef, useEffect } from 'react'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { ChevronRight, ChevronLeft,  ExternalLink, BarChart, Users, FileText, CreditCard, User, Edit, Plus, AlertCircle, Home, ZoomIn, X, } from "lucide-react"
+import { ChevronRight, ChevronLeft, BarChart, Users, FileText, CreditCard, User, Edit, Plus, AlertCircle, Home, ZoomIn, X, } from "lucide-react"
 import { motion, AnimatePresence } from "framer-motion"
 import { Badge } from "@/components/ui/badge"
 import { CldImage } from 'next-cloudinary'
@@ -382,7 +382,6 @@ const ProjectOverview: React.FC<ProjectOverviewProps> = ({ id, cloudinaryImageId
         return "bg-gray-500/70";
     }
   };
-  const [isModalOpen, setIsModalOpen] = useState(false);
   return (
     <section id="overview" className="py-16 bg-gradient-to-b from-gray-900 to-gray-950 min-h-screen">
       <div className="container mx-auto px-4">
