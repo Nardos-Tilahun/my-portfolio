@@ -129,7 +129,7 @@ const DeveloperLabel: FC<DeveloperLabelProps> = ({ className = "" }) => {
 
 const Hero: FC = () => {
   return (
-    <div className="relative h-[1000px] lg:h-[600px] max-w-[1500px] w-full overflow-hidden">
+    <div className="relative h-[1000px] lg:h-[600px] max-w-[1500px] w-full  mx-auto  overflow-hidden">
       <div className="relative z-10">
         <div className="container mx-auto px-6 py-12">
           {/* Desktop Label - Center Position */}

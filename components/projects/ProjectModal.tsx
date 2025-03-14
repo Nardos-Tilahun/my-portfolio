@@ -8,7 +8,6 @@ import { CldImage } from "next-cloudinary"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Badge } from "@/components/ui/badge"
 import {  ExternalLink, X } from "lucide-react"
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
 import Link from "next/link"
 
 
@@ -245,35 +244,7 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose }) => {
 
         {/* Modal footer with navigation */}
         <div className="mt-6 flex flex-wrap gap-4 justify-center">
-          <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
-                  <DialogTrigger asChild>
-                    <Button className="bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white px-6 py-3 flex items-center gap-2 transition-transform transform hover:scale-105">
-                      <ExternalLink className="w-5 h-5" />
-                      Live Demo
-                    </Button>
-                  </DialogTrigger>
-                  <DialogContent className="sm:max-w-4xl bg-gray-900 border-gray-700 text-white">
-                    <DialogHeader>
-                      <div className="flex justify-between items-center mb-4">
-                        <DialogTitle className="text-xl text-white">{project.title} - Demo</DialogTitle>
-                        
-                      </div>
-                    </DialogHeader>
-                    <div className="aspect-video w-full overflow-hidden rounded-lg">
-                    <iframe
-                      className="w-full h-full"
-                      src="https://www.youtube.com/embed/Uv0tDX2JCDE?autoplay=1&mute=1" 
-                      title={`${project.title} demo video`}
-                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                      allowFullScreen
-                    ></iframe>
-
-                    </div>
-                    <div className="mt-4 text-gray-300">
-                      {project.description}
-                    </div>
-                  </DialogContent>
-                </Dialog>`
+          
          
           <Link href={`/projects/${project.id}`} passHref>
           <Button 

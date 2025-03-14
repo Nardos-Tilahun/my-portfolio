@@ -51,7 +51,7 @@ const projects: Project[] = [
     type: "Full Stack Web Application",
     content:
       "This full-stack web application enables secure loan management for both administrators and customers. Administrators can manage users, loans, and payments, while customers can track their loan statuses and payment history. The application streamlines the entire lending process with features like authentication, payment tracking, email notifications, and detailed analytics.",
-    imageUrl: "wkdmwgbc87kxy26g2w8y",
+    imageUrl: "dashboard1234",
     features: [
       "User authentication with role-based access control",
       "Comprehensive loan application management",

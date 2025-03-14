@@ -7,7 +7,6 @@ import { ChevronRight, ChevronLeft,  ExternalLink, BarChart, Users, FileText, Cr
 import { motion, AnimatePresence } from "framer-motion"
 import { Badge } from "@/components/ui/badge"
 import { CldImage } from 'next-cloudinary'
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
 import Image from 'next/image'
 
 interface Screenshot {
@@ -449,43 +448,6 @@ const ProjectOverview: React.FC<ProjectOverviewProps> = ({ id, cloudinaryImageId
                 </div>
               </div>
   
-              <div className="flex flex-wrap gap-4 mt-10 justify-center md:justify-start">
-                  {/* Dialog button wrapper to prevent alignment issues */}
-                  <div className="inline-block">
-                    <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
-                      <DialogTrigger asChild>
-                        <button
-                          className="relative overflow-hidden flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-lg hover:from-indigo-700 hover:to-purple-700 transition-all font-medium shadow-lg group"
-                        >
-                          <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-indigo-400/20 to-purple-400/20 transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left"></span>
-                          <ExternalLink className="w-4 h-4 relative z-10" />
-                          <span className="relative z-10">Watch Demo</span>
-                        </button>
-                      </DialogTrigger>
-                      <DialogContent className="sm:max-w-3xl bg-gray-900 border-gray-700 text-white">
-                        <DialogHeader>
-                          <div className="flex justify-between items-center mb-2">
-                            <DialogTitle className="text-xl text-white">{projectData.title} - Demo</DialogTitle>
-                           
-                          </div>
-                        </DialogHeader>
-                        <div className="aspect-video w-full overflow-hidden rounded-lg">
-                          <iframe
-                            className="w-full h-full"
-                            src="https://www.youtube.com/embed/Uv0tDX2JCDE?autoplay=1&mute=1"
-                            title={`${projectData.title} demo video`}
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                            allowFullScreen
-                          ></iframe>
-                        </div>
-                        <div className="mt-3 text-gray-300 text-sm">
-                          {projectData.description}
-                        </div>
-                      </DialogContent>
-                    </Dialog>
-              </div>
-    
-                </div>
             </CardContent>
           </Card>
         </div>
