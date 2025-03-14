@@ -3,9 +3,8 @@
 import React, { useState, useCallback, useRef, useEffect } from 'react'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { ChevronRight, ChevronLeft, Github, ExternalLink, BarChart, Users, FileText, CreditCard, User, Edit, Plus, AlertCircle, Home, ZoomIn, X, } from "lucide-react"
+import { ChevronRight, ChevronLeft,  ExternalLink, BarChart, Users, FileText, CreditCard, User, Edit, Plus, AlertCircle, Home, ZoomIn, X, } from "lucide-react"
 import { motion, AnimatePresence } from "framer-motion"
-import Link from "next/link"
 import { Badge } from "@/components/ui/badge"
 import { CldImage } from 'next-cloudinary'
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
