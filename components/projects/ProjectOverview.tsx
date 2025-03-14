@@ -400,7 +400,7 @@ const ProjectOverview: React.FC<ProjectOverviewProps> = ({ id, cloudinaryImageId
                 Project Screenshots
               </CardTitle>
               <CardDescription className="text-gray-400">
-                Scroll through to see all pages of the application
+                Scroll through to see some pages of the application
               </CardDescription>
             </CardHeader>
             <CardContent className="pb-4">
