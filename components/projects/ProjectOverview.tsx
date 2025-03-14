@@ -486,27 +486,6 @@ const ProjectOverview: React.FC<ProjectOverviewProps> = ({ id, cloudinaryImageId
                     </Dialog>
               </div>
     
-                  <Link
-                    href={projectData.githubUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="relative overflow-hidden flex items-center gap-2 px-5 py-2.5 bg-gray-800 text-white rounded-lg border border-gray-700/70 hover:bg-gray-700 transition-all font-medium shadow-lg group"
-                  >
-                    <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-indigo-400/10 to-purple-400/10 transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left"></span>
-                    <Github className="w-4 h-4 relative z-10" />
-                    <span className="relative z-10">Repository</span>
-                  </Link>
-                    
-                  <Link
-                    href={"https://personal-loan-management.onrender.com/"}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="relative overflow-hidden flex items-center gap-2 px-5 py-2.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-all font-medium shadow-lg group"
-                  >
-                    <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-blue-400/20 to-blue-500/20 transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left"></span>
-                    <ExternalLink className="w-4 h-4 relative z-10" />
-                    <span className="relative z-10">Go to Website</span>
-                  </Link>
                 </div>
             </CardContent>
           </Card>

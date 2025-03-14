@@ -245,12 +245,6 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose }) => {
 
         {/* Modal footer with navigation */}
         <div className="mt-6 flex flex-wrap gap-4 justify-center">
-          <a href={project.githubUrl} target="_blank" rel="noopener noreferrer">
-            <Button className="bg-gradient-to-r from-gray-600 to-gray-800 hover:from-gray-700 hover:to-gray-900 text-white px-6 py-3 flex items-center gap-2 transition-transform transform hover:scale-105">
-              <Github className="w-5 h-5" />
-              GitHub
-            </Button>
-          </a>
           <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
                   <DialogTrigger asChild>
                     <Button className="bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white px-6 py-3 flex items-center gap-2 transition-transform transform hover:scale-105">
@@ -280,12 +274,7 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose }) => {
                     </div>
                   </DialogContent>
                 </Dialog>`
-          <a href={project.mockSiteUrl} target="_blank" rel="noopener noreferrer">
-            <Button className="bg-gradient-to-r from-green-500 to-teal-600 hover:from-green-600 hover:to-teal-700 text-white px-6 py-3 flex items-center gap-2 transition-transform transform hover:scale-105">
-              <Globe className="w-5 h-5" />
-              Mock Site
-            </Button>
-          </a>
+         
           <Link href={`/projects/${project.id}`} passHref>
           <Button 
               variant="outline" 

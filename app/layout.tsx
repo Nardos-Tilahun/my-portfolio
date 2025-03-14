@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { ReactNode } from 'react';
 import "./globals.css";
 import FloatingChat from '@/components/FloatingChat';
+
 export const metadata = {
   title: 'Nardos Tilahun - Portfolio',
   description: 'Web developer portfolio for Nardos Tilahun',
@@ -12,6 +13,7 @@ interface RootLayoutProps {
 }
 
 export default function RootLayout({ children } : RootLayoutProps) {
+
   return (
     <html lang="en">
       <body>
@@ -52,6 +54,27 @@ export default function RootLayout({ children } : RootLayoutProps) {
                 >
                   Contact
                 </Link>
+                <a
+                href="/api/download-resume"
+                className="ml-2 px-3 py-1 bg-gradient-to-r from-green-500 to-teal-600 text-white rounded-md font-medium text-sm flex items-center gap-1 hover:shadow-lg hover:shadow-green-700/30 transform transition-all duration-300 hover:scale-105 relative group"
+                aria-label="Download Resume"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-4 w-4"
+                  fill="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path d="M12 16l4-4h-3V3h-2v9H8l4 4zm9 4v-2H3v2h18z" />
+                </svg>
+                <span className="hidden sm:inline">Resume</span>
+                
+                {/* Tooltip */}
+                <div className="absolute hidden group-hover:block bg-gray-800 text-white text-xs rounded py-1 px-2 bottom-[-28px] sm:left-1/2 sm:-translate-x-1/2  left-[-70px] whitespace-nowrap pointer-events-none z-50">
+                  Download CV
+                </div>
+              </a>
+
               </nav>
             </div>
           </header>

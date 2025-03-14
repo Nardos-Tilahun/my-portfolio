@@ -129,7 +129,7 @@ const DeveloperLabel: FC<DeveloperLabelProps> = ({ className = "" }) => {
 
 const Hero: FC = () => {
   return (
-    <div className="relative min-h-screen max-h-[800px] max-w-[1500px] w-full overflow-hidden">
+    <div className="relative h-[1000px] lg:h-[600px] max-w-[1500px] w-full overflow-hidden">
       <div className="relative z-10">
         <div className="container mx-auto px-6 py-12">
           {/* Desktop Label - Center Position */}
@@ -148,17 +148,10 @@ const Hero: FC = () => {
               <div className="relative h-72 w-72 sm:h-96 sm:w-96">
                 <motion.div
                   className="absolute inset-0 rounded-full bg-gradient-to-r from-emerald-500/30 to-teal-500/30 blur-3xl"
-                  animate={{
-                    scale: [1, 1.2, 1],
-                    rotate: [0, 180, 0],
-                  }}
-                  transition={{
-                    duration: 20,
-                    repeat: Infinity,
-                    ease: "linear"
-                  }}
+                  animate={{ scale: [1, 1.2, 1], rotate: [0, 180, 0] }}
+                  transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
                 />
-                
+
                 <motion.div 
                   className="relative rounded-full backdrop-blur-sm"
                   whileHover={{ scale: 1.05 }}
@@ -188,7 +181,6 @@ const Hero: FC = () => {
               className="flex flex-col justify-center space-y-8 order-2 lg:order-1 text-center lg:text-left"
             >
               <div className="space-y-4">
-                {/* Using the embedded CrossBrowserEmeraldName component with explicit text prop */}
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -216,31 +208,24 @@ const Hero: FC = () => {
                 transition={{ delay: 0.9 }}
                 className="flex flex-col gap-4 sm:flex-row justify-center lg:justify-start"
               >
-                <Link
-                    href="#projects"
+                <Link href="#projects">
+                  <Button 
+                    size="lg" 
+                    className="group bg-emerald-500/80 text-black backdrop-blur-sm hover:bg-emerald-600 transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg hover:shadow-emerald-500/20"
                   >
-                <Button 
-                  size="lg" 
-                  className="group bg-emerald-500/80 text-black backdrop-blur-sm hover:bg-emerald-600 transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg hover:shadow-emerald-500/20"
-                >
-                  
                     Explore Projects
                     <ChevronRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
-                </Button>
+                  </Button>
                 </Link>
-                <Link
-                    href="#contact"
+                <Link href="#contact">
+                  <Button 
+                    size="lg" 
+                    variant="outline" 
+                    className="border-emerald-600/50 text-gray-600 backdrop-blur-sm hover:bg-emerald-900/30 transition-all duration-300 ease-in-out transform hover:scale-105 hover:text-yellow-400 hover:shadow-lg hover:shadow-emerald-500/20"
                   >
-                <Button 
-                  size="lg" 
-                  variant="outline" 
-                  className="border-emerald-600/50 text-gray-600 backdrop-blur-sm hover:bg-emerald-900/30 transition-all duration-300 ease-in-out transform hover:scale-105 hover:text-yellow-400 hover:shadow-lg hover:shadow-emerald-500/20"
-                >
-                  
-                     Get in Touch
+                    Get in Touch
                     <ExternalLink className="ml-2 h-4 w-4" />
-                  
-                </Button>
+                  </Button>
                 </Link>
               </motion.div>
             </motion.div>
@@ -248,6 +233,7 @@ const Hero: FC = () => {
         </div>
       </div>
     </div>
+
   );
 };
 
