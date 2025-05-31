@@ -135,7 +135,6 @@ export default function RootLayout({ children }: RootLayoutProps) {
 
           <header
             ref={headerRef}
-            // CHANGED: 'sticky' to 'fixed'
             className="fixed top-0 z-40 w-full border-b border-green-800 bg-gray-500 bg-opacity-70 backdrop-blur-md shadow-lg transition-all duration-300"
           >
             <div className="container mx-auto flex h-14 items-center md:px-14 px-4 ">
@@ -248,7 +247,6 @@ export default function RootLayout({ children }: RootLayoutProps) {
           </header>
 
           <main
-            // ADDED: pt-14 to push content below the fixed header
             className="flex-1 md:px-12 px-4 bg-transparent w-full pt-14"
           >
             <div className="container mx-auto">
@@ -259,17 +257,18 @@ export default function RootLayout({ children }: RootLayoutProps) {
           <footer className="bg-gradient-to-r from-gray-900 via-black to-gray-900">
             <div className="container mx-auto flex flex-col md:flex-row justify-between items-center py-4 px-6 space-y-6 md:space-y-0">
 
-              {/* Left Section */}
+              {/* Left Section - Text Color Changed to bright, readable gray, added shadow */}
               <div className="text-center md:text-left order-1 md:order-1">
-                <p className="text-sm leading-loose text-green-400/80">
+                {/* Applied Gradient to text */}
+                <p className="text-transparent bg-clip-text bg-gradient-to-r from-teal-200 to-cyan-400 text-sm leading-loose drop-shadow-sm">
                   Built by{" "}
-                  <span className="font-semibold text-green-300">Nardos Tilahun</span>.
+                  <span className="font-semibold text-transparent bg-clip-text bg-gradient-to-r from-purple-300 to-indigo-500">Nardos Tilahun</span>.
                   Hosted on{" "}
                   <a
                     href="https://render.com"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="font-medium underline underline-offset-4 hover:text-green-400 transition-colors"
+                    className="font-medium underline underline-offset-4 hover:text-teal-200 transition-colors"
                   >
                     Render
                   </a>
@@ -277,13 +276,13 @@ export default function RootLayout({ children }: RootLayoutProps) {
                 </p>
               </div>
 
-              {/* Center Section - Social Links */}
+              {/* Center Section - Social Links - Icons' colors changed to vibrant defaults and matching hovers */}
               <div className="flex items-center justify-center space-x-4 order-3 md:order-3">
                 <a
                   href="https://linkedin.com/in/nardos-tilahun-74260213a"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-green-400 hover:text-green-300 transition-transform transform hover:scale-110"
+                  className="text-blue-400 hover:text-blue-200 transition-transform transform hover:scale-110 drop-shadow-sm"
                   aria-label="LinkedIn"
                 >
                   <svg
@@ -299,7 +298,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
                   href="https://github.com/Nardos-Tilahun"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-green-400 hover:text-green-300 transition-transform transform hover:scale-110"
+                  className="text-purple-400 hover:text-purple-200 transition-transform transform hover:scale-110 drop-shadow-sm"
                   aria-label="GitHub"
                 >
                   <svg
@@ -315,7 +314,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
                   href="https://drive.google.com/file/d/1CgDUJvPqRsbySPPS_AywCvfRtWJu9KHl/view?usp=sharing"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-green-400 hover:text-green-300 transition-transform transform hover:scale-110"
+                  className="text-orange-400 hover:text-orange-200 transition-transform transform hover:scale-110 drop-shadow-sm"
                   aria-label="Resume"
                 >
                   <svg
@@ -329,20 +328,20 @@ export default function RootLayout({ children }: RootLayoutProps) {
                 </a>
               </div>
 
-              {/* Copyright Section */}
+              {/* Copyright Section - Applied Gradient to text */}
               <div className="flex items-center justify-center order-2 md:order-2">
-                <span className="text-gradient py-3">© {new Date().getFullYear()} All rights reserved.</span>
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-sky-400 to-blue-500 py-3 drop-shadow-sm">© {new Date().getFullYear()} All rights reserved.</span>
               </div>
 
-              {/* Right Section */}
+              {/* Right Section - Applied Gradient to text */}
               <div className="text-center md:text-right order-4 md:order-4">
-                <p className="text-sm leading-loose text-green-400/80">
+                <p className="text-transparent bg-clip-text bg-gradient-to-r from-teal-200 to-cyan-400 text-sm leading-loose drop-shadow-sm">
                   Source code available on{" "}
                   <a
                     href="https://github.com/Nardos-Tilahun/my-portfolio"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="font-medium underline underline-offset-4 hover:text-green-400 transition-colors"
+                    className="font-medium underline italic font-semibold text-transparent bg-clip-text bg-gradient-to-r from-purple-300 to-indigo-500 "
                   >
                     GitHub
                   </a>
