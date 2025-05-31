@@ -3,14 +3,14 @@
 import React, { useState, useCallback, useRef, useEffect } from 'react'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { ChevronRight, ChevronLeft, BarChart, Users, FileText, CreditCard, User, Edit, Plus, AlertCircle, Home, ZoomIn, X, } from "lucide-react"
+import { ChevronRight, ChevronLeft, BarChart, Users, FileText, CreditCard,  Edit, Plus, AlertCircle, Home, ZoomIn, X, } from "lucide-react"
 import { motion, AnimatePresence } from "framer-motion"
 import { Badge } from "@/components/ui/badge"
 import { CldImage } from 'next-cloudinary'
 import Image from 'next/image'
 
 // Import Project and Screenshot interfaces and data fetching functions
-import { Project, ProjectTechnology } from '@/data/projects'
+import { Project } from '@/data/projects'
 import { getScreenshotsByProjectId, Screenshot } from '@/data/screenshots'
 
 

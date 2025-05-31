@@ -2,7 +2,7 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import { ChevronDown, ChevronUp, Copy, Check, Code2 } from 'lucide-react';
-import { CodeSnippet, getCodeSnippetsByProjectId } from '@/data/codeSnippets'; // Import from the new module
+import {  getCodeSnippetsByProjectId } from '@/data/codeSnippets'; // Import from the new module
 
 interface CodeSnippetsClientProps {
   id: string;
