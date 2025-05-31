@@ -27,12 +27,10 @@ interface SubmitStatus {
   message: string;
 }
 
-// Define the props interface for Contact
 interface ContactProps {
-  id: string; // Add id to the props interface
+  id: string;
 }
 
-// Update the function signature to accept id prop
 export default function Contact({ id }: ContactProps) {
   const [formData, setFormData] = useState<FormData>({
     name: "",
@@ -49,9 +47,7 @@ export default function Contact({ id }: ContactProps) {
     message: "",
   });
 
-  // Add useEffect to clear notifications after a set time
   useEffect(() => {
-    // Only set the timer if there's a success or error message
     if (submitStatus.success || submitStatus.error) {
       const timer = setTimeout(() => {
         setSubmitStatus({
@@ -59,9 +55,7 @@ export default function Contact({ id }: ContactProps) {
           error: false,
           message: "",
         });
-      }, 5000); // 5 seconds (change to 10000 for 10 seconds)
-
-      // Clear the timer if the component unmounts or if the status changes
+      }, 5000);
       return () => clearTimeout(timer);
     }
   }, [submitStatus]);
@@ -69,23 +63,15 @@ export default function Contact({ id }: ContactProps) {
   const validateForm = (): boolean => {
     const newErrors: FormErrors = {};
 
-    if (!formData.name.trim()) {
-      newErrors.name = "Name is required";
-    }
-
+    if (!formData.name.trim()) newErrors.name = "Name is required";
     if (!formData.email.trim()) {
       newErrors.email = "Email is required";
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
       newErrors.email = "Please enter a valid email address";
     }
 
-    if (!formData.subject.trim()) {
-      newErrors.subject = "Subject is required";
-    }
-
-    if (!formData.message.trim()) {
-      newErrors.message = "Message is required";
-    }
+    if (!formData.subject.trim()) newErrors.subject = "Subject is required";
+    if (!formData.message.trim()) newErrors.message = "Message is required";
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -95,25 +81,16 @@ export default function Contact({ id }: ContactProps) {
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-    // Clear error when user starts typing
+    setFormData((prev) => ({ ...prev, [name]: value }));
+
     if (errors[name as keyof FormErrors]) {
-      setErrors((prev) => ({
-        ...prev,
-        [name]: "",
-      }));
+      setErrors((prev) => ({ ...prev, [name]: "" }));
     }
   };
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
-    if (!validateForm()) {
-      return;
-    }
+    if (!validateForm()) return;
 
     setIsSubmitting(true);
     setSubmitStatus({ success: false, error: false, message: "" });
@@ -121,9 +98,7 @@ export default function Contact({ id }: ContactProps) {
     try {
       const response = await fetch("/api/contact", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
       });
 
@@ -135,22 +110,20 @@ export default function Contact({ id }: ContactProps) {
           error: false,
           message: "Message sent successfully!",
         });
-        // Clear form
-        setFormData({
-          name: "",
-          email: "",
-          subject: "",
-          message: "",
-        });
+        setFormData({ name: "", email: "", subject: "", message: "" });
       } else {
-        throw new Error(data.message || "Failed to send message, Please try to send your message manually using the email address below:");
+        throw new Error(
+          data.message ||
+            "Failed to send message. Please try to send your message manually using the email address below:"
+        );
       }
     } catch (error) {
       console.error(error);
       setSubmitStatus({
         success: false,
         error: true,
-        message: "Failed to send message. Please try to send your message manually using the email address below:",
+        message:
+          "Failed to send message. Please try to send your message manually using the email address below:",
       });
     } finally {
       setIsSubmitting(false);
@@ -158,7 +131,10 @@ export default function Contact({ id }: ContactProps) {
   };
 
   return (
-    <section  id={id} className="w-full py-12 md:py-16 lg:py-24 bg-gradient-to-b from-gray-900 to-gray-800 text-white relative"> {/* Use id prop here */}
+    <section
+      id={id}
+      className="w-full py-12 md:py-16 lg:py-24 bg-gradient-to-b from-gray-900 to-gray-800 text-white relative"
+    >
       <div className="container px-4 md:px-6 py-4 md:py-0">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -167,8 +143,9 @@ export default function Contact({ id }: ContactProps) {
           className="max-w-4xl mx-auto"
         >
           <div className="text-center mb-12">
-            <h2 className="text-pink-400 text-4xl font-bold mb-4">Let&apos;s Connect</h2>
-
+            <h2 className="text-pink-400 text-4xl font-bold mb-4">
+              Let&apos;s Connect
+            </h2>
           </div>
 
           <div className="bg-gray-800 p-8 rounded-2xl shadow-xl">
@@ -186,7 +163,9 @@ export default function Contact({ id }: ContactProps) {
                   placeholder="Your Name"
                   value={formData.name}
                   onChange={handleInputChange}
-                  className={`w-full text-gray-100${errors.name ? "border-red-500" : ""}`}
+                  className={`w-full text-gray-100${
+                    errors.name ? " border-red-500" : ""
+                  }`}
                 />
                 {errors.name && (
                   <p className="text-red-500 text-sm mt-1">{errors.name}</p>
@@ -200,7 +179,9 @@ export default function Contact({ id }: ContactProps) {
                   placeholder="Your Email"
                   value={formData.email}
                   onChange={handleInputChange}
-                  className={`w-full text-gray-100${errors.email ? "border-red-500" : ""}`}
+                  className={`w-full text-gray-100${
+                    errors.email ? " border-red-500" : ""
+                  }`}
                 />
                 {errors.email && (
                   <p className="text-red-500 text-sm mt-1">{errors.email}</p>
@@ -214,10 +195,14 @@ export default function Contact({ id }: ContactProps) {
                   placeholder="Subject"
                   value={formData.subject}
                   onChange={handleInputChange}
-                  className={`w-full text-gray-100${errors.subject ? "border-red-500" : ""}`}
+                  className={`w-full text-gray-100${
+                    errors.subject ? " border-red-500" : ""
+                  }`}
                 />
                 {errors.subject && (
-                  <p className="text-red-500 text-sm mt-1">{errors.subject}</p>
+                  <p className="text-red-500 text-sm mt-1">
+                    {errors.subject}
+                  </p>
                 )}
               </div>
 
@@ -227,10 +212,14 @@ export default function Contact({ id }: ContactProps) {
                   placeholder="Your Message"
                   value={formData.message}
                   onChange={handleInputChange}
-                  className={`w-full h-32 text-gray-100${errors.message ? "border-red-500" : ""}`}
+                  className={`w-full h-32 text-gray-100${
+                    errors.message ? " border-red-500" : ""
+                  }`}
                 />
                 {errors.message && (
-                  <p className="text-red-500 text-sm mt-1">{errors.message}</p>
+                  <p className="text-red-500 text-sm mt-1">
+                    {errors.message}
+                  </p>
                 )}
               </div>
 
@@ -241,7 +230,9 @@ export default function Contact({ id }: ContactProps) {
                   exit={{ opacity: 0 }}
                 >
                   <Alert className="bg-green-500/20 text-green-500 border-green-500 text-center">
-                    <AlertDescription>{submitStatus.message}</AlertDescription>
+                    <AlertDescription>
+                      {submitStatus.message}
+                    </AlertDescription>
                   </Alert>
                 </motion.div>
               )}
@@ -253,7 +244,9 @@ export default function Contact({ id }: ContactProps) {
                   exit={{ opacity: 0 }}
                 >
                   <Alert className="bg-red-500/20 text-red-500 border-red-500 text-center">
-                    <AlertDescription>{submitStatus.message}</AlertDescription>
+                    <AlertDescription>
+                      {submitStatus.message}
+                    </AlertDescription>
                   </Alert>
                 </motion.div>
               )}
@@ -283,6 +276,7 @@ export default function Contact({ id }: ContactProps) {
           </div>
         </motion.div>
       </div>
+
       <div className="absolute top-0 left-0 w-32 h-32 bg-gradient-to-r from-pink-400 to-purple-400 rounded-full blur-3xl opacity-20 animate-pulse"></div>
       <div className="absolute bottom-10 right-10 w-48 h-48 bg-gradient-to-r from-indigo-400 to-green-400 rounded-full blur-3xl opacity-30 animate-pulse"></div>
     </section>

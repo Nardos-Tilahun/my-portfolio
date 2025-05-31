@@ -174,15 +174,16 @@ const Hero: FC<HeroProps> = ({ id }) => {
                 </motion.div>
 
                 <motion.p
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 0.7 }}
-                  className="max-w-xl text-lg text-gray-300 mx-auto lg:mx-0"
-                >
-                  Crafting innovative web solutions with cutting-edge technologies.
-                  Focused on creating immersive, high-performance applications
-                  that push the boundaries of what&#39;s possible on the web.
-                </motion.p>
+  initial={{ opacity: 0 }}
+  animate={{ opacity: 1 }}
+  transition={{ delay: 0.7 }}
+  className="max-w-xl text-lg text-gray-300 mx-auto lg:mx-0"
+>
+  Crafting innovative web solutions with cutting-edge technologies.
+  Focused on creating immersive, high-performance applications
+  that push the boundaries of what&apos;s possible on the web.
+</motion.p>
+
               </div>
 
               <motion.div
