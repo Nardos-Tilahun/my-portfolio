@@ -330,7 +330,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
 
               {/* Copyright Section - Applied Gradient to text */}
               <div className="flex items-center justify-center order-2 md:order-2">
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-sky-400 to-blue-500 py-3 drop-shadow-sm">© {new Date().getFullYear()} All rights reserved.</span>
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-lime-300 via-emerald-300 to-green-400 py-3 drop-shadow-sm">© {new Date().getFullYear()} All rights reserved.</span>
               </div>
 
               {/* Right Section - Applied Gradient to text */}
