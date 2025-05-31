@@ -49,7 +49,9 @@ const CrossBrowserEmeraldName: FC<{ text: string; className?: string; }> = ({
     if (distance === 1) return { color: "#10b981" };
     if (distance === 2) return { color: "#059669" };
     if (distance === 3) return { color: "#047857" };
-    if (distance === 4) return { color: "#065f46" };
+    if (distance === 4) {
+      return { color: "#065f46" };
+    }
     return { color: "#064e3b" };
   };
 

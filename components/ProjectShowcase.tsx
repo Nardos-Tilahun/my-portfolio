@@ -39,15 +39,17 @@ const ProjectShowcase: React.FC<ProjectShowcaseProps> = ({ id }) => { // Accept 
   }, [])
 
   useEffect(() => {
+    // projects.length is a static value, so it doesn't need to be in the dependency array.
     setIsLastCard(currentIndex === (isMobile ? projects.length - 1 : projects.length - 2))
-  }, [currentIndex, isMobile, projects.length])
+  }, [currentIndex, isMobile]) // Removed projects.length
 
   const handleNext = useCallback(() => {
+    // projects.length is a static value, so it doesn't need to be in the dependency array.
     if (isScrolling || currentIndex >= (isMobile ? projects.length - 1 : projects.length - 2)) return
     setIsScrolling(true)
     setCurrentIndex((prev) => prev + 1)
     setTimeout(() => setIsScrolling(false), 500)
-  }, [isScrolling, currentIndex, isMobile, projects.length])
+  }, [isScrolling, currentIndex, isMobile]) // Removed projects.length
 
   const handlePrev = useCallback(() => {
     if (isScrolling || currentIndex <= 0) return

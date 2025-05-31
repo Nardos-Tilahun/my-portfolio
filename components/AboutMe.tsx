@@ -24,7 +24,7 @@ export default function AboutMe({ id }: AboutMeProps) {
             <span className="text-green-400">Master's student in Computer Science at HiLcoE</span>, with a background that bridges technology and engineering. I spent <span className="text-purple-400">five years</span> as a civil engineer, working as a contractor and structural designer, where I developed software solutions for challenges in construction and design.
           </p>
           <p className="text-lg leading-relaxed">
-            Over the past <span className="text-purple-400">two years</span>, I’ve expanded my expertise in web development, using frameworks like <span className="text-pink-400">React</span>, <span className="text-indigo-400">Next.js</span>, and <span className="text-yellow-400">Node.js</span>. I thrive on solving challenging problems through agile methodologies and building scalable, user-centric applications.
+            Over the past <span className="text-purple-400">two years</span>, I've expanded my expertise in web development, using frameworks like <span className="text-pink-400">React</span>, <span className="text-indigo-400">Next.js</span>, and <span className="text-yellow-400">Node.js</span>. I thrive on solving challenging problems through agile methodologies and building scalable, user-centric applications.
           </p>
           <p className="text-lg leading-relaxed">
             Beyond coding, I thrive on tackling <span className="text-indigo-400">data structures</span> and{" "}
