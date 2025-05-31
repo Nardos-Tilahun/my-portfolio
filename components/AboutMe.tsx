@@ -20,8 +20,8 @@ export default function AboutMe({ id }: AboutMeProps) {
           className="max-w-4xl mx-auto space-y-6 p-6 bg-gray-900/70 backdrop-blur-md rounded-lg shadow-lg animate-fade-in-up"
         >
           <p className="text-lg leading-relaxed">
-            Hi! I'm a dedicated <span className="text-indigo-400">Full Stack Developer</span> and a{" "}
-            <span className="text-green-400">Master's student in Computer Science at HiLcoE</span>, with a background that bridges technology and engineering. I spent <span className="text-purple-400">five years</span> as a civil engineer, working as a contractor and structural designer, where I developed software solutions for challenges in construction and design.
+            Hi! I&apos;m a dedicated <span className="text-indigo-400">Full Stack Developer</span> and a{" "}
+            <span className="text-green-400">Master&apos;s student in Computer Science at HiLcoE</span>, with a background that bridges technology and engineering. I spent <span className="text-purple-400">five years</span> as a civil engineer, working as a contractor and structural designer, where I developed software solutions for challenges in construction and design.
           </p>
           <p className="text-lg leading-relaxed">
             Over the past <span className="text-purple-400">two years</span>, I've expanded my expertise in web development, using frameworks like <span className="text-pink-400">React</span>, <span className="text-indigo-400">Next.js</span>, and <span className="text-yellow-400">Node.js</span>. I thrive on solving challenging problems through agile methodologies and building scalable, user-centric applications.
@@ -38,7 +38,7 @@ export default function AboutMe({ id }: AboutMeProps) {
             In my free time, I dive into <span className="text-green-400">cutting-edge technologies</span>, experiment
             with <span className="text-pink-400">AI-powered tools</span>, and work on creative projects. With a passion
             for technology and an engineering mindset, I aim to create impactful solutions that drive progress and
-            simplify lives. Let's build something remarkable together!
+            simplify lives. Let&apos;s build something remarkable together!
           </p>
         </div>
       </div>

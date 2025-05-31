@@ -167,7 +167,8 @@ export default function Contact({ id }: ContactProps) {
           className="max-w-4xl mx-auto"
         >
           <div className="text-center mb-12">
-            <h2 className="text-pink-400 text-4xl font-bold mb-4">Let's Connect</h2>
+            <h2 className="text-pink-400 text-4xl font-bold mb-4">Let&apos;s Connect</h2>
+
           </div>
 
           <div className="bg-gray-800 p-8 rounded-2xl shadow-xl">

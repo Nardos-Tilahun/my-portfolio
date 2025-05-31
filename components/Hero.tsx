@@ -181,7 +181,7 @@ const Hero: FC<HeroProps> = ({ id }) => {
                 >
                   Crafting innovative web solutions with cutting-edge technologies.
                   Focused on creating immersive, high-performance applications
-                  that push the boundaries of what's possible on the web.
+                  that push the boundaries of what&#39;s possible on the web.
                 </motion.p>
               </div>
 
