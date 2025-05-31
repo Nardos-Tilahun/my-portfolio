@@ -1,3 +1,4 @@
+// components/projects/ProjectOverview.tsx
 "use client"
 
 import React, { useState, useCallback, useRef, useEffect } from 'react'
@@ -222,16 +223,18 @@ const ProjectOverview: React.FC<ProjectOverviewProps> = ({ project }) => {
   return (
     <section id="overview" className="py-16 bg-gradient-to-b from-gray-900 to-gray-950 min-h-screen">
       <div className="container mx-auto px-4">
-        <h2 className="text-4xl font-extrabold tracking-tight sm:text-6xl text-center mb-4 font-sans">
-          <span className="text-transparent bg-clip-text bg-gradient-to-r from-violet-400 via-purple-500 to-indigo-600">
+        {/* Main Project Title - Enhanced with brighter gradient and drop shadow */}
+        <h2 className="text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight text-center mb-4 font-sans relative z-50">
+          <span className="text-transparent bg-clip-text bg-gradient-to-r from-teal-300 via-sky-400 to-blue-500 drop-shadow-md">
             {project.title}
           </span>
         </h2>
-        <p className="text-center text-xl text-gray-300 mb-12 max-w-4xl mx-auto font-light leading-relaxed">
+        {/* Main Project Description - Brighter text and drop shadow */}
+        <p className="text-center text-xl text-white mb-12 max-w-4xl mx-auto font-light leading-relaxed drop-shadow-sm"> {/* CHANGED: text-gray-200 to text-white, added drop-shadow-sm */}
           {project.description}
         </p>
   
-        {/* Project Details - Now full width matching the screenshots section */}
+        {/* Project Details Card */}
         <div className="max-w-full mx-auto mb-12">
           <Card className="bg-gradient-to-br from-gray-800/70 to-gray-900/90 backdrop-blur-sm border border-gray-700/50 shadow-xl">
             <CardHeader className="pb-2">
@@ -239,7 +242,7 @@ const ProjectOverview: React.FC<ProjectOverviewProps> = ({ project }) => {
                 <span className="bg-gradient-to-r from-purple-400 to-indigo-500 w-6 h-0.5 mr-2"></span>
                 Project Overview
               </CardTitle>
-              <CardDescription className="text-gray-400">
+              <CardDescription className="text-gray-100"> {/* CHANGED: text-gray-300 to text-gray-100 */}
                 Details and technologies
               </CardDescription>
             </CardHeader>
@@ -248,8 +251,9 @@ const ProjectOverview: React.FC<ProjectOverviewProps> = ({ project }) => {
                 <Badge variant="outline" className="px-3 py-1 rounded-full text-sm font-medium bg-indigo-900/50 text-indigo-200 border-indigo-500 mb-4">
                   {project.type}
                 </Badge>
-                <p className="text-gray-200 text-lg mb-8 leading-relaxed font-light tracking-wide bg-gradient-to-r from-gray-200 via-indigo-100 to-gray-200 bg-clip-text text-transparent">
-                  {project.content} {/* Changed from longDescription to content */}
+                {/* Project Content (main description inside card) - CRITICAL FIX: Solid bright color with shadow */}
+                <p className="text-cyan-300 text-lg mb-8 leading-relaxed font-normal tracking-wide drop-shadow-sm"> {/* CHANGED: text-sky-300 to text-cyan-300, added drop-shadow-sm */}
+                  {project.content}
                 </p>
               </div>
   
@@ -262,7 +266,7 @@ const ProjectOverview: React.FC<ProjectOverviewProps> = ({ project }) => {
                   <div className="flex flex-wrap gap-2">
                     {project.technologies.map((tech, index) => (
                       <span key={index} className="px-3 py-1 bg-gray-700/60 text-gray-200 rounded-full text-sm border border-gray-600/30 backdrop-blur-sm transition-all hover:bg-gray-600/80 cursor-default">
-                        {tech.name} {/* Access tech.name */}
+                        {tech.name}
                       </span>
                     ))}
                   </div>
@@ -277,7 +281,7 @@ const ProjectOverview: React.FC<ProjectOverviewProps> = ({ project }) => {
                     {project.features.map((feature, index) => (
                       <li key={index} className="flex items-start list-none group">
                         <span className="text-indigo-400 mr-2 text-lg group-hover:text-purple-400 transition-colors">•</span>
-                        <span className="font-light text-gray-300 group-hover:text-indigo-200 transition-colors">{feature}</span>
+                        <span className="font-light text-gray-200 group-hover:text-indigo-200 transition-colors">{feature}</span>
                       </li>
                     ))}
                   </div>
@@ -296,7 +300,7 @@ const ProjectOverview: React.FC<ProjectOverviewProps> = ({ project }) => {
                 <span className="bg-gradient-to-r from-purple-400 to-indigo-500 w-6 h-0.5 mr-2"></span>
                 Project Screenshots
               </CardTitle>
-              <CardDescription className="text-gray-400">
+              <CardDescription className="text-gray-100"> {/* CHANGED: text-gray-300 to text-gray-100 */}
                 Scroll through to see some pages of the application
               </CardDescription>
             </CardHeader>
@@ -311,7 +315,7 @@ const ProjectOverview: React.FC<ProjectOverviewProps> = ({ project }) => {
                   className={`px-2 md:px-3 py-0.5 md:py-1 text-xs md:text-sm h-6 md:h-8 ${
                     activeCategory === category
                       ? "bg-indigo-600 hover:bg-indigo-700 text-white"
-                      : "bg-transparent border-gray-700 text-gray-300 hover:bg-gray-800"
+                      : "bg-transparent border-gray-700 text-gray-200 hover:bg-gray-800"
                   }`}
                 >
                   {category}
@@ -332,7 +336,7 @@ const ProjectOverview: React.FC<ProjectOverviewProps> = ({ project }) => {
                 >
                   <ChevronLeft className="w-5 h-5" />
                 </Button>
-                <span className="text-gray-300 font-mono">
+                <span className="text-gray-200 font-mono">
                   {filteredScreenshots.length > 0 ? `${currentIndex + 1} / ${filteredScreenshots.length}` : "0 / 0"}
                 </span>
                 <Button
@@ -364,7 +368,7 @@ const ProjectOverview: React.FC<ProjectOverviewProps> = ({ project }) => {
                         {filteredScreenshots[currentIndex]?.category || "General"}
                       </Badge>
                     </div>
-                    <p className="text-sm text-gray-300 font-light mt-2">
+                    <p className="text-sm text-gray-200 font-light mt-2">
                       {filteredScreenshots[currentIndex]?.description || "Browse through the screenshots."}
                     </p>
                     
@@ -374,7 +378,7 @@ const ProjectOverview: React.FC<ProjectOverviewProps> = ({ project }) => {
                         <Button
                           onClick={toggleDetailedDescription}
                           variant="outline"
-                          className="text-sm bg-transparent border-gray-700 text-gray-300 hover:bg-gray-800 hover:text-white transition-all mt-3"
+                          className="text-sm bg-transparent border-gray-700 text-gray-200 hover:bg-gray-800 hover:text-white transition-all mt-3"
                         >
                           {showDetailedDescription ? "Hide Details" : "Show Full Description"}
                         </Button>
@@ -386,7 +390,7 @@ const ProjectOverview: React.FC<ProjectOverviewProps> = ({ project }) => {
                             exit={{ opacity: 0, height: 0 }}
                             className="mt-3 pt-3 border-t border-gray-700/50"
                           >
-                            <p className="text-sm text-gray-300 font-light leading-relaxed">
+                            <p className="text-sm text-gray-200 font-light leading-relaxed">
                               {filteredScreenshots[currentIndex]?.detailedDescription}
                             </p>
                           </motion.div>
@@ -490,7 +494,7 @@ const ProjectOverview: React.FC<ProjectOverviewProps> = ({ project }) => {
                                     </Badge>
                                   </div>
                                 </div>
-                                <p className="text-sm text-gray-300 font-light mt-2 max-w-3xl">{screenshot.description}</p>
+                                <p className="text-sm text-gray-200 font-light mt-2 max-w-3xl">{screenshot.description}</p>
                                 
                                 {showDetailedDescription && index === currentIndex && (
                                   <motion.div
@@ -499,7 +503,7 @@ const ProjectOverview: React.FC<ProjectOverviewProps> = ({ project }) => {
                                     exit={{ opacity: 0, height: 0 }}
                                     className="mt-3 pt-3 border-t border-gray-700/50 max-w-3xl"
                                   >
-                                    <p className="text-sm text-gray-300 font-light leading-relaxed">
+                                    <p className="text-sm text-gray-200 font-light leading-relaxed">
                                       {screenshot.detailedDescription}
                                     </p>
                                   </motion.div>
@@ -510,7 +514,7 @@ const ProjectOverview: React.FC<ProjectOverviewProps> = ({ project }) => {
                                     toggleDetailedDescription();
                                   }}
                                   variant="outline"
-                                  className="text-sm bg-transparent border-gray-700 text-gray-300 hover:bg-gray-800 hover:text-white transition-all mt-3"
+                                  className="text-sm bg-transparent border-gray-700 text-gray-200 hover:bg-gray-800 hover:text-white transition-all mt-3"
                                 >
                                   {showDetailedDescription ? "Hide Details" : "Show Full Description"}
                                 </Button>
@@ -530,7 +534,7 @@ const ProjectOverview: React.FC<ProjectOverviewProps> = ({ project }) => {
                                       </Badge>
                                     </div>
                                   </div>
-                                  <p className="text-sm text-gray-300 font-light mt-2 max-w-3xl">{screenshot.description}</p>
+                                  <p className="text-sm text-gray-200 font-light mt-2 max-w-3xl">{screenshot.description}</p>
                                   
                                   {showDetailedDescription && (
                                     <motion.div
@@ -539,7 +543,7 @@ const ProjectOverview: React.FC<ProjectOverviewProps> = ({ project }) => {
                                       exit={{ opacity: 0, height: 0 }}
                                       className="mt-3 pt-3 border-t border-gray-700/50 max-w-3xl"
                                     >
-                                      <p className="text-sm text-gray-300 font-light leading-relaxed">
+                                      <p className="text-sm text-gray-200 font-light leading-relaxed">
                                         {screenshot.detailedDescription}
                                       </p>
                                     </motion.div>
@@ -550,7 +554,7 @@ const ProjectOverview: React.FC<ProjectOverviewProps> = ({ project }) => {
                                       toggleDetailedDescription();
                                     }}
                                     variant="outline"
-                                    className="text-sm bg-transparent border-gray-700 text-gray-300 hover:bg-gray-800 hover:text-white transition-all mt-3"
+                                    className="text-sm bg-transparent border-gray-700 text-gray-200 hover:bg-gray-800 hover:text-white transition-all mt-3"
                                   >
                                     {showDetailedDescription ? "Hide Details" : "Show Full Description"}
                                   </Button>

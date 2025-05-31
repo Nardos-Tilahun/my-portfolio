@@ -1,84 +1,95 @@
 // app/layout.tsx
-'use client'; // This component needs to be a client component for DOM manipulation
+'use client';
 
 import Link from 'next/link';
 import { ReactNode, useState, useEffect, useRef, useCallback } from 'react';
-import "./globals.css"; // Ensure this is imported for global styles
-import FloatingChat from '@/components/FloatingChat';
-import ParticlesBackground from '@/components/ParticlesBackground'; // NEW: Import the new component
-import { motion, AnimatePresence } from 'framer-motion'; // For subtle animations
+import "./globals.css";
+import dynamic from 'next/dynamic';
+import ParticlesBackground from '@/components/ParticlesBackground';
+import { motion, AnimatePresence } from 'framer-motion';
+import { useRouter, usePathname } from 'next/navigation';
 
-// No changes needed for metadata as it's handled by Next.js from here
+const DynamicFloatingChat = dynamic(() => import('@/components/FloatingChat'), { ssr: false });
 
 interface RootLayoutProps {
   children: ReactNode;
 }
 
 export default function RootLayout({ children }: RootLayoutProps) {
+  const router = useRouter();
+  const pathname = usePathname();
   const headerRef = useRef<HTMLElement>(null);
-  const [activeSection, setActiveSection] = useState<string>('home'); // State to track active section
-  const [activeLinkClicked, setActiveLinkClicked] = useState<string | null>(null); // State for click feedback
-  const [isScrollingProgrammatically, setIsScrollingProgrammatically] = useState(false); // Prevent observer firing during programmatic scroll
+  const [activeSection, setActiveSection] = useState<string>('home');
+  const [activeLinkClicked, setActiveLinkClicked] = useState<string | null>(null);
+  const [isScrollingProgrammatically, setIsScrollingProgrammatically] = useState(false);
 
-  // Custom easing function: easeInOutCubic for a brilliant slow-fast-slow effect
   const easeInOutCubic = (t: number) => t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
 
-  // Custom smooth scroll handler
-  const handleSmoothScroll = useCallback((e: React.MouseEvent<HTMLAnchorElement>, targetId: string) => {
-    e.preventDefault(); // Prevent default anchor jump
+  const handleSmoothScroll = useCallback(async (e: React.MouseEvent<HTMLAnchorElement>, targetId: string) => {
+    e.preventDefault();
 
-    const targetElement = document.getElementById(targetId);
-    if (!targetElement) return;
+    const isHomePage = pathname === '/';
 
-    const headerHeight = headerRef.current?.offsetHeight || 0;
-    const targetScrollPosition = targetElement.offsetTop - headerHeight - 10; // -10 for a little extra padding
-
-    const startPosition = window.pageYOffset;
-    const distance = targetScrollPosition - startPosition;
-    const duration = 1200; // 1.2 seconds for a noticeably smooth, "amazing" effect
-    let startTime: number | null = null;
-
-    setIsScrollingProgrammatically(true); // Indicate programmatic scroll
-
-    // Set active section immediately for quick visual feedback
-    setActiveSection(targetId);
-    setActiveLinkClicked(targetId); // Set for click animation
-    setTimeout(() => setActiveLinkClicked(null), 500); // Reset click animation feedback
-
-    const animateScroll = (currentTime: number) => {
-      if (!startTime) startTime = currentTime;
-      const elapsedTime = currentTime - startTime;
-      const progress = Math.min(elapsedTime / duration, 1); // Clamp progress to 1
-      const easedProgress = easeInOutCubic(progress); // Apply cubic easing
-
-      window.scrollTo(0, startPosition + distance * easedProgress);
-
-      if (elapsedTime < duration) {
-        requestAnimationFrame(animateScroll);
-      } else {
-        // Ensure the final position is exact
-        window.scrollTo(0, targetScrollPosition);
-        setIsScrollingProgrammatically(false);
+    if (isHomePage) {
+      const targetElement = document.getElementById(targetId);
+      if (!targetElement) {
+        console.warn(`Target element with ID '${targetId}' not found on home page. Skipping smooth scroll.`);
+        return;
       }
-    };
 
-    requestAnimationFrame(animateScroll); // Start the animation loop
-  }, []);
+      const headerHeight = headerRef.current?.offsetHeight || 0;
+      const targetScrollPosition = targetElement.offsetTop - headerHeight - 10;
 
-  // Intersection Observer to detect active section on manual scroll
+      const startPosition = window.pageYOffset;
+      const distance = targetScrollPosition - startPosition;
+      const duration = 1200;
+      let startTime: number | null = null;
+
+      setIsScrollingProgrammatically(true);
+      setActiveSection(targetId);
+      setActiveLinkClicked(targetId);
+      setTimeout(() => setActiveLinkClicked(null), 500);
+
+      const animateScroll = (currentTime: number) => {
+        if (!startTime) startTime = currentTime;
+        const elapsedTime = currentTime - startTime;
+        const progress = Math.min(elapsedTime / duration, 1);
+        const easedProgress = easeInOutCubic(progress);
+
+        window.scrollTo(0, startPosition + distance * easedProgress);
+
+        if (elapsedTime < duration) {
+          requestAnimationFrame(animateScroll);
+        } else {
+          window.scrollTo(0, targetScrollPosition);
+          setIsScrollingProgrammatically(false);
+        }
+      };
+
+      requestAnimationFrame(animateScroll);
+    } else {
+      console.log(`Navigating from ${pathname} to /#${targetId}`);
+      await router.push(`/#${targetId}`);
+      setTimeout(() => {
+        const newTargetElement = document.getElementById(targetId);
+        if (newTargetElement) {
+          const headerHeight = headerRef.current?.offsetHeight || 0;
+          const targetScrollPosition = newTargetElement.offsetTop - headerHeight - 10;
+          window.scrollTo({ top: targetScrollPosition, behavior: 'smooth' });
+        }
+      }, 100);
+    }
+  }, [easeInOutCubic, headerRef, isScrollingProgrammatically, pathname, router]);
+
   useEffect(() => {
     const observerOptions: IntersectionObserverInit = {
-      root: null, // Use the viewport as the root
-      // rootMargin should be adjusted based on header height.
-      // Top margin pushes the intersection boundary down.
-      // Bottom margin pulls the boundary up, making a section "active" when it fills more of the top half.
+      root: null,
       rootMargin: `-${(headerRef.current?.offsetHeight || 0) + 10}px 0px -50% 0px`,
-      threshold: 0, // Trigger as soon as target enters/exits
+      threshold: 0,
     };
 
     const observer = new IntersectionObserver((entries) => {
-      // Only update if not currently scrolling programmatically
-      if (!isScrollingProgrammatically) {
+      if (pathname === '/' && !isScrollingProgrammatically) {
         entries.forEach(entry => {
           if (entry.isIntersecting) {
             setActiveSection(entry.target.id);
@@ -87,21 +98,21 @@ export default function RootLayout({ children }: RootLayoutProps) {
       }
     }, observerOptions);
 
-    // Observe all relevant sections (ensure these IDs exist in your page components)
-    const sections = document.querySelectorAll('#home, #projects, #skills, #about, #contact');
-    sections.forEach(section => {
-      observer.observe(section);
-    });
+    if (pathname === '/') {
+      const sections = document.querySelectorAll('#home, #projects, #skills, #about, #contact');
+      sections.forEach(section => {
+        observer.observe(section);
+      });
+    }
 
-    // Cleanup observer on component unmount
     return () => {
+      const sections = document.querySelectorAll('#home, #projects, #skills, #about, #contact');
       sections.forEach(section => {
         observer.unobserve(section);
       });
     };
-  }, [isScrollingProgrammatically]); // Re-run effect if programmatic scroll state changes
+  }, [isScrollingProgrammatically, pathname]);
 
-  // Helper function to get link classes
   const getLinkClasses = (sectionId: string) => `
     relative
     text-gray-900
@@ -119,12 +130,13 @@ export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <html lang="en">
       <body>
-        <div className="flex flex-col min-h-screen text-gray-900 w-full">
-          <ParticlesBackground /> {/* NEW: Place the ParticlesBackground here */}
+        <div className="flex flex-col min-h-screen text-gray-100 w-full">
+          <ParticlesBackground />
 
           <header
-            ref={headerRef} // Attach ref to header
-            className="sticky top-0 z-40 w-full border-b border-green-800 bg-gray-500 bg-opacity-70 backdrop-blur-md shadow-lg transition-all duration-300"
+            ref={headerRef}
+            // CHANGED: 'sticky' to 'fixed'
+            className="fixed top-0 z-40 w-full border-b border-green-800 bg-gray-500 bg-opacity-70 backdrop-blur-md shadow-lg transition-all duration-300"
           >
             <div className="container mx-auto flex h-14 items-center md:px-14 px-4 ">
               <Link href="/#home" onClick={(e) => handleSmoothScroll(e, 'home')} className="flex items-center space-x-2">
@@ -235,7 +247,10 @@ export default function RootLayout({ children }: RootLayoutProps) {
             </div>
           </header>
 
-          <main className="flex-1 md:px-12 px-4 bg-transparent w-full"> {/* CHANGED: bg-gray-900 to bg-transparent */}
+          <main
+            // ADDED: pt-14 to push content below the fixed header
+            className="flex-1 md:px-12 px-4 bg-transparent w-full pt-14"
+          >
             <div className="container mx-auto">
               {children}
             </div>
@@ -338,8 +353,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
             </div>
           </footer>
 
-
-          <FloatingChat />
+          <DynamicFloatingChat />
         </div>
       </body>
     </html>
