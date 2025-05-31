@@ -1,7 +1,7 @@
 // components/ParticlesBackground.tsx
 'use client';
 
-import React, { useRef, useEffect, useState, useCallback } from 'react';
+import React, { useRef, useEffect,  useCallback } from 'react';
 
 // Define the structure for each particle
 interface Particle {
@@ -42,8 +42,8 @@ const ParticlesBackground: React.FC = () => {
       newParticles.push({
         x: random(0, canvas.width),
         y: random(0, canvas.height),
-        vx: random(-1.15, 1.15), // Drastically reduced velocity for slow motion
-        vy: random(-1.35, 1.35), // Drastically reduced velocity for slow motion
+        vx: random(-0.5, -0.5), // Drastically reduced velocity for slow motion
+        vy: random(-0.5, 0.5), // Drastically reduced velocity for slow motion
         radius: particleRadius,
         color: particleColor,
       });
