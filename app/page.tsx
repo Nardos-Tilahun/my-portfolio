@@ -8,11 +8,12 @@ import Contact from '@/components/Contact'
 export default function Home() {
   return (
     <>
-      <Hero />
-      <ProjectShowcase />
-      <TechnicalSkills />
-      <AboutMe />
-      <Contact />
+      {/* Add id attributes to your sections */}
+      <Hero id="home" /> {/* Added ID for home section */}
+      <ProjectShowcase id="projects" />
+      <TechnicalSkills id="skills" />
+      <AboutMe id="about" />
+      <Contact id="contact" />
     </>
   )
 }

@@ -6,24 +6,8 @@ import ProjectOverview from '@/components/projects/ProjectOverview';
 import ProjectArchitecture from '@/components/projects/Architecture';
 import CodeSnippetsWrapper from '@/components/projects/CodeSnippetsWrapper';
 
-// You would normally fetch this from an API or data source
-async function getProject(id: string) {
-  const projects = [
-    { 
-      id: 'personal-loan-management', 
-      title: 'personal-loan-management',
-      cloudinaryImageIds: [
-        'dashboard1234', 'addUser123', 
-        'editLoan123', 'addPayment123',
-        'customerDetailAdmin123', 'customerDashboard123', 'loanDetailCustomer123',
-        'paymentDetailCustomer123', 'signIn123', 'serverErrorPage500'
-      ]
-    },
-    // Add more projects here
-  ];
-
-  return projects.find(p => p.id === id) || null;
-}
+// Import the getProjectById function from the new data module
+import { getProjectById } from '@/data/projects';
 
 // We need to await params and resolve them before using
 export default async function ProjectPage({ params }: { params: Promise<{ id: string }> }) {
@@ -31,16 +15,18 @@ export default async function ProjectPage({ params }: { params: Promise<{ id: st
   const resolvedParams = await params;
   const { id } = resolvedParams;
 
-  const project = await getProject(id);
+  // Fetch the project data using the imported function
+  const project = getProjectById(id);
 
   if (!project) {
-    notFound();
+    notFound(); // Display 404 if project is not found
   }
 
   return (
     <>
       <Suspense fallback={<div className="py-20 text-center">Loading overview...</div>}>
-        <ProjectOverview id={project.id} cloudinaryImageIds={project.cloudinaryImageIds} />
+        {/* Pass the entire project object to ProjectOverview */}
+        <ProjectOverview project={project} />
       </Suspense>
 
       <Suspense fallback={<div className="py-20 text-center">Loading architecture...</div>}>

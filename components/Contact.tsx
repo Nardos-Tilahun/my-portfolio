@@ -27,7 +27,13 @@ interface SubmitStatus {
   message: string;
 }
 
-export default function Contact() {
+// Define the props interface for Contact
+interface ContactProps {
+  id: string; // Add id to the props interface
+}
+
+// Update the function signature to accept id prop
+export default function Contact({ id }: ContactProps) {
   const [formData, setFormData] = useState<FormData>({
     name: "",
     email: "",
@@ -54,7 +60,7 @@ export default function Contact() {
           message: "",
         });
       }, 5000); // 5 seconds (change to 10000 for 10 seconds)
-      
+
       // Clear the timer if the component unmounts or if the status changes
       return () => clearTimeout(timer);
     }
@@ -104,7 +110,7 @@ export default function Contact() {
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    
+
     if (!validateForm()) {
       return;
     }
@@ -152,7 +158,7 @@ export default function Contact() {
   };
 
   return (
-    <section  id="contact" className="w-full py-12 md:py-16 lg:py-24 bg-gradient-to-b from-gray-900 to-gray-800 text-white relative">
+    <section  id={id} className="w-full py-12 md:py-16 lg:py-24 bg-gradient-to-b from-gray-900 to-gray-800 text-white relative"> {/* Use id prop here */}
       <div className="container px-4 md:px-6 py-4 md:py-0">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -161,7 +167,7 @@ export default function Contact() {
           className="max-w-4xl mx-auto"
         >
           <div className="text-center mb-12">
-            <h2 className="text-pink-400 text-4xl font-bold mb-4">Let&#39;s Connect</h2>
+            <h2 className="text-pink-400 text-4xl font-bold mb-4">Let's Connect</h2>
           </div>
 
           <div className="bg-gray-800 p-8 rounded-2xl shadow-xl">

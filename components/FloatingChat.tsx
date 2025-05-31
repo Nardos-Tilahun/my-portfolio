@@ -44,7 +44,7 @@ export default function FloatingChat() {
   // Scroll to the bottom when new messages arrive
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
-  }, [messagesEndRef]) //Corrected dependency
+  }, [messages.length]) // Corrected dependency: scroll when messages array changes length
 
   // Focus input when chat opens
   useEffect(() => {
@@ -54,7 +54,7 @@ export default function FloatingChat() {
       }, 300)
       setUnreadCount(0)
     }
-  }, [isOpen, inputRef]) //Corrected dependency
+  }, [isOpen]) // Corrected dependency: only depend on isOpen
 
   // Auto-resize the textarea to fit all content without scrolling
   const handleTextareaChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -121,9 +121,12 @@ export default function FloatingChat() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ message: messageToSend, messages }),
       })
-      setMessages((prev) => prev.filter((msg) => msg.id !== typingMessageId))
+      // setMessages((prev) => prev.filter((msg) => msg.id !== typingMessageId)) // This is redundant as it's filtered later
 
       if (!res.ok) {
+        // Remove the typing indicator first
+        setMessages((prev) => prev.filter((msg) => msg.id !== typingMessageId));
+        
         const errorMessageId = Date.now() + 2
         const aiMessage: Message = {
           id: errorMessageId,
@@ -206,6 +209,7 @@ export default function FloatingChat() {
     setHasConversationStarted(false)
     setMessages([])
     setError(null)
+    setUnreadCount(0); // Reset unread count on clear
     setShowDeleteConfirmation(false)
   }
 
@@ -323,9 +327,44 @@ export default function FloatingChat() {
       <AnimatePresence>
         {isOpen ? (
           <motion.div
-            initial={{ opacity: 0, scale: 0.8, y: 20 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.8, y: 20 }}
+            initial={{
+              opacity: 0,
+              scale: 0.05, // Start very small
+              y: 150,      // Exaggerated Y offset
+              x: 75,       // Exaggerated X offset
+              rotate: 90,  // Initial rotation (90 degrees)
+              boxShadow: "0px 0px 0px rgba(0,0,0,0)",
+              filter: "blur(8px) brightness(0.2)" // Start blurred and dim
+            }}
+            animate={{
+              opacity: 1,
+              scale: 1,
+              y: 0,
+              x: 0,
+              rotate: 0,
+              boxShadow: "0px 0px 50px rgba(0,100,83,0.8), 0px 0px 20px rgba(0,100,83,0.4)", // Stronger, more vibrant shadow
+              filter: "blur(0px) brightness(1)" // Clear filter
+            }}
+            exit={{
+              opacity: 0,
+              scale: 0.05, // Shrink back small
+              y: 150,
+              x: 75,
+              rotate: -90, // Reverse rotation (-90 degrees)
+              boxShadow: "0px 0px 0px rgba(0,0,0,0)",
+              filter: "blur(8px) brightness(0.2)"
+            }}
+            transition={{
+              // Primary spring for the main expansion and vertical movement (slower, more relaxed)
+              scale: { type: "spring", stiffness: 80, damping: 20, mass: 1.5 }, // Reduced stiffness, increased mass for slower feel
+              y: { type: "spring", stiffness: 80, damping: 20, mass: 1.5 },   // Matched with scale
+              // Smoother, slightly slower transitions for other properties
+              opacity: { duration: 0.5, ease: "easeOut" }, // Slower fade-in
+              filter: { duration: 1.0, ease: "easeOut" },  // Slower filter resolve
+              x: { duration: 1.8, ease: "easeOut" },       // Slower X slide
+              rotate: { type: "spring", stiffness: 70, damping: 10, mass: 1 }, // Slower, more pronounced rotation
+              boxShadow: { duration: 1.0, ease: "easeInOut" } // Slower shadow fade-in
+            }}
             className="w-[380px] min-h-[550px] max-h-[80vh] max-w-[100vh] bg-gray-900 border border-green-700 rounded-lg shadow-2xl flex flex-col overflow-hidden relative"
             style={{ transformOrigin: "bottom right" }}
           >
@@ -615,38 +654,40 @@ export default function FloatingChat() {
         ) : (
           <motion.button
             initial={{ scale: 0.8, opacity: 0 }}
-            animate={{ 
-              scale: 1, 
+            // Apply continuous scale pulse and existing boxShadow pulse
+            animate={{
+              scale: [1, 1.02, 1], // Subtle breathing pulse
               opacity: 1,
               boxShadow: ["0px 0px 0px rgba(0,200,83,0.3)", "0px 0px 15px rgba(0,200,83,0.6)", "0px 0px 0px rgba(0,200,83,0.3)"]
             }}
             exit={{ scale: 0.8, opacity: 0 }}
-            whileHover={{ 
+            whileHover={{
               scale: 1.05,
               boxShadow: "0px 0px 20px rgba(0,200,83,0.7)",
               background: "linear-gradient(45deg, #00c853, #2e7d32)"
             }}
-            whileTap={{ 
+            whileTap={{
               scale: 0.95,
-              boxShadow: "0px 0px 5px rgba(0,200,83,0.8)" 
+              boxShadow: "0px 0px 5px rgba(0,200,83,0.8)"
             }}
             onClick={toggleChat}
-            transition={{ 
-              duration: 0.3,
-              boxShadow: { duration: 2, repeat: Infinity }
+            transition={{
+              scale: { duration: 3, repeat: Infinity, ease: "easeInOut" }, // Transition for the scale array
+              boxShadow: { duration: 2, repeat: Infinity }, // Transition for the boxShadow array
+              duration: 0.3 // This duration is for the initial `opacity` animation
             }}
             className="bg-gradient-to-r from-green-700 to-green-600 text-white rounded-full p-4 shadow-lg shadow-green-900/20 flex items-center space-x-2 group relative overflow-hidden"
           >
-          
+
 
             {/* Icon container with pulse effect */}
             <div className="relative z-10">
               <motion.div
-                animate={{ 
+                animate={{
                   rotate: [0, 0, 10, -10, 0],
                 }}
-                transition={{ 
-                  duration: 3, 
+                transition={{
+                  duration: 3,
                   repeat: Infinity,
                   repeatType: "loop",
                   times: [0, 0.6, 0.7, 0.8, 1]
@@ -654,25 +695,26 @@ export default function FloatingChat() {
               >
                 <MessageCircle className="h-6 w-6" />
               </motion.div>
-              
+
               {/* Pulsing dot with trailing effect */}
               <motion.div
                 className="absolute -top-1 -right-1 h-2 w-2 bg-green-300 rounded-full"
-                animate={{ 
+                animate={{
                   scale: [1, 1.5, 1],
                   boxShadow: ["0px 0px 0px rgba(134,239,172,0)", "0px 0px 10px rgba(134,239,172,0.8)", "0px 0px 0px rgba(134,239,172,0)"]
                 }}
-                transition={{ 
-                  duration: 2, 
+                transition={{
+                  duration: 2,
                   repeat: Infinity,
-                  repeatType: "loop" 
+                  repeatType: "loop"
                 }}
-              />
+              >
+              </motion.div>
             </div>
 
             {/* Text with wave effect */}
             <div className="pr-2 relative z-10 overflow-hidden">
-              <motion.span 
+              <motion.span
                 className="inline-block"
                 animate={{
                   y: ["0%", "-15%", "0%"]
@@ -682,7 +724,6 @@ export default function FloatingChat() {
                   repeat: Infinity,
                   repeatType: "loop",
                   ease: "easeInOut",
-                  times: [0, 0.5, 1],
                   delay: 0.1
                 }}
               >
@@ -702,7 +743,7 @@ export default function FloatingChat() {
               >
                 Digital Twin
               </motion.span>
-              <motion.span 
+              <motion.span
                 className="inline-block"
                 animate={{
                   rotate: [0, 10, -10, 0],
@@ -724,16 +765,16 @@ export default function FloatingChat() {
               <motion.span
                 className="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center z-20"
                 initial={{ scale: 0 }}
-                animate={{ 
+                animate={{
                   scale: [1, 1.2, 1],
                   rotate: [0, 0, 5, -5, 0]
                 }}
-                transition={{ 
+                transition={{
                   scale: { duration: 0.8, repeat: Infinity, repeatType: "reverse" },
                   rotate: { duration: 1.5, repeat: Infinity, repeatType: "loop", times: [0, 0.6, 0.7, 0.8, 1] },
-                  type: "spring", 
-                  stiffness: 500, 
-                  damping: 15 
+                  type: "spring",
+                  stiffness: 500,
+                  damping: 15
                 }}
               >
                 {unreadCount}
@@ -743,10 +784,10 @@ export default function FloatingChat() {
             {/* Ripple effect on hover */}
             <motion.div
               className="absolute inset-0 rounded-full opacity-0 bg-white pointer-events-none"
-              whileHover={{ 
-                opacity: 0.2, 
+              whileHover={{
+                opacity: 0.2,
                 scale: 1.05,
-                transition: { duration: 0.3 } 
+                transition: { duration: 0.3 }
               }}
             />
           </motion.button>

@@ -3,7 +3,13 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { FaHtml5, FaCss3Alt, FaJs, FaReact, FaNodeJs, FaGitAlt, FaDocker, FaDatabase } from "react-icons/fa";
 import { SiNextdotjs, SiTailwindcss, SiMongodb, SiMysql, SiPostgresql, SiFirebase, SiDjango, SiRedis, SiTypescript, SiGraphql, SiWebpack, SiKubernetes, SiJenkins, SiNginx, SiVercel } from "react-icons/si";
 
-export default function TechnicalSkills() {
+// Define the props interface for TechnicalSkills
+interface TechnicalSkillsProps {
+  id: string; // Add id to the props interface
+}
+
+// Update the function signature to accept id prop
+export default function TechnicalSkills({ id }: TechnicalSkillsProps) {
   const skills = [
     {
       category: "Frontend Development",
@@ -61,10 +67,10 @@ export default function TechnicalSkills() {
   ];
 
   return (
-    <section id="skills" className="relative w-full pb-12 md:py-24 lg:pb-32 overflow-hidden">
+    <section id={id} className="relative w-full pb-12 md:py-24 lg:pb-32 overflow-hidden"> {/* Use id prop here */}
       {/* Background gradients */}
       <div className="absolute inset-0 bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900"></div>
-      
+
       {/* Animated background elements */}
       <div className="absolute top-0 left-0 w-96 h-96 bg-gradient-to-r from-purple-500/30 to-pink-500/30 rounded-full blur-3xl animate-pulse"></div>
       <div className="absolute bottom-0 right-0 w-96 h-96 bg-gradient-to-r from-blue-500/30 to-cyan-500/30 rounded-full blur-3xl animate-pulse"></div>
@@ -76,13 +82,13 @@ export default function TechnicalSkills() {
         </h2>
         <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-4">
           {skills.map((skill) => (
-            <Card 
-              key={skill.category} 
+            <Card
+              key={skill.category}
               className="group relative overflow-hidden backdrop-blur-lg bg-white/10 border-0 shadow-[0_0_15px_rgba(0,0,0,0.1)] hover:shadow-[0_0_30px_rgba(59,130,246,0.5)] transition-all duration-500 hover:-translate-y-2"
             >
               {/* Card gradient overlay */}
               <div className="absolute inset-0 bg-gradient-to-br from-transparent via-white/5 to-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-              
+
               <CardHeader className="relative z-10">
                 <CardTitle className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-300">
                   {skill.category}
@@ -91,8 +97,8 @@ export default function TechnicalSkills() {
               <CardContent className="relative z-10">
                 <ul className="space-y-4">
                   {skill.items.map((item) => (
-                    <li 
-                      key={item.name} 
+                    <li
+                      key={item.name}
                       className="flex items-start space-x-3 group/item hover:bg-white/5 p-2 rounded-lg transition-colors duration-300"
                     >
                       <div className="flex-shrink-0 text-2xl transform group-hover/item:scale-110 transition-transform duration-300">

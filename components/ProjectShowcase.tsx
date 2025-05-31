@@ -10,108 +10,15 @@ import { motion } from "framer-motion"
 import Link from "next/link"
 import ProjectModal from "./projects/ProjectModal"
 
+// Import Project and projects array from data/projects.ts
+import { Project, projects } from '@/data/projects';
 
-interface ProjectTechnology {
-  name: string
-  category: "frontend" | "backend" | "database" | "devops" | "other"
+// Define the props interface for ProjectShowcase
+interface ProjectShowcaseProps {
+  id: string; // Add id to the props interface
 }
 
-interface ProjectImage {
-  url: string
-  alt: string
-  caption?: string
-}
-
-interface Project {
-  id: string
-  title: string
-  description: string
-  type: string
-  content: string
-  imageUrl: string
-  features: string[]
-  technologies: ProjectTechnology[]
-  images: ProjectImage[]
-  challenges: string[]
-  solutions: string[]
-  learnings: string[]
-}
-
-
-
-const projects: Project[] = [
-  {
-    id: "personal-loan-management",
-    title: "Personal Financial Loan Management System",
-    description: "A comprehensive platform for managing personal loans online with separate interfaces for administrators and customers.",
-    type: "Full Stack Web Application",
-    content:
-      "This full-stack web application enables secure loan management for both administrators and customers. Administrators can manage users, loans, and payments, while customers can track their loan statuses and payment history. The application streamlines the entire lending process with features like authentication, payment tracking, email notifications, and detailed analytics.",
-    imageUrl: "dashboard1234",
-    features: [
-      "User authentication with role-based access control",
-      "Comprehensive loan application management",
-      "Payment tracking and transaction history",
-      "Interactive dashboard with financial analytics",
-      "Automated email notifications",
-      "Customer verification system",
-      "Multi-currency support",
-      "Responsive design for all devices",
-      "Batch operations for admin efficiency",
-      "Real-time input validation",
-    ],
-    technologies: [
-      { name: "React", category: "frontend" },
-      { name: "Node.js", category: "backend" },
-      { name: "Express", category: "backend" },
-      { name: "MySQL", category: "database" },
-      { name: "JWT", category: "backend" },
-      { name: "Tailwind CSS", category: "frontend" },
-      { name: "Vite", category: "frontend" },
-      { name: "SendGrid", category: "other" },
-      { name: "D3.js", category: "frontend" },
-      { name: "Material UI", category: "frontend" },
-      { name: "Lodash", category: "backend" },
-      { name: "Bcrypt", category: "backend" },
-      { name: "Nodemailer", category: "other" },
-      { name: "Winston", category: "backend" },
-      { name: "Morgan", category: "backend" },
-      { name: "Multer", category: "backend" },
-      { name: "React Router DOM", category: "frontend" },
-      { name: "Helmet", category: "backend" },
-      { name: "CORS", category: "backend" },
-      { name: "Country-State-City", category: "other" },
-      { name: "React Phone Number Input", category: "frontend" }
-    ],
-    images: [
-      { url: "loan-dashboard.jpg", alt: "Admin dashboard showing loan statuses" },
-      { url: "customer-view.jpg", alt: "Customer portal with loan details" }
-    ],
-    challenges: [
-      "Frontend design collaboration was challenging; a UI/UX designer was consulted to refine the interface.",
-      "Developed a cash-based payment algorithm to ensure rounded payment amounts.",
-      "Faced time constraints as this was my first full-scale real-world project.",
-      "Managed evolving requirements by adopting a modular and adaptable system architecture.",
-    ],
-    solutions: [
-      "Designed wireframes and collaborated on UI/UX improvements.",
-      "Created an optimized algorithm to distribute payments correctly.",
-      "Used agile methodology to prioritize features and iterate efficiently.",
-      "Built modular components for easier adaptability to changing requirements."
-    ],
-    learnings: [
-      "Gained experience with full-stack architecture and integrating financial logic.",
-      "Learned how to handle authentication and security with JWT and Bcrypt.",
-      "Improved database management skills using MySQL for structured financial data.",
-      "Refined project management skills using agile methodologies."
-    ],
-  }
-];
-
-
-
-
-const ProjectShowcase: React.FC = () => {
+const ProjectShowcase: React.FC<ProjectShowcaseProps> = ({ id }) => { // Accept id prop
   const [currentIndex, setCurrentIndex] = useState<number>(0)
   const [isScrolling, setIsScrolling] = useState<boolean>(false)
   const [isMobile, setIsMobile] = useState<boolean>(false)
@@ -133,14 +40,14 @@ const ProjectShowcase: React.FC = () => {
 
   useEffect(() => {
     setIsLastCard(currentIndex === (isMobile ? projects.length - 1 : projects.length - 2))
-  }, [currentIndex, isMobile]) // Removed projects.length from dependencies
+  }, [currentIndex, isMobile, projects.length])
 
   const handleNext = useCallback(() => {
     if (isScrolling || currentIndex >= (isMobile ? projects.length - 1 : projects.length - 2)) return
     setIsScrolling(true)
     setCurrentIndex((prev) => prev + 1)
     setTimeout(() => setIsScrolling(false), 500)
-  }, [isScrolling, currentIndex, isMobile])
+  }, [isScrolling, currentIndex, isMobile, projects.length])
 
   const handlePrev = useCallback(() => {
     if (isScrolling || currentIndex <= 0) return
@@ -158,9 +65,6 @@ const ProjectShowcase: React.FC = () => {
       if (currentTime - lastWheelTime.current < 100) return
       lastWheelTime.current = currentTime
 
-      const absX = Math.abs(e.deltaX)
-      const absY = Math.abs(e.deltaY)
-
       if (scrollTimeout.current) {
         clearTimeout(scrollTimeout.current)
       }
@@ -170,6 +74,9 @@ const ProjectShowcase: React.FC = () => {
           return
         }
       }
+
+      const absX = Math.abs(e.deltaX)
+      const absY = Math.abs(e.deltaY)
 
       if (isMobile) {
         if (absY > 10) {
@@ -248,7 +155,7 @@ const ProjectShowcase: React.FC = () => {
 
   return (
     <div
-      id="projects"
+      id={id} // Use id prop here
       ref={containerRef}
       className="w-full bg-gray-900 overflow-hidden select-none relative pt-16 pb-16"
     >
@@ -311,7 +218,7 @@ const ProjectShowcase: React.FC = () => {
                     </p>
 
                 </CardContent>
-                
+
                 <CardFooter className="flex justify-between gap-2 sm:gap-4">
                   <Button
                     onClick={() => setSelectedProject(project)}
@@ -339,14 +246,13 @@ const ProjectShowcase: React.FC = () => {
         </div>
       </div>
       {selectedProject && (
-        <ProjectModal 
-          project={selectedProject} 
-          onClose={() => setSelectedProject(null)} 
+        <ProjectModal
+          project={selectedProject}
+          onClose={() => setSelectedProject(null)}
         />
       )}
     </div>
   )
 }
 
-export default ProjectShowcase
-
+export default ProjectShowcase;

@@ -9,136 +9,16 @@ import { Badge } from "@/components/ui/badge"
 import { CldImage } from 'next-cloudinary'
 import Image from 'next/image'
 
-interface Screenshot {
-  cloudinaryId: string
-  title: string
-  description: string
-  detailedDescription: string
-  category: string
-}
+// Import Project and Screenshot interfaces and data fetching functions
+import { Project, ProjectTechnology } from '@/data/projects'
+import { getScreenshotsByProjectId, Screenshot } from '@/data/screenshots'
 
-interface ProjectDetails {
-  id: string
-  title: string
-  description: string
-  type: string
-  longDescription: string
-  technologies: string[]
-  features: string[]
-  screenshots: Screenshot[]
-}
 
 interface ProjectOverviewProps {
-  id: string
-  cloudinaryImageIds?: string[] // Array of Cloudinary image IDs to use
+  project: Project // Now expects a full Project object as a prop
 }
 
-const ProjectOverview: React.FC<ProjectOverviewProps> = ({ id, cloudinaryImageIds = [] }) => {
-  // Project data based on the README file and all pages from document
-
-  const projectData: ProjectDetails = {
-    id: id,
-    title: "Personal Financial Loan Management System",
-    description: "A comprehensive platform for managing personal loans online",
-    type: "Full Stack Web Application",
-    longDescription: "This platform enables secure loan management for both administrators and customers. Administrators can manage users, loans, and payments, while customers can track their loan statuses and payment history. The application streamlines the entire lending process with features like authentication, payment tracking, email notifications, and detailed analytics. The system is designed with role-based access to provide different views and capabilities depending on user permissions.",
-    technologies: [
-        "React", "Node.js", "Express", "MySQL", "JWT",
-        "Tailwind CSS", "Vite", "SendGrid", "D3.js",
-        "Material UI", "Lodash", "Bcrypt", "Nodemailer",
-        "Winston", "Morgan", "Multer", "React Router DOM",
-        "Helmet", "CORS", "Country-State-City", "React Phone Number Input"
-    ],
-    features: [
-      "User authentication with role-based access control",
-      "Comprehensive loan application management",
-      "Payment tracking and transaction history",
-      "Interactive dashboard with financial analytics",
-      "Automated email notifications",
-      "Customer verification system",
-      "Multi-currency support",
-      "Responsive design for all devices",
-      "Batch operations for admin efficiency",
-      "Real-time input validation"
-    ],
-    screenshots: [
-      // Admin Role Pages
-      {
-        cloudinaryId: cloudinaryImageIds[0] || "default_dashboard",
-        title: "Admin Dashboard",
-        description: "Key performance metrics and visual analytics",
-        detailedDescription: "A central overview displaying key performance metrics such as total customers (registered and active), total lending amounts, and visual data through a vertical bar graph and pie chart. It also provides quick-access buttons for adding loans or payments and a transactions table with search, sorting, and pagination options.",
-        category: "Admin"
-      },
-      {
-        cloudinaryId: cloudinaryImageIds[1] || "default_add_user",
-        title: "Add User Page",
-        description: "Register new customers and admin users",
-        detailedDescription: "A modal form to register new users. It includes fields for name, email, role, password, and contact details. The page enforces input validation, displays error messages for incorrect entries, and handles confirmation—via email for customers or explicit confirmation for admin roles.",
-        category: "Admin"
-      },
-      {
-        cloudinaryId: cloudinaryImageIds[2] || "default_edit_loan",
-        title: "Edit Loan Page",
-        description: "Modify pending loan details",
-        detailedDescription: "A modal dialog that allows editing of a pending loan (editable only if there are no registered payments). It presents pre-populated loan details for review, enables modifications with live validation, and confirms successful updates upon saving.",
-        category: "Admin"
-      },
-      {
-        cloudinaryId: cloudinaryImageIds[3] || "default_add_payment",
-        title: "Add Payment Page",
-        description: "Register new payments against existing loans",
-        detailedDescription: "A form for registering a new payment against an existing loan. It begins with a searchable interface to select a loan, then displays associated customer and loan details. Once selected, the form reveals payment fields with mandatory validations and error handling.",
-        category: "Admin"
-      },
-      {
-        cloudinaryId: cloudinaryImageIds[4] || "default_customer_detail_admin",
-        title: "Customer Detail (Admin View)",
-        description: "Detailed customer profile with loan history",
-        detailedDescription: "A detailed view of a specific customer accessed from the Customers Page. It includes sections for Customer Information (name, email with verification status, phone, address), Payment Information (upcoming and total remaining payment details if a loan exists), and Loan Information (a table listing all loans with options to add or view details).",
-        category: "Admin"
-      },
-      
-      // Customer Role Pages
-      {
-        cloudinaryId: cloudinaryImageIds[5] || "default_customer_dashboard",
-        title: "Customer Dashboard",
-        description: "Customer's personal profile and loan summary",
-        detailedDescription: "The landing page for a customer after logging in. It displays personal details such as name, email (with verification status and notification options), phone, and address. Additional sections show Payment Information (upcoming payment details and remaining amounts) and Loan Information (listing all the customer's loans).",
-        category: "Customer"
-      },
-      {
-        cloudinaryId: cloudinaryImageIds[6] || "default_loan_detail_customer",
-        title: "Loan Detail (Customer View)",
-        description: "Customer view of loan details and payment schedule",
-        detailedDescription: "A detailed view of a specific loan from the customer's perspective. It provides comprehensive loan details including the principal, issue date, duration, terms, status, total interest, and a breakdown of paid vs. remaining amounts. It also lists payment history and upcoming payment details for that loan.",
-        category: "Customer"
-      },
-      {
-        cloudinaryId: cloudinaryImageIds[7] || "default_payment_detail_customer",
-        title: "Payment Detail (Customer View)",
-        description: "Details of individual payments made by customer",
-        detailedDescription: "A detailed view of a specific payment made by the customer. It includes the payment term, amount, date, and status, along with a breakdown of principal versus interest and any penalties. This page also shows associated loan details for full context.",
-        category: "Customer"
-      },
-      
-      // Mutual Pages
-      {
-        cloudinaryId: cloudinaryImageIds[8] || "default_signin_image",
-        title: "Sign In Page",
-        description: "Secure login for financial services",
-        detailedDescription: "A professional sign-in page for financial services, featuring a company logo, email and password input fields, a 'Forgot Password?' option, and a green-themed sign-in button.",
-        category: "Mutual",
-      },
-      {
-        cloudinaryId: cloudinaryImageIds[9] || "default_server_error",
-        title: "500 Server Error Page",
-        description: "User-friendly server error notification",
-        detailedDescription: "This page appears when the system encounters an internal server error. It informs the user that a server-side problem has occurred and typically provides a message suggesting to try again later or contact support. Navigation options (like a link to return home) are usually available.",
-        category: "Mutual"
-      }
-    ],
-  }
+const ProjectOverview: React.FC<ProjectOverviewProps> = ({ project }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [currentIndex, setCurrentIndex] = useState<number>(0)
   const [isScrolling, setIsScrolling] = useState<boolean>(false)
@@ -149,15 +29,19 @@ const ProjectOverview: React.FC<ProjectOverviewProps> = ({ id, cloudinaryImageId
   const lastWheelTime = useRef<number>(0)
   const scrollTimeout = useRef<NodeJS.Timeout | null>(null)
 
+  // Fetch screenshots relevant to this project ID
+  const allProjectScreenshots: Screenshot[] = getScreenshotsByProjectId(project.id);
+
   // Filter screenshots based on active category
-  const filteredScreenshots = activeCategory === "All" 
-    ? projectData.screenshots 
-    : projectData.screenshots.filter(screenshot => screenshot.category === activeCategory);
+  const filteredScreenshots = activeCategory === "All"
+    ? allProjectScreenshots
+    : allProjectScreenshots.filter(screenshot => screenshot.category === activeCategory);
 
   useEffect(() => {
     // Reset current index when changing categories
     setCurrentIndex(0);
-  }, [activeCategory]);
+    setShowDetailedDescription(false); // Also reset detailed description visibility
+  }, [activeCategory, project.id]); // Add project.id as a dependency
 
   useEffect(() => {
     const checkMobile = () => {
@@ -260,31 +144,21 @@ const ProjectOverview: React.FC<ProjectOverviewProps> = ({ id, cloudinaryImageId
 
   // Function to check if screenshot has a valid Cloudinary ID
   const hasValidCloudinaryId = (cloudinaryId: string) => {
-    
     return cloudinaryId && !cloudinaryId.startsWith('default_');
   };
 
-  // Get the unique categories
-  const categories = ["All", ...new Set(projectData.screenshots.map(item => item.category))];
+  // Get the unique categories from the project's screenshots
+  const categories = ["All", ...new Set(allProjectScreenshots.map(item => item.category))];
 
   // Function to get icon for screenshot
   const getIconForScreenshot = (title: string) => {
     if (title.includes("Dashboard")) return <BarChart className="w-5 h-5" />;
-    if (title.includes("Add User")) return <Plus className="w-5 h-5" />;
-    if (title.includes("Edit User")) return <Edit className="w-5 h-5" />;
-    if (title.includes("Add Loan")) return <Plus className="w-5 h-5" />;
-    if (title.includes("Edit Loan")) return <Edit className="w-5 h-5" />;
-    if (title.includes("Add Payment")) return <Plus className="w-5 h-5" />;
-    if (title.includes("Edit Payment")) return <Edit className="w-5 h-5" />;
-    if (title.includes("Customers Page")) return <Users className="w-5 h-5" />;
-    if (title.includes("Admins Page")) return <Users className="w-5 h-5" />;
-    if (title.includes("Loans Page")) return <FileText className="w-5 h-5" />;
-    if (title.includes("Payments Page")) return <CreditCard className="w-5 h-5" />;
-    if (title.includes("Customer Detail")) return <User className="w-5 h-5" />;
-    if (title.includes("Loan Detail")) return <FileText className="w-5 h-5" />;
-    if (title.includes("Payment Detail")) return <CreditCard className="w-5 h-5" />;
-    if (title.includes("Error")) return <AlertCircle className="w-5 h-5" />;
-    if (title.includes("Not Found")) return <AlertCircle className="w-5 h-5" />;
+    if (title.includes("User") || title.includes("Admin")) return <Users className="w-5 h-5" />;
+    if (title.includes("Loan") || title.includes("Shipment")) return <FileText className="w-5 h-5" />;
+    if (title.includes("Payment")) return <CreditCard className="w-5 h-5" />;
+    if (title.includes("Add") || title.includes("New")) return <Plus className="w-5 h-5" />;
+    if (title.includes("Edit") || title.includes("Form")) return <Edit className="w-5 h-5" />;
+    if (title.includes("Error") || title.includes("Not Found")) return <AlertCircle className="w-5 h-5" />;
     return <Home className="w-5 h-5" />;
   };
 
@@ -296,9 +170,14 @@ const ProjectOverview: React.FC<ProjectOverviewProps> = ({ id, cloudinaryImageId
   const getCategoryColor = (category: string) => {
     switch(category) {
       case "Admin":
+      case "Dashboard": // For shipment project dashboard
+      case "Auth": // For shipment project auth
         return "bg-indigo-900/50 text-indigo-200 border-indigo-500";
       case "Customer":
+      case "Shipments": // For shipment project shipments
+      case "Forms": // For shipment project forms
         return "bg-emerald-900/50 text-emerald-200 border-emerald-500";
+      case "Mutual":
       case "Error":
         return "bg-rose-900/50 text-rose-200 border-rose-500";
       default:
@@ -313,25 +192,43 @@ const ProjectOverview: React.FC<ProjectOverviewProps> = ({ id, cloudinaryImageId
   const getCategoryIconColor = (category: string) => {
     switch(category) {
       case "Admin":
+      case "Dashboard":
+      case "Auth":
         return "bg-indigo-500/70";
       case "Customer":
+      case "Shipments":
+      case "Forms":
         return "bg-emerald-500/70";
+      case "Mutual":
       case "Error":
         return "bg-rose-500/70";
       default:
         return "bg-gray-500/70";
     }
   };
+
+  // Render nothing if project data is not provided or screenshots are empty
+  if (!project || allProjectScreenshots.length === 0) {
+    return (
+      <section id="overview" className="py-16 bg-gradient-to-b from-gray-900 to-gray-950 min-h-screen flex items-center justify-center">
+        <div className="text-center text-gray-400">
+          <AlertCircle className="w-12 h-12 mx-auto mb-4" />
+          <p>No project data or screenshots found for this ID.</p>
+        </div>
+      </section>
+    );
+  }
+
   return (
     <section id="overview" className="py-16 bg-gradient-to-b from-gray-900 to-gray-950 min-h-screen">
       <div className="container mx-auto px-4">
         <h2 className="text-4xl font-extrabold tracking-tight sm:text-6xl text-center mb-4 font-sans">
           <span className="text-transparent bg-clip-text bg-gradient-to-r from-violet-400 via-purple-500 to-indigo-600">
-            {projectData.title}
+            {project.title}
           </span>
         </h2>
         <p className="text-center text-xl text-gray-300 mb-12 max-w-4xl mx-auto font-light leading-relaxed">
-          {projectData.description}
+          {project.description}
         </p>
   
         {/* Project Details - Now full width matching the screenshots section */}
@@ -349,10 +246,10 @@ const ProjectOverview: React.FC<ProjectOverviewProps> = ({ id, cloudinaryImageId
             <CardContent className="pb-6">
               <div className="mb-6">
                 <Badge variant="outline" className="px-3 py-1 rounded-full text-sm font-medium bg-indigo-900/50 text-indigo-200 border-indigo-500 mb-4">
-                  {projectData.type}
+                  {project.type}
                 </Badge>
                 <p className="text-gray-200 text-lg mb-8 leading-relaxed font-light tracking-wide bg-gradient-to-r from-gray-200 via-indigo-100 to-gray-200 bg-clip-text text-transparent">
-                  {projectData.longDescription}
+                  {project.content} {/* Changed from longDescription to content */}
                 </p>
               </div>
   
@@ -363,9 +260,9 @@ const ProjectOverview: React.FC<ProjectOverviewProps> = ({ id, cloudinaryImageId
                     Technologies
                   </h3>
                   <div className="flex flex-wrap gap-2">
-                    {projectData.technologies.map((tech, index) => (
+                    {project.technologies.map((tech, index) => (
                       <span key={index} className="px-3 py-1 bg-gray-700/60 text-gray-200 rounded-full text-sm border border-gray-600/30 backdrop-blur-sm transition-all hover:bg-gray-600/80 cursor-default">
-                        {tech}
+                        {tech.name} {/* Access tech.name */}
                       </span>
                     ))}
                   </div>
@@ -377,7 +274,7 @@ const ProjectOverview: React.FC<ProjectOverviewProps> = ({ id, cloudinaryImageId
                     Key Features
                   </h3>
                   <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-8 gap-y-3">
-                    {projectData.features.map((feature, index) => (
+                    {project.features.map((feature, index) => (
                       <li key={index} className="flex items-start list-none group">
                         <span className="text-indigo-400 mr-2 text-lg group-hover:text-purple-400 transition-colors">•</span>
                         <span className="font-light text-gray-300 group-hover:text-indigo-200 transition-colors">{feature}</span>
@@ -427,8 +324,8 @@ const ProjectOverview: React.FC<ProjectOverviewProps> = ({ id, cloudinaryImageId
                   onClick={handlePrev}
                   disabled={currentIndex <= 0}
                   className={`p-2 rounded-full transition-all ${
-                    currentIndex <= 0 
-                      ? "bg-gray-800/50 text-gray-500 cursor-not-allowed" 
+                    currentIndex <= 0
+                      ? "bg-gray-800/50 text-gray-500 cursor-not-allowed"
                       : "bg-gray-800 hover:bg-indigo-800 text-white"
                   }`}
                   aria-label="Previous screenshot"
@@ -436,7 +333,7 @@ const ProjectOverview: React.FC<ProjectOverviewProps> = ({ id, cloudinaryImageId
                   <ChevronLeft className="w-5 h-5" />
                 </Button>
                 <span className="text-gray-300 font-mono">
-                  {currentIndex + 1} / {filteredScreenshots.length}
+                  {filteredScreenshots.length > 0 ? `${currentIndex + 1} / ${filteredScreenshots.length}` : "0 / 0"}
                 </span>
                 <Button
                   onClick={handleNext}
@@ -463,7 +360,7 @@ const ProjectOverview: React.FC<ProjectOverviewProps> = ({ id, cloudinaryImageId
                       <span className={`${getCategoryIconColor(filteredScreenshots[currentIndex]?.category)} p-1.5 rounded-full mr-2 backdrop-blur-sm`}>
                         {getIconForScreenshot(filteredScreenshots[currentIndex]?.title)}
                       </span>
-                      <Badge variant="outline" className={`text-xs ${getCategoryColor(filteredScreenshots[currentIndex]?.category)}`}>
+                      <Badge variant="outline" className={`mt-1 text-xs ${getCategoryColor(filteredScreenshots[currentIndex]?.category)}`}>
                         {filteredScreenshots[currentIndex]?.category || "General"}
                       </Badge>
                     </div>
@@ -483,7 +380,7 @@ const ProjectOverview: React.FC<ProjectOverviewProps> = ({ id, cloudinaryImageId
                         </Button>
                         
                         {showDetailedDescription && (
-                          <motion.div 
+                          <motion.div
                             initial={{ opacity: 0, height: 0 }}
                             animate={{ opacity: 1, height: "auto" }}
                             exit={{ opacity: 0, height: 0 }}
@@ -499,25 +396,25 @@ const ProjectOverview: React.FC<ProjectOverviewProps> = ({ id, cloudinaryImageId
                   </div>
 
                   {/* Screenshots Container */}
-                  <div 
+                  <div
                     ref={containerRef}
                     className="relative w-full aspect-[1892/855] overflow-hidden select-none rounded-xl"
                   >
                     <AnimatePresence>
                       {filteredScreenshots.map((screenshot, index) => (
-                        <div 
-                          key={index} 
-                          className="absolute w-full h-full" 
+                        <div
+                          key={index}
+                          className="absolute w-full h-full"
                           style={getScreenshotStyle(index)}
                         >
-                          <motion.div 
-                            whileHover={{ scale: 1.02 }} 
+                          <motion.div
+                            whileHover={{ scale: 1.02 }}
                             transition={{ type: "spring", stiffness: 200, damping: 10 }}
                             className="h-full"
                           >
                             <div className="relative h-full rounded-lg overflow-hidden border border-gray-700/50 shadow-xl">
                               {/* Expandable Image Container */}
-                              <div 
+                              <div
                                 className={`w-full h-full transition-all duration-300 ${
                                   isExpanded && currentIndex === index ? "fixed inset-0 z-50 bg-black/90" : ""
                                 }`}
@@ -537,18 +434,20 @@ const ProjectOverview: React.FC<ProjectOverviewProps> = ({ id, cloudinaryImageId
                                     width={1892}
                                     height={855}
                                     className={`${
-                                      isExpanded && currentIndex === index 
-                                        ? "w-full h-full object-contain p-4 md:p-8" 
+                                      isExpanded && currentIndex === index
+                                        ? "w-full h-full object-contain p-4 md:p-8"
                                         : "w-full h-full object-contain"
                                     }`}
                                   />
                                 ) : (
                                   <Image
-                                    src={`/api/placeholder/1892/855`}
+                                    src={`https://via.placeholder.com/1892x855?text=Image+Missing`} // Fallback placeholder
                                     alt={screenshot.title}
+                                    width={1892}
+                                    height={855}
                                     className={`${
-                                      isExpanded && currentIndex === index 
-                                        ? "w-full h-full object-contain p-4 md:p-8" 
+                                      isExpanded && currentIndex === index
+                                        ? "w-full h-full object-contain p-4 md:p-8"
                                         : "w-full h-full object-cover"
                                     }`}
                                   />
@@ -563,7 +462,7 @@ const ProjectOverview: React.FC<ProjectOverviewProps> = ({ id, cloudinaryImageId
                                 
                                 {/* Close button when expanded */}
                                 {isExpanded && currentIndex === index && (
-                                  <button 
+                                  <button
                                     onClick={(e) => {
                                       e.stopPropagation();
                                       setIsExpanded(false);
@@ -594,7 +493,7 @@ const ProjectOverview: React.FC<ProjectOverviewProps> = ({ id, cloudinaryImageId
                                 <p className="text-sm text-gray-300 font-light mt-2 max-w-3xl">{screenshot.description}</p>
                                 
                                 {showDetailedDescription && index === currentIndex && (
-                                  <motion.div 
+                                  <motion.div
                                     initial={{ opacity: 0, height: 0 }}
                                     animate={{ opacity: 1, height: "auto" }}
                                     exit={{ opacity: 0, height: 0 }}
@@ -634,7 +533,7 @@ const ProjectOverview: React.FC<ProjectOverviewProps> = ({ id, cloudinaryImageId
                                   <p className="text-sm text-gray-300 font-light mt-2 max-w-3xl">{screenshot.description}</p>
                                   
                                   {showDetailedDescription && (
-                                    <motion.div 
+                                    <motion.div
                                       initial={{ opacity: 0, height: 0 }}
                                       animate={{ opacity: 1, height: "auto" }}
                                       exit={{ opacity: 0, height: 0 }}
@@ -665,10 +564,10 @@ const ProjectOverview: React.FC<ProjectOverviewProps> = ({ id, cloudinaryImageId
                     
                     {/* Navigation controls for mobile - optional to add if needed */}
                     <div className="absolute bottom-4 right-4 flex space-x-2 md:hidden z-10">
-                      <Button 
+                      <Button
                         variant="outline"
                         size="icon"
-                        className="bg-black/60 backdrop-blur-sm border-gray-700 text-white hover:bg-black/80" 
+                        className="bg-black/60 backdrop-blur-sm border-gray-700 text-white hover:bg-black/80"
                         onClick={(e) => {
                           e.stopPropagation();
                           navigateScreenshots(-1);
@@ -676,10 +575,10 @@ const ProjectOverview: React.FC<ProjectOverviewProps> = ({ id, cloudinaryImageId
                       >
                         <ChevronLeft className="w-5 h-5" />
                       </Button>
-                      <Button 
+                      <Button
                         variant="outline"
                         size="icon"
-                        className="bg-black/60 backdrop-blur-sm border-gray-700 text-white hover:bg-black/80" 
+                        className="bg-black/60 backdrop-blur-sm border-gray-700 text-white hover:bg-black/80"
                         onClick={(e) => {
                           e.stopPropagation();
                           navigateScreenshots(1);

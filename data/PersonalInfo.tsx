@@ -1,28 +1,30 @@
+// personalData.ts (or wherever your personal info is stored)
+
 export const personalData = {
   "basic": {
     "name": "Nardos T Dubale",
     "title": "Full Stack Developer",
     "yearsOfExperience": 2,
-    "summary": "Pioneering Full Stack Developer with proven expertise in architecting high-performance web applications using React, Next.js, Node.js, and Django. Leveraging a unique background in civil engineering to deliver robust system architectures and innovative solutions. Demonstrated track record of implementing AI-driven features and leading agile development cycles that consistently exceed project KPIs."
+    "summary": "Pioneering Full Stack Developer with extensive expertise in architecting high-performance web applications, including sophisticated logistics and financial systems, using React, Next.js, Node.js, and Django. He leverages his unique background in civil engineering to deliver robust system architectures and innovative solutions. Nardos has a demonstrated track record of implementing AI-driven features, including Agents and MCP server integration, and leading agile development cycles that consistently exceed project KPIs."
   },
   "experience": [
     {
       "company": "Freelancer",
       "title": "Full Stack Developer",
       "period": "2023-present",
-      "description": "Working on personal real-world projects, applying expertise in MERN stack, Django, and cloud technologies to deliver scalable and secure solutions."
+      "description": "Actively developing and deploying diverse full-stack applications, including a Personal Financial Loan Management System and a comprehensive Shipment Tracking System for Logistics. Applying expertise in MERN stack, Django, and modern cloud technologies, including AI tools like Agents and MCP server, to deliver scalable, secure, and intelligent solutions for real-world challenges."
     },
     {
       "company": "ALX and Evangadi Bootcamp",
       "title": "Full Stack Developer Student",
       "period": "2023-2025",
-      "description": "Collaborated with over 20 developers using Git workflow and agile methodologies. Achieved top 5% ranking among 500+ bootcamp participants. Led 3 team projects with 100% on-time delivery and client satisfaction."
+      "description": "Collaborated with over 20 developers using Git workflow and agile methodologies. Achieved top 5% ranking among 500+ bootcamp participants. Led 3 team projects with 100% on-time delivery and client satisfaction. Gained foundational knowledge in AI tools through the ALX AI Start Kit program."
     },
     {
       "company": "Nardos Tilahun General Construction and SIS Engineering PLC",
       "title": "Civil Engineer (Contractor & Structural Designer)",
       "period": "2018-2023",
-      "description": "Worked as a solo contractor and structural designer, developing software solutions for challenges in construction and design."
+      "description": "Worked as a solo contractor and structural designer, developing software solutions for challenges in construction and design. This experience honed analytical thinking, complex problem-solving, and meticulous project management skills, which are directly transferable to full-stack development."
     }
   ],
   "education": {
@@ -38,6 +40,7 @@ export const personalData = {
     "DevOps & Tools: CI/CD, Git, Jenkins, Terraform, Microservices Architecture",
     "Security & Testing: JWT, OAuth2.0, Jest, Cypress, End to End Testing",
     "Methodologies: Agile/Scrum, TDD, DDD, Microservices Architecture",
+    "AI & Machine Learning: Agents, MCP Server, AI Toolkits (from ALX AI Start Kit)", // Added AI specific skills
     "HTML5",
     "CSS3",
     "JavaScript (ES6+)",
@@ -51,9 +54,9 @@ export const personalData = {
       "description": "A comprehensive platform for managing personal loans online with separate interfaces for administrators and customers.",
       "longDescription": "This full-stack web application enables secure loan management for both administrators and customers. Administrators can manage users, loans, and payments, while customers can track their loan statuses and payment history. The application streamlines the entire lending process with features like authentication, payment tracking, email notifications, and detailed analytics.",
       "technologies": [
-        "React", "Node.js", "Express", "MySQL", "JWT", "Tailwind CSS", 
-        "Vite", "SendGrid", "D3.js", "Material UI", "Lodash", "Bcrypt", 
-        "Nodemailer", "Winston", "Morgan", "Multer", "React Router DOM", 
+        "React", "Node.js", "Express", "MySQL", "JWT", "Tailwind CSS",
+        "Vite", "SendGrid", "D3.js", "Material UI", "Lodash", "Bcrypt",
+        "Nodemailer", "Winston", "Morgan", "Multer", "React Router DOM",
         "Helmet", "CORS", "Country-State-City", "React Phone Number Input"
       ],
       "keyFeatures": [
@@ -159,6 +162,108 @@ export const personalData = {
       },
       "role": "Full Stack Developer",
       "outcome": "Successfully delivered a full-stack application with MySQL that provides a comprehensive loan management platform. The system now efficiently handles all aspects of the lending process while maintaining high standards of security and user experience."
+    },
+    {
+      "name": "Shipment Tracking System for Logistics",
+      "description": "A robust full-stack web application for managing and tracking logistics shipments, with user management and dashboard analytics.",
+      "longDescription": "This comprehensive system streamlines logistics operations by allowing administrators to manage users and track shipments from creation to delivery. It provides a user-friendly interface for creating, viewing, editing, and deleting shipment records. The system features a powerful dashboard with real-time statistics, charts for various metrics (status, type, office, payment), and recent activity. Secure JWT authentication and role-based access control ensure data integrity and user permissions. Furthermore, Nardos integrated advanced AI tools like Agents and MCP server APIs into the system to enhance predictive capabilities and optimize logistical workflows.",
+      "technologies": [
+        "Next.js", "React", "TypeScript", "Tailwind CSS", "Shadcn UI", "Recharts", "Sonner",
+        "Node.js", "Prisma ORM", "PostgreSQL", "JWT (Jose)", "Bcryptjs", "Cloudinary",
+        "Agents (AI)", "MCP Server (AI)", "AI Toolkits" // Added AI specific technologies
+      ],
+      "keyFeatures": [
+        "Secure User Authentication (JWT)",
+        "Role-Based Access Control (Admin/User)",
+        "Comprehensive Shipment CRUD (Create, Read, Update, Delete)",
+        "Interactive Dashboard with Analytics and Charts",
+        "Shipment Filtering, Search, Pagination, and Sorting",
+        "Detailed Shipment Views",
+        "User Management (Admin-only)",
+        "Responsive Design",
+        "AI-driven Predictive Analytics for Delivery Times", // Added AI-driven feature
+        "Optimized Logistics Workflows via Agents" // Another AI-driven feature
+      ],
+      "architecture": {
+        "overview": "The Shipment Tracking System uses a modern Next.js framework for a full-stack approach, with robust backend services and a PostgreSQL database. It's designed for high performance and scalability, incorporating advanced AI components.",
+        "frontend": {
+          "description": "Next.js frontend providing SSR/CSR for optimal performance. Features a rich UI for managing shipments and users, with interactive dashboards and multi-tabbed forms.",
+          "technologies": ["Next.js", "React", "TypeScript", "Tailwind CSS", "Shadcn UI", "Recharts", "Sonner"],
+          "components": ["Dashboard", "Shipment List (Table/Grid)", "Shipment Details", "Multi-tabbed Forms", "User Management UI", "Login Page"]
+        },
+        "backend": {
+          "description": "Next.js API Routes serving as a robust backend. Handles API endpoints for data operations, authentication, and integrates with AI services (Agents, MCP server) for enhanced capabilities.",
+          "technologies": ["Node.js", "Next.js API Routes", "Prisma ORM", "JWT (Jose)", "Bcryptjs", "Agents (AI)", "MCP Server (AI)"],
+          "components": ["Authentication API", "Shipment CRUD API", "Dashboard Analytics API", "User Management API", "AI Integration Layer"]
+        },
+        "dataLayer": {
+          "description": "PostgreSQL database managed via Prisma ORM for efficient, type-safe data access. Stores all logistics, user, and historical data.",
+          "technologies": ["PostgreSQL", "Prisma ORM"],
+          "components": ["Shipment Records", "User Accounts", "Status Enums", "Audit Logs"]
+        }
+      },
+      "systemInteractions": {
+        "authFlow": "Secure user authentication with JWT. Role-based access ensures admins have full control while general users can view specific data.",
+        "shipmentLifecycle": "Admins manage shipments from creation to delivery. The system tracks status changes, container details, and integrates AI for optimized routing and predictions.",
+        "dashboardAnalytics": "Backend APIs efficiently aggregate shipment data, enhanced by AI insights, to power real-time statistics and predictive trends on the dashboard.",
+        "aiIntegration": "Leverages Agents and MCP server to process shipment data, provide predictive analytics (e.g., estimated delivery times), and suggest optimized logistics workflows."
+      },
+      "challenges": [
+        {
+          "title": "Integrating Advanced AI APIs",
+          "description": "The challenge was effectively incorporating complex AI APIs like Agents and MCP server to provide meaningful predictive and optimization features without overcomplicating the system architecture or user experience.",
+          "solution": "Developed a dedicated AI integration layer within the backend services, using modular design patterns to ensure seamless communication and data flow between the core logic and AI services. Focused on clear API contracts and robust error handling."
+        },
+        {
+          "title": "Optimizing Data Queries for Large Datasets",
+          "description": "As the shipment data grew, ensuring fast and efficient retrieval for dashboard analytics and filtered lists became critical.",
+          "solution": "Utilized Prisma's advanced querying capabilities, including `groupBy` and `select` optimizations. Implemented database indexing and pagination strategies to maintain high performance."
+        },
+        {
+          "title": "Implementing Robust Authentication & Authorization",
+          "description": "Ensuring secure and fine-grained access control (RBAC) across both Next.js API routes and client-side components.",
+          "solution": "Leveraged Next.js middleware and JWT (with Jose library) for token verification and user context propagation. Designed a custom `AuthContext` for global client-side auth state and secure route protection."
+        }
+      ],
+      "futureImprovements": [
+        {
+          "feature": "Real-time Tracking & GPS Integration",
+          "description": "Integrate with third-party GPS tracking services and carrier APIs to provide real-time location updates of shipments on a map interface.",
+          "benefits": ["Enhanced visibility", "Proactive issue resolution", "Improved customer satisfaction"],
+          "technologies": ["Google Maps API", "WebSockets", "Carrier APIs"]
+        },
+        {
+          "feature": "Automated Notifications & Alerts",
+          "description": "Implement automated email/SMS alerts for key shipment milestones (e.g., departure, arrival, delays) to stakeholders.",
+          "benefits": ["Timely communication", "Reduced customer inquiries", "Proactive issue alerts"],
+          "technologies": ["Twilio", "SendGrid", "Cron jobs"]
+        },
+        {
+          "feature": "Customer & Agent Portals",
+          "description": "Develop dedicated, restricted-access portals for customers to view statuses and for external agents to update milestones.",
+          "benefits": ["Self-service capabilities", "Reduced administrative burden", "Improved collaboration"],
+          "technologies": ["NextAuth.js", "Dedicated React Components"]
+        },
+        {
+          "feature": "Advanced Reporting & Export",
+          "description": "Expand dashboard capabilities with custom report generation (e.g., monthly volume, performance metrics) and export options (PDF, Excel).",
+          "benefits": ["Deeper business insights", "Easier compliance reporting", "Enhanced data analysis"],
+          "technologies": ["React-PDF", "SheetJS", "Chart.js"]
+        },
+        {
+          "feature": "Predictive Maintenance for Vehicles (AI-Enhanced)",
+          "description": "Utilize AI and sensor data to predict potential vehicle breakdowns, optimizing maintenance schedules and minimizing downtime in logistics.",
+          "benefits": ["Reduced operational costs", "Increased fleet uptime", "Proactive problem solving"],
+          "technologies": ["Machine Learning (TensorFlow/PyTorch)", "IoT sensor data", "Azure IoT Hub/AWS IoT Core", "Predictive models"]
+        }
+      ],
+      "links": {
+        "github": "https://github.com/Nardos-Tilahun/Shipment-Tracking-System", // Placeholder
+        "demoVideo": "https://drive.google.com/file/d/your-shipment-demo-video-link/view", // Placeholder
+        "liveSite": "https://shipment-tracking-system.vercel.app/" // Placeholder
+      },
+      "role": "Full Stack Developer (Lead)",
+      "outcome": "Successfully built and deployed a scalable logistics tracking system. This project significantly enhanced Nardos's expertise in Next.js, PostgreSQL, Prisma, and the practical application of AI through Agents and MCP server, delivering a solution that provides real-time insights and operational efficiency."
     }
   ],
   "contact": {
@@ -167,7 +272,7 @@ export const personalData = {
     "linkedin": "www.linkedin.com/in/nardosdubale",
     "github": "https://github.com/Nardos-Tilahun",
     "twitter": "@Nardos_Tilahun",
-    "resume": "https://drive.google.com/file/d/1in0RVRK0Q6G5-nOMhFY1_8xIdzWCl9qi/view?usp=sharing"
+    "resume": "https://drive.google.com/file/d/1CgDUJvPqRsbySPPS_AywCvfRtWJu9KHl/view?usp=sharing"
   },
   "interests": [
     "Web development",

@@ -1,98 +1,250 @@
-// app/layout.tsx
-import Link from 'next/link'
-import { ReactNode } from 'react';
-import "./globals.css";
-import FloatingChat from '@/components/FloatingChat';
+'use client'; // This component needs to be a client component for DOM manipulation
 
-export const metadata = {
-  title: 'Nardos Tilahun - Portfolio',
-  description: 'Web developer portfolio for Nardos Tilahun',
-}
+import Link from 'next/link';
+import { ReactNode, useState, useEffect, useRef, useCallback } from 'react';
+import "./globals.css"; // Ensure this is imported for global styles
+import FloatingChat from '@/components/FloatingChat';
+import { motion, AnimatePresence } from 'framer-motion'; // For subtle animations
+
+// No changes needed for metadata as it's handled by Next.js from here
+
 interface RootLayoutProps {
   children: ReactNode;
 }
 
-export default function RootLayout({ children } : RootLayoutProps) {
+export default function RootLayout({ children }: RootLayoutProps) {
+  const headerRef = useRef<HTMLElement>(null);
+  const [activeSection, setActiveSection] = useState<string>('home'); // State to track active section
+  const [activeLinkClicked, setActiveLinkClicked] = useState<string | null>(null); // State for click feedback
+  const [isScrollingProgrammatically, setIsScrollingProgrammatically] = useState(false); // Prevent observer firing during programmatic scroll
+
+  // Custom easing function: easeInOutCubic for a brilliant slow-fast-slow effect
+  const easeInOutCubic = (t: number) => t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+
+  // Custom smooth scroll handler
+  const handleSmoothScroll = useCallback((e: React.MouseEvent<HTMLAnchorElement>, targetId: string) => {
+    e.preventDefault(); // Prevent default anchor jump
+
+    const targetElement = document.getElementById(targetId);
+    if (!targetElement) return;
+
+    const headerHeight = headerRef.current?.offsetHeight || 0;
+    const targetScrollPosition = targetElement.offsetTop - headerHeight - 10; // -10 for a little extra padding
+
+    const startPosition = window.pageYOffset;
+    const distance = targetScrollPosition - startPosition;
+    const duration = 1200; // 1.2 seconds for a noticeably smooth, "amazing" effect
+    let startTime: number | null = null;
+
+    setIsScrollingProgrammatically(true); // Indicate programmatic scroll
+
+    // Set active section immediately for quick visual feedback
+    setActiveSection(targetId);
+    setActiveLinkClicked(targetId); // Set for click animation
+    setTimeout(() => setActiveLinkClicked(null), 500); // Reset click animation feedback
+
+    const animateScroll = (currentTime: number) => {
+      if (!startTime) startTime = currentTime;
+      const elapsedTime = currentTime - startTime;
+      const progress = Math.min(elapsedTime / duration, 1); // Clamp progress to 1
+      const easedProgress = easeInOutCubic(progress); // Apply cubic easing
+
+      window.scrollTo(0, startPosition + distance * easedProgress);
+
+      if (elapsedTime < duration) {
+        requestAnimationFrame(animateScroll);
+      } else {
+        // Ensure the final position is exact
+        window.scrollTo(0, targetScrollPosition);
+        setIsScrollingProgrammatically(false);
+      }
+    };
+
+    requestAnimationFrame(animateScroll); // Start the animation loop
+  }, []);
+
+  // Intersection Observer to detect active section on manual scroll
+  useEffect(() => {
+    const observerOptions: IntersectionObserverInit = {
+      root: null, // Use the viewport as the root
+      // rootMargin should be adjusted based on header height.
+      // Top margin pushes the intersection boundary down.
+      // Bottom margin pulls the boundary up, making a section "active" when it fills more of the top half.
+      rootMargin: `-${(headerRef.current?.offsetHeight || 0) + 10}px 0px -50% 0px`,
+      threshold: 0, // Trigger as soon as target enters/exits
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      // Only update if not currently scrolling programmatically
+      if (!isScrollingProgrammatically) {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            setActiveSection(entry.target.id);
+          }
+        });
+      }
+    }, observerOptions);
+
+    // Observe all relevant sections (ensure these IDs exist in your page components)
+    const sections = document.querySelectorAll('#home, #projects, #skills, #about, #contact');
+    sections.forEach(section => {
+      observer.observe(section);
+    });
+
+    // Cleanup observer on component unmount
+    return () => {
+      sections.forEach(section => {
+        observer.unobserve(section);
+      });
+    };
+  }, [isScrollingProgrammatically]); // Re-run effect if programmatic scroll state changes
+
+  // Helper function to get link classes
+  const getLinkClasses = (sectionId: string) => `
+    relative
+    text-gray-900
+    font-medium
+    hover:scale-105
+    transition-all
+    duration-200
+    transform-gpu
+    hover:translate-x-1
+    ${activeSection === sectionId ? 'text-teal-600 font-semibold active-link' : 'hover:text-teal-700'}
+    ${activeLinkClicked === sectionId ? 'shadow-lg shadow-teal-500/50' : ''}
+    ${activeLinkClicked === sectionId ? 'animate-pulse-once' : ''}
+  `;
 
   return (
     <html lang="en">
       <body>
         <div className="flex flex-col min-h-screen text-gray-900 w-full">
-          <header className="sticky top-0 z-40 w-full border-b border-green-800 bg-gray-500 bg-opacity-70 backdrop-blur-md shadow-lg transition-all duration-300">
+          <header
+            ref={headerRef} // Attach ref to header
+            className="sticky top-0 z-40 w-full border-b border-green-800 bg-gray-500 bg-opacity-70 backdrop-blur-md shadow-lg transition-all duration-300"
+          >
             <div className="container mx-auto flex h-14 items-center md:px-14 px-4 ">
-              <Link href="/" className="flex items-center space-x-2">
-                <span className="text-2xl text-gray-900 font-extrabold transition-all duration-200 
-                  hover:scale-110 hover:shadow-2xl hover:shadow-gray-600 transform-gpu 
-                  hover:translate-x-2 hover:translate-y-1 relative">
+              <Link href="/#home" onClick={(e) => handleSmoothScroll(e, 'home')} className="flex items-center space-x-2">
+                <span className="text-2xl text-gray-900 font-extrabold transition-all duration-200
+                  hover:scale-110 hover:shadow-2xl hover:shadow-gray-600 transform-gpu
+                  hover:translate-x-2 hover:translate-y-1 relative group"
+                >
                   NTD
-                  <span className="absolute inset-0 bg-gradient-to-r from-gray-500 to-teal-500 opacity-20 rounded-xl blur-md"></span>
+                  <span className="absolute inset-0 bg-gradient-to-r from-gray-500 to-teal-500 opacity-20 rounded-xl blur-md group-hover:scale-125 transition-all duration-300"></span>
                 </span>
               </Link>
 
               <nav className="ml-auto flex gap-4 sm:gap-12">
                 <Link
-                  className="text-gray-900 hover:text-underline hover:scale-105 transition-all duration-200 hover:shadow-lg hover:shadow-gray-500 transform-gpu hover:translate-x-1"
+                  className={getLinkClasses('projects')}
                   href="/#projects"
+                  onClick={(e) => handleSmoothScroll(e, 'projects')}
                 >
                   Projects
+                  <AnimatePresence>
+                    {activeSection === 'projects' && (
+                      <motion.span
+                        className="absolute -bottom-1 left-0 w-full h-0.5 bg-teal-500 rounded-full shadow-md shadow-teal-400/50"
+                        initial={{ scaleX: 0 }}
+                        animate={{ scaleX: 1 }}
+                        exit={{ scaleX: 0 }}
+                        transition={{ duration: 0.3 }}
+                      />
+                    )}
+                  </AnimatePresence>
                 </Link>
                 <Link
-                  className="text-gray-900 hover:text-underline hover:scale-105 transition-all duration-200 hover:shadow-lg hover:shadow-gray-500 transform-gpu hover:translate-x-1"
+                  className={getLinkClasses('skills')}
                   href="/#skills"
+                  onClick={(e) => handleSmoothScroll(e, 'skills')}
                 >
                   Skills
+                  <AnimatePresence>
+                    {activeSection === 'skills' && (
+                      <motion.span
+                        className="absolute -bottom-1 left-0 w-full h-0.5 bg-teal-500 rounded-full shadow-md shadow-teal-400/50"
+                        initial={{ scaleX: 0 }}
+                        animate={{ scaleX: 1 }}
+                        exit={{ scaleX: 0 }}
+                        transition={{ duration: 0.3 }}
+                      />
+                    )}
+                  </AnimatePresence>
                 </Link>
                 <Link
-                  className="text-gray-900 hover:text-underline hover:scale-105 transition-all duration-200 hover:shadow-lg hover:shadow-gray-500 transform-gpu hover:translate-x-1"
+                  className={getLinkClasses('about')}
                   href="/#about"
+                  onClick={(e) => handleSmoothScroll(e, 'about')}
                 >
                   About
+                  <AnimatePresence>
+                    {activeSection === 'about' && (
+                      <motion.span
+                        className="absolute -bottom-1 left-0 w-full h-0.5 bg-teal-500 rounded-full shadow-md shadow-teal-400/50"
+                        initial={{ scaleX: 0 }}
+                        animate={{ scaleX: 1 }}
+                        exit={{ scaleX: 0 }}
+                        transition={{ duration: 0.3 }}
+                      />
+                    )}
+                  </AnimatePresence>
                 </Link>
                 <Link
-                  className="text-gray-900 hover:text-underline hover:scale-105 transition-all duration-200 hover:shadow-lg hover:shadow-gray-500 transform-gpu hover:translate-x-1"
+                  className={getLinkClasses('contact')}
                   href="/#contact"
+                  onClick={(e) => handleSmoothScroll(e, 'contact')}
                 >
                   Contact
+                  <AnimatePresence>
+                    {activeSection === 'contact' && (
+                      <motion.span
+                        className="absolute -bottom-1 left-0 w-full h-0.5 bg-teal-500 rounded-full shadow-md shadow-teal-400/50"
+                        initial={{ scaleX: 0 }}
+                        animate={{ scaleX: 1 }}
+                        exit={{ scaleX: 0 }}
+                        transition={{ duration: 0.3 }}
+                      />
+                    )}
+                  </AnimatePresence>
                 </Link>
                 <a
-                href="/api/download-resume"
-                className="ml-2 px-3 py-1 bg-gradient-to-r from-green-500 to-teal-600 text-white rounded-md font-medium text-sm flex items-center gap-1 hover:shadow-lg hover:shadow-green-700/30 transform transition-all duration-300 hover:scale-105 relative group"
-                aria-label="Download Resume"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-4 w-4"
-                  fill="currentColor"
-                  viewBox="0 0 24 24"
+                  href="/api/download-resume"
+                  className="ml-2 px-3 py-1 bg-gradient-to-r from-green-500 to-teal-600 text-white rounded-md font-medium text-sm flex items-center gap-1 hover:shadow-lg hover:shadow-green-700/30 transform transition-all duration-300 hover:scale-105 relative group"
+                  aria-label="Download Resume"
                 >
-                  <path d="M12 16l4-4h-3V3h-2v9H8l4 4zm9 4v-2H3v2h18z" />
-                </svg>
-                <span className="hidden sm:inline">Resume</span>
-                
-                {/* Tooltip */}
-                <div className="absolute hidden group-hover:block bg-gray-800 text-white text-xs rounded py-1 px-2 bottom-[-28px] sm:left-1/2 sm:-translate-x-1/2  left-[-70px] whitespace-nowrap pointer-events-none z-50">
-                  Download CV
-                </div>
-              </a>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-4 w-4"
+                    fill="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path d="M12 16l4-4h-3V3h-2v9H8l4 4zm9 4v-2H3v2h18z" />
+                  </svg>
+                  <span className="hidden sm:inline">Resume</span>
+
+                  {/* Tooltip */}
+                  <div className="absolute hidden group-hover:block bg-gray-800 text-white text-xs rounded py-1 px-2 bottom-[-28px] sm:left-1/2 sm:-translate-x-1/2  left-[-70px] whitespace-nowrap pointer-events-none z-50">
+                    Download CV
+                  </div>
+                </a>
 
               </nav>
             </div>
           </header>
-          
+
           <main className="flex-1 md:px-12 px-4 bg-gray-900 w-full">
             <div className="container mx-auto">
               {children}
             </div>
           </main>
-          
+
           <footer className="bg-gradient-to-r from-gray-900 via-black to-gray-900">
             <div className="container mx-auto flex flex-col md:flex-row justify-between items-center py-4 px-6 space-y-6 md:space-y-0">
-              
+
               {/* Left Section */}
               <div className="text-center md:text-left order-1 md:order-1">
                 <p className="text-sm leading-loose text-green-400/80">
                   Built by{" "}
-                  <span className="font-semibold text-green-300">Nardos Tilahun</span>. 
+                  <span className="font-semibold text-green-300">Nardos Tilahun</span>.
                   Hosted on{" "}
                   <a
                     href="https://render.com"
@@ -141,7 +293,7 @@ export default function RootLayout({ children } : RootLayoutProps) {
                   </svg>
                 </a>
                 <a
-                  href="https://drive.google.com/file/d/1in0RVRK0Q6G5-nOMhFY1_8xIdzWCl9qi/view?usp=sharing"
+                  href="https://drive.google.com/file/d/1CgDUJvPqRsbySPPS_AywCvfRtWJu9KHl/view?usp=sharing"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-green-400 hover:text-green-300 transition-transform transform hover:scale-110"
@@ -187,5 +339,5 @@ export default function RootLayout({ children } : RootLayoutProps) {
         </div>
       </body>
     </html>
-  )
+  );
 }

@@ -1,55 +1,29 @@
 import React from 'react';
+import { Improvement, getImprovementsByProjectId } from '@/data/futureImprovements'; // Import the interface and function
 
 interface FutureImprovementsProps {
   id: string;
 }
 
 const FutureImprovements: React.FC<FutureImprovementsProps> = ({ id }) => {
-  // Future improvements structured for server-side rendering
-  const improvements = [
-    {
-      title: 'Online Payment Integration',
-      description: 'Implement secure payment gateways allowing customers to make loan payments online via credit/debit cards, bank transfers, and digital wallets, eliminating the need for cash transactions.',
-      benefits: 'Increased payment convenience, reduced processing time, automated reconciliation',
-      technologies: 'Stripe API, PayPal, Plaid',
-      iconClass: 'bg-blue-500'
-    },
-    {
-      title: 'Advanced Analytics Dashboard',
-      description: 'Implement data visualization tools showing loan performance metrics, customer payment history trends, and predictive analytics for risk assessment.',
-      benefits: 'Data-driven decision making, risk mitigation, performance tracking',
-      technologies: 'D3.js, TensorFlow.js, React Query',
-      iconClass: 'bg-indigo-500'
-    },
-    {
-      title: 'Multi-currency Support',
-      description: 'Expand beyond USD and Colombian Peso to support additional currencies with real-time exchange rate integration.',
-      benefits: 'Global market expansion, currency risk management, international reach',
-      technologies: 'Exchange Rate API, Currency.js, i18next',
-      iconClass: 'bg-cyan-500'
-    },
-    {
-      title: 'Mobile Application',
-      description: 'Develop a native mobile application to allow customers to manage loans, make payments, and receive notifications on-the-go.',
-      benefits: 'Increased user engagement, 24/7 account access, push notifications',
-      technologies: 'React Native, Expo, Firebase',
-      iconClass: 'bg-green-500'
-    },
-    {
-      title: 'Automated Payment Reminders',
-      description: 'Implement an automated system to send customizable payment reminders at scheduled intervals before due dates.',
-      benefits: 'Reduced delinquency rates, improved communication, lower overhead',
-      technologies: 'Twilio API, SendGrid, Node-cron',
-      iconClass: 'bg-yellow-500'
-    },
-    {
-      title: 'Document Management System',
-      description: 'Add functionality for secure uploading, storing, and managing loan-related documents with OCR capabilities.',
-      benefits: 'Centralized document storage, reduced paperwork, enhanced security',
-      technologies: 'AWS S3, Tesseract.js, PDF.js',
-      iconClass: 'bg-red-500'
-    }
-  ];
+  // Retrieve improvements based on the projectId using the imported function
+  const improvements: Improvement[] = getImprovementsByProjectId(id);
+
+  // If no improvements are found for the given ID, you might want to render a fallback or empty state.
+  if (improvements.length === 0) {
+    return (
+      <section id={id} className="w-full py-12 md:py-16 bg-gradient-to-b from-gray-900 to-gray-800 text-white relative overflow-hidden">
+        <div className="container px-4 md:px-6 mx-auto relative z-10 text-center">
+          <h2 className="text-3xl font-bold mb-2 text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 via-blue-400 to-cyan-400">
+            Future Improvements
+          </h2>
+          <p className="text-gray-300 text-center mb-10 max-w-2xl mx-auto">
+            No specific future improvements are currently defined for this project.
+          </p>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section id={id} className="w-full py-12 md:py-16 bg-gradient-to-b from-gray-900 to-gray-800 text-white relative overflow-hidden">

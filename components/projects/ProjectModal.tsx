@@ -10,51 +10,29 @@ import { Badge } from "@/components/ui/badge"
 import {  ExternalLink, X } from "lucide-react"
 import Link from "next/link"
 
+// Import Project and ProjectTechnology from data/projects.ts
+import { Project, ProjectTechnology } from '@/data/projects';
 
 
-
-interface ProjectTechnology {
-  name: string
-  category: "frontend" | "backend" | "database" | "devops" | "other"
-}
-
-interface ProjectImage {
-  url: string
-  alt: string
-  caption?: string
-}
-
-interface Project {
-  id: string
-  title: string
-  description: string
-  type: string
-  content: string
-  imageUrl: string
-  features: string[]
-  technologies: ProjectTechnology[]
-  images: ProjectImage[]
-  challenges: string[]
-  solutions: string[]
-  learnings: string[]
-}
+// Removed:
+// interface ProjectTechnology { ... }
+// interface ProjectImage { ... }
+// interface Project { ... }
 
 interface ProjectModalProps {
-  project: Project
+  project: Project // Use the imported Project interface
   onClose: () => void
 }
-
-
 
 const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose }) => {
   const [, setCurrentTab] = useState("overview")
 
   // Get background color for technology badge based on category
-  const getTechBadgeColor = (category: string): string => {
+  const getTechBadgeColor = (category: ProjectTechnology['category']): string => { // Use imported category type
     switch (category) {
       case "frontend": return "bg-blue-500 hover:bg-blue-600"
       case "backend": return "bg-green-500 hover:bg-green-600"
-      case "database": return "bg-yellow-500 hover:bg-yellow-600" 
+      case "database": return "bg-yellow-500 hover:bg-yellow-600"
       case "devops": return "bg-purple-500 hover:bg-purple-600"
       default: return "bg-gray-500 hover:bg-gray-600"
     }
@@ -70,10 +48,10 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose }) => {
         className="bg-gray-800 rounded-lg max-w-4xl w-full p-6 overflow-y-auto max-h-[90vh] text-white relative"
       >
         {/* Close button - floating in top right */}
-        <Button 
-          onClick={onClose} 
-          variant="ghost" 
-          size="icon" 
+        <Button
+          onClick={onClose}
+          variant="ghost"
+          size="icon"
           className="absolute top-4 right-4 rounded-full hover:bg-gray-700"
         >
           <X className="h-6 w-6" />
@@ -144,10 +122,10 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose }) => {
               </ul>
             </div>
 
-            
+
           </TabsContent>
 
-          
+
 
           {/* Learning Process Tab */}
           <TabsContent value="Learning" className="space-y-6">
@@ -168,10 +146,10 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose }) => {
             <div>
               <h3 className="text-xl font-semibold mb-2">Key Learnings</h3>
               <ul className="space-y-2">
-                {project.learnings.map((development, index) => (
+                {project.learnings.map((learning, index) => ( // Changed 'development' to 'learning' for clarity
                   <li key={index} className="flex items-start">
                     <span className="text-blue-400 mr-2">•</span>
-                    <span className="text-gray-300">{development}</span>
+                    <span className="text-gray-300">{learning}</span>
                   </li>
                 ))}
               </ul>
@@ -238,17 +216,17 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose }) => {
 
         {/* Modal footer with navigation */}
         <div className="mt-6 flex flex-wrap gap-4 justify-center">
-          
-         
+
+
           <Link href={`/projects/${project.id}`} passHref>
-          <Button 
-              variant="outline" 
+          <Button
+              variant="outline"
               className="border-emerald-600/50 text-black backdrop-blur-sm hover:bg-emerald-900/30 transition-all duration-300 ease-in-out transform hover:scale-105 hover:text-yellow-400 hover:shadow-lg hover:shadow-emerald-500/20"
             >
-              
+
               More Details
                 <ExternalLink className="ml-2 h-4 w-4" />
-              
+
             </Button>
             </Link>
         </div>

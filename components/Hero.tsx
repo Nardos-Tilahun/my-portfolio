@@ -1,4 +1,3 @@
-
 "use client";
 import { useState, useEffect, FC } from 'react';
 import { Button } from "@/components/ui/button";
@@ -7,77 +6,61 @@ import { CldImage } from 'next-cloudinary';
 import { ChevronRight, ExternalLink } from 'lucide-react';
 import Link from 'next/link';
 
-// Define proper TypeScript interfaces
-interface CrossBrowserEmeraldNameProps {
-  text: string;
-  className?: string;
+// Define the props interface for Hero
+interface HeroProps {
+  id: string; // Add id to the props interface
 }
 
-interface LetterStyleType {
-  color: string;
-  textShadow?: string; 
-}
+// ... (CrossBrowserEmeraldName and DeveloperLabel components remain unchanged)
 
-// Cross Browser Emerald Name Component - Embedded in same file
-const CrossBrowserEmeraldName: FC<CrossBrowserEmeraldNameProps> = ({ 
-  text = "Nardos T. Dubale", 
-  className = "text-4xl sm:text-6xl font-bold tracking-tight" 
+const CrossBrowserEmeraldName: FC<{ text: string; className?: string; }> = ({
+  text = "Nardos T. Dubale",
+  className = "text-4xl sm:text-6xl font-bold tracking-tight"
 }) => {
   const letters = text.split('');
   const [currentPosition, setCurrentPosition] = useState<number>(0);
-  
-  // In the CrossBrowserEmeraldName component, update the useEffect hook:
 
-useEffect(() => {
-  const interval = setInterval(() => {
-    setCurrentPosition(prev => {
-      // When we reach the end, immediately wrap around to start
-      return (prev + 1) % letters.length;
-    });
-  }, 500);
-  
-  return () => clearInterval(interval);
-}, [letters.length]);
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentPosition(prev => {
+        return (prev + 1) % letters.length;
+      });
+    }, 500);
 
-// And update the getLetterStyle function to handle the wrap-around case better:
-const getLetterStyle = (index: number): LetterStyleType => {
-  // Create a continuous highlightable window that wraps around the text
-  const textLength = letters.length;
-  
-  // Calculate relative distance considering wrap-around
-  const distanceForward = (index >= currentPosition) 
-    ? index - currentPosition 
-    : textLength - currentPosition + index;
-  
-  const distanceBackward = (index <= currentPosition) 
-    ? currentPosition - index 
-    : currentPosition + textLength - index;
-  
-  // Use the smaller of the two distances for a more efficient highlight path
-  const distance = Math.min(distanceForward, distanceBackward);
-  
-  // Highlight the current position and the next 2 characters with gradient
-  if (distance === 0) {
-    return { 
-      color: "#00ffaa", // Brightest, almost glowing emerald
-      textShadow: '0 0 15px rgba(16, 185, 129, 0.7)' // Add glow effect to current letter
-    };
-  }
-  if (distance === 1) return { color: "#10b981" }; // Very bright emerald
-  if (distance === 2) return { color: "#059669" }; // Medium emerald
-  if (distance === 3) return { color: "#047857" }; // Darker emerald
-  if (distance === 4) return { color: "#065f46" }; // Dim emerald
-  return { color: "#064e3b" }; // Background emerald (slightly brighter than before)
-};
-  
+    return () => clearInterval(interval);
+  }, [letters.length]);
+
+  const getLetterStyle = (index: number): { color: string; textShadow?: string; } => {
+    const textLength = letters.length;
+    const distanceForward = (index >= currentPosition)
+      ? index - currentPosition
+      : textLength - currentPosition + index;
+    const distanceBackward = (index <= currentPosition)
+      ? currentPosition - index
+      : currentPosition + textLength - index;
+    const distance = Math.min(distanceForward, distanceBackward);
+
+    if (distance === 0) {
+      return {
+        color: "#00ffaa",
+        textShadow: '0 0 15px rgba(16, 185, 129, 0.7)'
+      };
+    }
+    if (distance === 1) return { color: "#10b981" };
+    if (distance === 2) return { color: "#059669" };
+    if (distance === 3) return { color: "#047857" };
+    if (distance === 4) return { color: "#065f46" };
+    return { color: "#064e3b" };
+  };
+
   return (
     <h1 className={className}>
       {letters.map((letter, index) => (
-        <span 
-          key={index} 
+        <span
+          key={index}
           style={{
             ...getLetterStyle(index),
-            transition: 'color 1s ease, text-shadow 3s ease' // Add transition for text-shadow too
+            transition: 'color 1s ease, text-shadow 3s ease'
           }}
         >
           {letter === " " ? "\u00A0" : letter}
@@ -87,11 +70,7 @@ const getLetterStyle = (index: number): LetterStyleType => {
   );
 };
 
-interface DeveloperLabelProps {
-  className?: string;
-}
-
-const DeveloperLabel: FC<DeveloperLabelProps> = ({ className = "" }) => {
+const DeveloperLabel: FC<{ className?: string; }> = ({ className = "" }) => {
   return (
     <motion.div
       initial={{ opacity: 0, scale: 0.9 }}
@@ -107,7 +86,7 @@ const DeveloperLabel: FC<DeveloperLabelProps> = ({ className = "" }) => {
       }}
       whileDrag={{ scale: 1.1 }}
     >
-      <motion.div 
+      <motion.div
         className="bg-gradient-to-r from-emerald-500/30 to-teal-500/30 p-1 rounded-lg backdrop-blur-md shadow-lg cursor-pointer"
         whileHover={{ scale: 1.05 }}
         animate={{
@@ -127,9 +106,11 @@ const DeveloperLabel: FC<DeveloperLabelProps> = ({ className = "" }) => {
   );
 };
 
-const Hero: FC = () => {
+
+// Update Hero component to accept id prop
+const Hero: FC<HeroProps> = ({ id }) => {
   return (
-    <div className="relative h-[1000px] lg:h-[600px] max-w-[1500px] w-full  mx-auto  overflow-hidden">
+    <div id={id} className="relative h-[1000px] lg:h-[600px] max-w-[1500px] w-full  mx-auto  overflow-hidden"> {/* Use id prop here */}
       <div className="relative z-10">
         <div className="container mx-auto px-6 py-12">
           {/* Desktop Label - Center Position */}
@@ -152,7 +133,7 @@ const Hero: FC = () => {
                   transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
                 />
 
-                <motion.div 
+                <motion.div
                   className="relative rounded-full backdrop-blur-sm"
                   whileHover={{ scale: 1.05 }}
                   transition={{ type: "spring", stiffness: 300, damping: 10 }}
@@ -177,7 +158,7 @@ const Hero: FC = () => {
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8 }}
+              transition={{ delay: 0.5 }}
               className="flex flex-col justify-center space-y-8 order-2 lg:order-1 text-center lg:text-left"
             >
               <div className="space-y-4">
@@ -196,9 +177,9 @@ const Hero: FC = () => {
                   transition={{ delay: 0.7 }}
                   className="max-w-xl text-lg text-gray-300 mx-auto lg:mx-0"
                 >
-                  Crafting innovative web solutions with cutting-edge technologies. 
-                  Focused on creating immersive, high-performance applications 
-                  that push the boundaries of what&#39;s possible on the web.
+                  Crafting innovative web solutions with cutting-edge technologies.
+                  Focused on creating immersive, high-performance applications
+                  that push the boundaries of what's possible on the web.
                 </motion.p>
               </div>
 
@@ -209,8 +190,8 @@ const Hero: FC = () => {
                 className="flex flex-col gap-4 sm:flex-row justify-center lg:justify-start"
               >
                 <Link href="#projects">
-                  <Button 
-                    size="lg" 
+                  <Button
+                    size="lg"
                     className="group bg-emerald-500/80 text-black backdrop-blur-sm hover:bg-emerald-600 transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg hover:shadow-emerald-500/20"
                   >
                     Explore Projects
@@ -218,9 +199,9 @@ const Hero: FC = () => {
                   </Button>
                 </Link>
                 <Link href="#contact">
-                  <Button 
-                    size="lg" 
-                    variant="outline" 
+                  <Button
+                    size="lg"
+                    variant="outline"
                     className="border-emerald-600/50 text-gray-600 backdrop-blur-sm hover:bg-emerald-900/30 transition-all duration-300 ease-in-out transform hover:scale-105 hover:text-yellow-400 hover:shadow-lg hover:shadow-emerald-500/20"
                   >
                     Get in Touch
