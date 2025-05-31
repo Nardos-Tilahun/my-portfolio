@@ -1,18 +1,30 @@
+/* ./globals.css */
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-
-body {
+/*
+  CRITICAL OPTIMIZATION FOR INITIAL LOAD:
+  Set a dark background color for the entire page (html and body).
+  This style is applied by the browser immediately upon loading the HTML,
+  before any JavaScript (including React's hydration) runs.
+  This prevents the "white flash" and ensures a consistent dark background
+  is visible from the very first paint.
+  #111827 is the hex value for Tailwind's gray-900.
+*/
+html, body {
+  background-color: #111827;
   font-family: Arial, Helvetica, sans-serif;
-  /* Removed scroll-behavior: smooth from here, as JS will handle it precisely */
+  margin: 0; /* Ensures no default browser margin */
+  padding: 0; /* Ensures no default browser padding */
+  overflow-x: hidden; /* Prevents horizontal scrollbar from accidental overflow */
 }
 
 @layer utilities {
   .text-balance {
-    text-wrap: balance;
+    text-wrap: balance; /* Modern CSS for better text layout */
   }
-
 }
 
 .text-gradient {
@@ -28,7 +40,7 @@ body {
     opacity: 1;
   }
   50% {
-    transform: scale(1.05);
+    transform: scale(1.05); /* Use transform for GPU-accelerated animation */
     opacity: 0.9;
   }
   100% {
@@ -41,7 +53,7 @@ body {
   animation: pulse-once 0.5s ease-in-out;
 }
 
-/* Base styles for root variables */
+/* Base styles for root variables (keep as is; these are standard Tailwind/CSS vars) */
 @layer base {
   :root {
     --background: 0 0% 100%;
@@ -96,20 +108,16 @@ body {
     --chart-4: 280 65% 60%;
     --chart-5: 340 75% 55%;
   }
-}
 
-@layer base {
+  /*
+    The `html, body` rule above handles the background.
+    This `body` rule can now focus solely on text color and
+    other default body-level properties defined by your theme.
+  */
   body {
-    @apply bg-background text-foreground;
+    @apply text-foreground;
   }
-}
-
-
-@layer base {
   * {
     @apply border-border;
-  }
-  body {
-    @apply bg-background text-foreground;
   }
 }
