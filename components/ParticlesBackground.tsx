@@ -160,14 +160,15 @@ const ParticlesBackground: React.FC = () => {
     };
 
     // Debounce function to limit how often setCanvasDimensions is called on resize
-    const debounce = (func: Function, delay: number) => {
+   // Debounce function with strict typing
+    function debounce<T extends (...args: any[]) => void>(func: T, delay: number): (...args: Parameters<T>) => void {
       let timeout: NodeJS.Timeout;
-      return function(this: any, ...args: any[]) {
-        const context = this;
+      return (...args: Parameters<T>) => {
         clearTimeout(timeout);
-        timeout = setTimeout(() => func.apply(context, args), delay);
+        timeout = setTimeout(() => func(...args), delay);
       };
-    };
+    }
+
 
     const debouncedSetCanvasDimensions = debounce(setCanvasDimensions, 100); // Debounce by 100ms
 
