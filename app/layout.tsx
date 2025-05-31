@@ -1,9 +1,11 @@
+// app/layout.tsx
 'use client'; // This component needs to be a client component for DOM manipulation
 
 import Link from 'next/link';
 import { ReactNode, useState, useEffect, useRef, useCallback } from 'react';
 import "./globals.css"; // Ensure this is imported for global styles
 import FloatingChat from '@/components/FloatingChat';
+import ParticlesBackground from '@/components/ParticlesBackground'; // NEW: Import the new component
 import { motion, AnimatePresence } from 'framer-motion'; // For subtle animations
 
 // No changes needed for metadata as it's handled by Next.js from here
@@ -118,6 +120,8 @@ export default function RootLayout({ children }: RootLayoutProps) {
     <html lang="en">
       <body>
         <div className="flex flex-col min-h-screen text-gray-900 w-full">
+          <ParticlesBackground /> {/* NEW: Place the ParticlesBackground here */}
+
           <header
             ref={headerRef} // Attach ref to header
             className="sticky top-0 z-40 w-full border-b border-green-800 bg-gray-500 bg-opacity-70 backdrop-blur-md shadow-lg transition-all duration-300"
@@ -231,7 +235,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
             </div>
           </header>
 
-          <main className="flex-1 md:px-12 px-4 bg-gray-900 w-full">
+          <main className="flex-1 md:px-12 px-4 bg-transparent w-full"> {/* CHANGED: bg-gray-900 to bg-transparent */}
             <div className="container mx-auto">
               {children}
             </div>
