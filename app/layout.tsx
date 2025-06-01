@@ -79,7 +79,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
         }
       }, 100);
     }
-  }, [easeInOutCubic, headerRef, isScrollingProgrammatically, pathname, router]);
+  }, [easeInOutCubic, headerRef, pathname, router]);
 
   useEffect(() => {
     const observerOptions: IntersectionObserverInit = {
