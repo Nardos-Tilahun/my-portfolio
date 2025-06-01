@@ -223,14 +223,14 @@ const ProjectOverview: React.FC<ProjectOverviewProps> = ({ project }) => {
   return (
     <section id="overview" className="py-16 bg-gradient-to-b from-gray-900 to-gray-950 min-h-screen">
       <div className="container mx-auto px-4">
-        {/* Main Project Title - Enhanced with brighter gradient and drop shadow */}
-        <h2 className="text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight text-center mb-4 font-sans relative z-50">
+        {/* Main Project Title - Removed z-50 */}
+        <h2 className="text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight text-center mb-4 font-sans relative"> {/* REMOVED z-50 */}
           <span className="text-transparent bg-clip-text bg-gradient-to-r from-teal-300 via-sky-400 to-blue-500 drop-shadow-md">
             {project.title}
           </span>
         </h2>
         {/* Main Project Description - Brighter text and drop shadow */}
-        <p className="text-center text-xl text-white mb-12 max-w-4xl mx-auto font-light leading-relaxed drop-shadow-sm"> {/* CHANGED: text-gray-200 to text-white, added drop-shadow-sm */}
+        <p className="text-center text-xl text-white mb-12 max-w-4xl mx-auto font-light leading-relaxed drop-shadow-sm">
           {project.description}
         </p>
   
@@ -242,7 +242,7 @@ const ProjectOverview: React.FC<ProjectOverviewProps> = ({ project }) => {
                 <span className="bg-gradient-to-r from-purple-400 to-indigo-500 w-6 h-0.5 mr-2"></span>
                 Project Overview
               </CardTitle>
-              <CardDescription className="text-gray-100"> {/* CHANGED: text-gray-300 to text-gray-100 */}
+              <CardDescription className="text-gray-100">
                 Details and technologies
               </CardDescription>
             </CardHeader>
@@ -252,7 +252,7 @@ const ProjectOverview: React.FC<ProjectOverviewProps> = ({ project }) => {
                   {project.type}
                 </Badge>
                 {/* Project Content (main description inside card) - CRITICAL FIX: Solid bright color with shadow */}
-                <p className="text-cyan-300 text-lg mb-8 leading-relaxed font-normal tracking-wide drop-shadow-sm"> {/* CHANGED: text-sky-300 to text-cyan-300, added drop-shadow-sm */}
+                <p className="text-cyan-300 text-lg mb-8 leading-relaxed font-normal tracking-wide drop-shadow-sm">
                   {project.content}
                 </p>
               </div>
@@ -300,7 +300,7 @@ const ProjectOverview: React.FC<ProjectOverviewProps> = ({ project }) => {
                 <span className="bg-gradient-to-r from-purple-400 to-indigo-500 w-6 h-0.5 mr-2"></span>
                 Project Screenshots
               </CardTitle>
-              <CardDescription className="text-gray-100"> {/* CHANGED: text-gray-300 to text-gray-100 */}
+              <CardDescription className="text-gray-100">
                 Scroll through to see some pages of the application
               </CardDescription>
             </CardHeader>
@@ -600,5 +600,4 @@ const ProjectOverview: React.FC<ProjectOverviewProps> = ({ project }) => {
     </section>
   )
 }
-
 export default ProjectOverview

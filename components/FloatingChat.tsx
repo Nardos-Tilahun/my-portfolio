@@ -1,7 +1,7 @@
 "use client"
 
 import type React from "react"
-import { useState, useRef, useEffect } from "react"
+import { useState, useCallback, useRef, useEffect } from "react"
 import NextImage from "next/image";
 import { Button } from "@/components/ui/button"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
@@ -44,7 +44,7 @@ export default function FloatingChat() {
   // Scroll to the bottom when new messages arrive
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
-  }, [messages.length]) // Corrected dependency: scroll when messages array changes length
+  }, [messages.length])
 
   // Focus input when chat opens
   useEffect(() => {
@@ -54,18 +54,16 @@ export default function FloatingChat() {
       }, 300)
       setUnreadCount(0)
     }
-  }, [isOpen]) // Corrected dependency: only depend on isOpen
+  }, [isOpen])
 
   // Auto-resize the textarea to fit all content without scrolling
   const handleTextareaChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setInput(e.target.value)
 
-    // Auto-resize the textarea to fit all content without scrolling
     const textarea = e.target
-    textarea.style.height = "40px" // Reset height to recalculate
+    textarea.style.height = "40px"
     const scrollHeight = textarea.scrollHeight
 
-    // Allow unlimited height to fit all content
     setTextareaHeight(`${scrollHeight}px`)
   }
 
@@ -121,10 +119,8 @@ export default function FloatingChat() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ message: messageToSend, messages }),
       })
-      // setMessages((prev) => prev.filter((msg) => msg.id !== typingMessageId)) // This is redundant as it's filtered later
 
       if (!res.ok) {
-        // Remove the typing indicator first
         setMessages((prev) => prev.filter((msg) => msg.id !== typingMessageId));
         
         const errorMessageId = Date.now() + 2
@@ -140,17 +136,14 @@ export default function FloatingChat() {
         }
         setMessages((prev) => [...prev, aiMessage])
 
-        // Set a subtle error notification that doesn't disrupt the flow
         setError("Connection issue detected. Contact information provided.")
         return
       }
 
       const data = await res.json()
 
-      // Remove the typing indicator and add the real message
       setMessages((prev) => prev.filter((msg) => msg.id !== typingMessageId))
 
-      // Add the AI's response
       const aiMessage: Message = {
         id: Date.now() + 2,
         role: "ai",
@@ -159,22 +152,18 @@ export default function FloatingChat() {
       }
       setMessages((prev) => [...prev, aiMessage])
 
-      // If the message should redirect to contact, scroll to the contact section
       if (data.message.shouldRedirectToContact) {
         setTimeout(() => {
           const contactSection = document.getElementById("contact")
           if (contactSection) {
             contactSection.scrollIntoView({ behavior: "smooth" })
           } else {
-            // If contact section doesn't exist on the current page, try to navigate to it
             window.location.href = window.location.origin + "/#contact"
           }
-        }, 1500) // Give user time to read the message before redirecting
+        }, 1500)
       }
     } catch  {
-      // Remove the typing indicator
       setMessages((prev) => prev.filter((msg) => msg.id !== typingMessageId))
-      // Add a more helpful error message with contact information
       const errorMessageId = Date.now() + 3
       setMessages((prev) => [
         ...prev,
@@ -200,7 +189,6 @@ export default function FloatingChat() {
     setIsOpen((prev) => !prev)
   }
 
-  // Clear chat history
   const clearChat = () => {
     setShowDeleteConfirmation(true)
   }
@@ -209,7 +197,7 @@ export default function FloatingChat() {
     setHasConversationStarted(false)
     setMessages([])
     setError(null)
-    setUnreadCount(0); // Reset unread count on clear
+    setUnreadCount(0);
     setShowDeleteConfirmation(false)
   }
 
@@ -329,12 +317,12 @@ export default function FloatingChat() {
           <motion.div
             initial={{
               opacity: 0,
-              scale: 0.05, // Start very small
-              y: 150,      // Exaggerated Y offset
-              x: 75,       // Exaggerated X offset
-              rotate: 90,  // Initial rotation (90 degrees)
+              scale: 0.05,
+              y: 150,
+              x: 75,
+              rotate: 90,
               boxShadow: "0px 0px 0px rgba(0,0,0,0)",
-              filter: "blur(8px) brightness(0.2)" // Start blurred and dim
+              filter: "blur(8px) brightness(0.2)"
             }}
             animate={{
               opacity: 1,
@@ -342,32 +330,37 @@ export default function FloatingChat() {
               y: 0,
               x: 0,
               rotate: 0,
-              boxShadow: "0px 0px 50px rgba(0,100,83,0.8), 0px 0px 20px rgba(0,100,83,0.4)", // Stronger, more vibrant shadow
-              filter: "blur(0px) brightness(1)" // Clear filter
+              boxShadow: "0px 0px 50px rgba(0,100,83,0.8), 0px 0px 20px rgba(0,100,83,0.4)",
+              filter: "blur(0px) brightness(1)"
             }}
             exit={{
               opacity: 0,
-              scale: 0.05, // Shrink back small
+              scale: 0.05,
               y: 150,
               x: 75,
-              rotate: -90, // Reverse rotation (-90 degrees)
+              rotate: 90,
               boxShadow: "0px 0px 0px rgba(0,0,0,0)",
               filter: "blur(8px) brightness(0.2)"
             }}
+            // ADJUSTED: transition properties for overall slower, smoother open/close.
+            // Using explicit duration for `opacity`, `filter`, `x`, `boxShadow`
+            // and spring for `scale`, `y`, `rotate` to maintain the "bounce" feel
             transition={{
-              // Primary spring for the main expansion and vertical movement (slower, more relaxed)
-              scale: { type: "spring", stiffness: 80, damping: 20, mass: 1.5 }, // Reduced stiffness, increased mass for slower feel
-              y: { type: "spring", stiffness: 80, damping: 20, mass: 1.5 },   // Matched with scale
-              // Smoother, slightly slower transitions for other properties
-              opacity: { duration: 0.5, ease: "easeOut" }, // Slower fade-in
-              filter: { duration: 1.0, ease: "easeOut" },  // Slower filter resolve
-              x: { duration: 1.8, ease: "easeOut" },       // Slower X slide
-              rotate: { type: "spring", stiffness: 70, damping: 10, mass: 1 }, // Slower, more pronounced rotation
-              boxShadow: { duration: 1.0, ease: "easeInOut" } // Slower shadow fade-in
+              // Spring transitions for main movement
+              scale: { type: "spring", stiffness: 60, damping: 18, mass: 1.8 },
+              y: { type: "spring", stiffness: 60, damping: 18, mass: 1.8 },
+              rotate: { type: "spring", stiffness: 50, damping: 15, mass: 1.2 },
+
+              // Tween (linear) transitions for other properties, with explicit durations
+              opacity: { duration: 0.8, ease: "easeOut" }, // Slower fade for visibility during animation
+              filter: { duration: 1.2, ease: "easeOut" },  // Slower blur/brightness
+              x: { duration: 4.5, ease: "easeOut" },       // Slower horizontal slide
+              boxShadow: { duration: 1.0, ease: "easeInOut" } // Slower shadow fade
             }}
             className="w-[380px] min-h-[550px] max-h-[80vh] max-w-[100vh] bg-gray-900 border border-green-700 rounded-lg shadow-2xl flex flex-col overflow-hidden relative"
             style={{ transformOrigin: "bottom right" }}
           >
+            {/* ... (Chat Header, Messages, Input, DeleteConfirmation are unchanged) ... */}
             {/* Chat Header */}
             <div className="bg-gradient-to-r from-gray-800 to-gray-900 p-3 border-b border-green-700 flex justify-between items-center">
               <div className="flex items-center space-x-2">
@@ -401,7 +394,7 @@ export default function FloatingChat() {
                   <Button
                     variant="ghost"
                     size="icon"
-                    onClick={toggleChat}
+                    onClick={toggleChat} // This will trigger the exit animation via setIsOpen(false)
                     className="text-green-400 hover:text-green-300 hover:bg-gray-800 rounded-full transition-all duration-300 ease-in-out transform hover:scale-110"
                   >
                     <X className="h-5 w-5" />
@@ -528,7 +521,6 @@ export default function FloatingChat() {
                                           if (contactSection) {
                                             contactSection.scrollIntoView({ behavior: "smooth" })
                                           } else {
-                                            // If contact section doesn't exist on the current page, try to navigate to it
                                             window.location.href = window.location.origin + "/#contact"
                                           }
                                         }}
@@ -563,8 +555,8 @@ export default function FloatingChat() {
                                         src={src || "/placeholder.svg"}
                                         alt={props.alt || "Image"}
                                         crossOrigin="anonymous"
-                                        width={500}  // adjust as needed
-                                        height={300} // adjust as needed
+                                        width={500}
+                                        height={300}
                                       />
                                     </div>
                                   );
@@ -654,9 +646,8 @@ export default function FloatingChat() {
         ) : (
           <motion.button
             initial={{ scale: 0.8, opacity: 0 }}
-            // Apply continuous scale pulse and existing boxShadow pulse
             animate={{
-              scale: [1, 1.02, 1], // Subtle breathing pulse
+              scale: [1, 1.02, 1],
               opacity: 1,
               boxShadow: ["0px 0px 0px rgba(0,200,83,0.3)", "0px 0px 15px rgba(0,200,83,0.6)", "0px 0px 0px rgba(0,200,83,0.3)"]
             }}
@@ -672,9 +663,9 @@ export default function FloatingChat() {
             }}
             onClick={toggleChat}
             transition={{
-              scale: { duration: 3, repeat: Infinity, ease: "easeInOut" }, // Transition for the scale array
-              boxShadow: { duration: 2, repeat: Infinity }, // Transition for the boxShadow array
-              duration: 0.3 // This duration is for the initial `opacity` animation
+              scale: { duration: 3, repeat: Infinity, ease: "easeInOut" },
+              boxShadow: { duration: 2, repeat: Infinity },
+              duration: 0.3
             }}
             className="bg-gradient-to-r from-green-700 to-green-600 text-white rounded-full p-4 shadow-lg shadow-green-900/20 flex items-center space-x-2 group relative overflow-hidden"
           >
