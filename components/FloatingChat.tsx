@@ -311,7 +311,7 @@ export default function FloatingChat() {
   )
 
   return (
-    <div className="fixed bottom-8 sm:bottom-16 right-2 xs:right-6 lg:right-6 xl:right-12 3xl:left-1/2 3xl:right-auto 3xl:translate-x-[600px] z-50">
+    <div className="fixed bottom-8 sm:bottom-12 right-2 xs:right-6 lg:right-6 xl:right-12 z-50">
       <AnimatePresence>
         {isOpen ? (
           <motion.div
