@@ -66,7 +66,7 @@ Make sure you have the following installed on your machine:
 
 **Nardos Tilahun**
 
-- LinkedIn: [https://www.linkedin.com/in/nardos-tilahun-74260213a/](https://www.linkedin.com/in/nardos-tilahun-74260213a/)
+- LinkedIn: [https://www.linkedin.com/in/nardos-tilahun-74260213a/](https://www.linkedin.com/in/nardosdubale/)
 - GitHub: [github.com/Nardos-Tilahun](https://github.com/Nardos-Tilahun)
 
 ---
