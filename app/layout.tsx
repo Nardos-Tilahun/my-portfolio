@@ -311,7 +311,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
                   </svg>
                 </a>
                 <a
-                  href="https://res.cloudinary.com/dyayxqlzr/image/upload/v1753021337/Nardos_Tilahun_CV_Resume_djluwf.pdf"
+                  href="https://res.cloudinary.com/dyayxqlzr/image/upload/v1753022177/Nardos_Tilahun_CV_Resume_h3pa6h.pdf"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-orange-400 hover:text-orange-200 transition-transform transform hover:scale-110 drop-shadow-sm"
