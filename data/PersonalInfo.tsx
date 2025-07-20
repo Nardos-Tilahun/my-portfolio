@@ -272,7 +272,7 @@ export const personalData = {
     "linkedin": "www.linkedin.com/in/nardosdubale",
     "github": "https://github.com/Nardos-Tilahun",
     "twitter": "@Nardos_Tilahun",
-    "resume": "https://res.cloudinary.com/dyayxqlzr/image/upload/v1753019590/Nardos_Tilahun_CV_Resume_wumtqa.pdf"
+    "resume": "https://res.cloudinary.com/dyayxqlzr/image/upload/v1753021337/Nardos_Tilahun_CV_Resume_djluwf.pdf"
   },
   "interests": [
     "Web development",
